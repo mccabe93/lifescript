@@ -21,9 +21,9 @@ public class Simulator {
 	}
 
 	public void run(){
+		interpVisitor.setCellMatrix(matrix);
+		interpVisitor.setLSFrame(frame);
 		for(int i = 0; i < interpVisitor.getGenerations(); i++) {
-			interpVisitor.setCellMatrix(matrix);
-			interpVisitor.setLSFrame(frame);
 			System.out.println("Generation " + (i+2));
 			for(int k = 0; k < matrix.cells(); k++) {
 				for(AST type : types)

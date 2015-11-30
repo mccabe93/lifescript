@@ -114,6 +114,7 @@ public class InterpVisitor {
 		return null;	
 	}
 	private Double interp(AliveStmt ast) {
+		System.out.println("setting a cell alive");
 		cellMatrix.state(cellMatrix.ALIVE);
 		return null;	
 	}

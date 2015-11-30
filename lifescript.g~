@@ -120,6 +120,7 @@ stmt	returns [Stmt ast]
 	|	'Properties' ':'
 			('Title' '=' title=STRING)? // otherwise sim
 			('Dimensions' '=' dims=coordexp)? // otherwise 540,540
+			('Default Type' '=' dt=STRING)?
 			{BlockStmt startConditions = new BlockStmt();}
 			('Start' '=' '{' 
 				'(' celltype=STRING ',' cellcoords=coordexp 
@@ -128,7 +129,6 @@ stmt	returns [Stmt ast]
 				(',' '(' celltype=STRING ',' cellcoords=coordexp 
 				{startConditions.addAST(new CellStmt($celltype.text, $cellcoords.ast));}
 				')')* '}' )?
-			('Default Type' '=' dt=STRING)?
 			('Generations' '=' gens=exp)? // otherwise infinite
 			('Interval' '=' intervals=exp)? // otherwise 0.3 seconds
 			('Pausable' '=' pause=exp)? // defaults true

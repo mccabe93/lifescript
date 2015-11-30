@@ -2,7 +2,7 @@ Properties:
 	Title = "Rule 30"
 	Dimensions = (64, 64)
 	Start = {("block", (0,10)), ("block", (0, 15))}
-	Default Type = "block"
+	DefaultType = "block"
 	Generations = 64
 	Interval = 0.5
 	Pausable = false

@@ -74,6 +74,8 @@ public class CellMatrix {
 
 	public int neighborValues(int pos) {
 		int values = 0, place = pos;
+//		System.out.println("Matrix["+pos+"].type = " + Matrix[pos].type);
+//		System.out.println("# Saved Types = " + types.size());
 		Cell cell = types.get(Matrix[pos].type);
 		int[] hood = cell.neighborhood;
 		for(int i = 1; i < hood.length; i++)
