@@ -1,4 +1,4 @@
-// $ANTLR 3.5 lifescript.g 2015-11-30 13:02:39
+// $ANTLR 3.5 lifescript.g 2015-12-02 17:25:24
 
 import org.antlr.runtime.*;
 import java.util.Stack;
@@ -1209,7 +1209,7 @@ public class lifescriptLexer extends Lexer {
 		try {
 			int _type = BOOLEAN;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// lifescript.g:223:9: ( 'true' | 'false' )
+			// lifescript.g:222:9: ( 'true' | 'false' )
 			int alt1=2;
 			int LA1_0 = input.LA(1);
 			if ( (LA1_0=='t') ) {
@@ -1227,14 +1227,14 @@ public class lifescriptLexer extends Lexer {
 
 			switch (alt1) {
 				case 1 :
-					// lifescript.g:223:11: 'true'
+					// lifescript.g:222:11: 'true'
 					{
 					match("true"); 
 
 					}
 					break;
 				case 2 :
-					// lifescript.g:223:20: 'false'
+					// lifescript.g:222:20: 'false'
 					{
 					match("false"); 
 
@@ -1256,8 +1256,8 @@ public class lifescriptLexer extends Lexer {
 		try {
 			int _type = ID;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// lifescript.g:225:5: ( ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )* )
-			// lifescript.g:225:7: ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
+			// lifescript.g:224:5: ( ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )* )
+			// lifescript.g:224:7: ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
 			{
 			if ( (input.LA(1) >= 'A' && input.LA(1) <= 'Z')||input.LA(1)=='_'||(input.LA(1) >= 'a' && input.LA(1) <= 'z') ) {
 				input.consume();
@@ -1267,7 +1267,7 @@ public class lifescriptLexer extends Lexer {
 				recover(mse);
 				throw mse;
 			}
-			// lifescript.g:225:31: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
+			// lifescript.g:224:31: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
 			loop2:
 			while (true) {
 				int alt2=2;
@@ -1312,10 +1312,10 @@ public class lifescriptLexer extends Lexer {
 		try {
 			int _type = INT;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// lifescript.g:228:5: ( ( '0' .. '9' )+ )
-			// lifescript.g:228:7: ( '0' .. '9' )+
+			// lifescript.g:227:5: ( ( '0' .. '9' )+ )
+			// lifescript.g:227:7: ( '0' .. '9' )+
 			{
-			// lifescript.g:228:7: ( '0' .. '9' )+
+			// lifescript.g:227:7: ( '0' .. '9' )+
 			int cnt3=0;
 			loop3:
 			while (true) {
@@ -1364,8 +1364,8 @@ public class lifescriptLexer extends Lexer {
 		try {
 			int _type = FLOAT;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// lifescript.g:232:5: ( INT '.' INT )
-			// lifescript.g:232:7: INT '.' INT
+			// lifescript.g:231:5: ( INT '.' INT )
+			// lifescript.g:231:7: INT '.' INT
 			{
 			mINT(); 
 
@@ -1388,11 +1388,11 @@ public class lifescriptLexer extends Lexer {
 		try {
 			int _type = STRING;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// lifescript.g:236:5: ( '\"' ( ESC_SEQ |~ ( '\\\\' | '\"' ) )* '\"' )
-			// lifescript.g:236:8: '\"' ( ESC_SEQ |~ ( '\\\\' | '\"' ) )* '\"'
+			// lifescript.g:235:5: ( '\"' ( ESC_SEQ |~ ( '\\\\' | '\"' ) )* '\"' )
+			// lifescript.g:235:8: '\"' ( ESC_SEQ |~ ( '\\\\' | '\"' ) )* '\"'
 			{
 			match('\"'); 
-			// lifescript.g:236:12: ( ESC_SEQ |~ ( '\\\\' | '\"' ) )*
+			// lifescript.g:235:12: ( ESC_SEQ |~ ( '\\\\' | '\"' ) )*
 			loop4:
 			while (true) {
 				int alt4=3;
@@ -1406,14 +1406,14 @@ public class lifescriptLexer extends Lexer {
 
 				switch (alt4) {
 				case 1 :
-					// lifescript.g:236:14: ESC_SEQ
+					// lifescript.g:235:14: ESC_SEQ
 					{
 					mESC_SEQ(); 
 
 					}
 					break;
 				case 2 :
-					// lifescript.g:236:24: ~ ( '\\\\' | '\"' )
+					// lifescript.g:235:24: ~ ( '\\\\' | '\"' )
 					{
 					if ( (input.LA(1) >= '\u0000' && input.LA(1) <= '!')||(input.LA(1) >= '#' && input.LA(1) <= '[')||(input.LA(1) >= ']' && input.LA(1) <= '\uFFFF') ) {
 						input.consume();
@@ -1446,8 +1446,8 @@ public class lifescriptLexer extends Lexer {
 	// $ANTLR start "ESC_SEQ"
 	public final void mESC_SEQ() throws RecognitionException {
 		try {
-			// lifescript.g:242:5: ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) )
-			// lifescript.g:242:9: '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' )
+			// lifescript.g:241:5: ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) )
+			// lifescript.g:241:9: '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' )
 			{
 			match('\\'); 
 			if ( input.LA(1)=='\"'||input.LA(1)=='\''||input.LA(1)=='\\'||input.LA(1)=='b'||input.LA(1)=='f'||input.LA(1)=='n'||input.LA(1)=='r'||input.LA(1)=='t' ) {
@@ -1472,12 +1472,12 @@ public class lifescriptLexer extends Lexer {
 		try {
 			int _type = COMMENT;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// lifescript.g:245:5: ( 'rem' (~ ( '\\n' | '\\r' ) )* ( '\\r' )? '\\n' )
-			// lifescript.g:245:9: 'rem' (~ ( '\\n' | '\\r' ) )* ( '\\r' )? '\\n'
+			// lifescript.g:244:5: ( 'rem' (~ ( '\\n' | '\\r' ) )* ( '\\r' )? '\\n' )
+			// lifescript.g:244:9: 'rem' (~ ( '\\n' | '\\r' ) )* ( '\\r' )? '\\n'
 			{
 			match("rem"); 
 
-			// lifescript.g:245:15: (~ ( '\\n' | '\\r' ) )*
+			// lifescript.g:244:15: (~ ( '\\n' | '\\r' ) )*
 			loop5:
 			while (true) {
 				int alt5=2;
@@ -1506,7 +1506,7 @@ public class lifescriptLexer extends Lexer {
 				}
 			}
 
-			// lifescript.g:245:29: ( '\\r' )?
+			// lifescript.g:244:29: ( '\\r' )?
 			int alt6=2;
 			int LA6_0 = input.LA(1);
 			if ( (LA6_0=='\r') ) {
@@ -1514,7 +1514,7 @@ public class lifescriptLexer extends Lexer {
 			}
 			switch (alt6) {
 				case 1 :
-					// lifescript.g:245:29: '\\r'
+					// lifescript.g:244:29: '\\r'
 					{
 					match('\r'); 
 					}
@@ -1540,8 +1540,8 @@ public class lifescriptLexer extends Lexer {
 		try {
 			int _type = WS;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// lifescript.g:248:5: ( ( ' ' | '\\t' | '\\r' | '\\n' ) )
-			// lifescript.g:248:9: ( ' ' | '\\t' | '\\r' | '\\n' )
+			// lifescript.g:247:5: ( ( ' ' | '\\t' | '\\r' | '\\n' ) )
+			// lifescript.g:247:9: ( ' ' | '\\t' | '\\r' | '\\n' )
 			{
 			if ( (input.LA(1) >= '\t' && input.LA(1) <= '\n')||input.LA(1)=='\r'||input.LA(1)==' ' ) {
 				input.consume();

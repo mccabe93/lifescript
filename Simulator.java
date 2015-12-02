@@ -21,20 +21,22 @@ public class Simulator {
 	}
 
 	public void run(){
-		for(int i = 0; i < interpVisitor.getGenerations(); i++) {
+		for(int i = 0; i < interpVisitor.getGenerations()-1; i++) {
 			interpVisitor.setCellMatrix(matrix);
 			interpVisitor.setLSFrame(frame);
-			System.out.println("Generation " + (i+2));
+			System.out.println("Generation " + (i+1));
 			for(int k = 0; k < matrix.cells(); k++) {
 				for(AST type : types)
 					interpVisitor.dispatch(type);
-				matrix.nextCell();
+				interpVisitor.nextCell();
 			}
 //			for(AST world : worlds)
 //				interpVisitor.dispatch(world);
 			System.out.println();		
 			System.out.println();
 			matrix.printMatrix();
+			matrix	= interpVisitor.getCellMatrix();
+			frame	= interpVisitor.getLSFrame();
 		}
 	}
 

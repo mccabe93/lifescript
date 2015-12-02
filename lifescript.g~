@@ -117,26 +117,25 @@ stmt	returns [Stmt ast]
 	|	'world' ':' {BlockStmt worldBlock = new BlockStmt();}
 			(s=stmt {worldBlock.addAST($s.ast);})+
 		'endworld' {$ast = new WorldStmt(worldBlock);}
+
 	|	'Properties' ':'
+			{BlockStmt properties = new BlockStmt();}
 			('Title' '=' title=STRING)? // otherwise sim
-			('Dimensions' '=' dims=coordexp)? // otherwise 540,540
-			('Default Type' '=' dt=STRING)?
-			{BlockStmt startConditions = new BlockStmt();}
-			('Start' '=' '{' 
+			('Dimensions' '=' dims=coordexp {properties.addAST(new DimensionsStmt(dims));})? // otherwise 540,540
+			('Start' '=' '{' {BlockStmt startConditions = new BlockStmt();}
 				'(' celltype=STRING ',' cellcoords=coordexp 
 				{startConditions.addAST(new CellStmt($celltype.text, $cellcoords.ast));}
 				')'
 				(',' '(' celltype=STRING ',' cellcoords=coordexp 
 				{startConditions.addAST(new CellStmt($celltype.text, $cellcoords.ast));}
-				')')* '}' )?
-			('Generations' '=' gens=exp)? // otherwise infinite
-			('Interval' '=' intervals=exp)? // otherwise 0.3 seconds
-			('Pausable' '=' pause=exp)? // defaults true
-			('Steppable' '=' sb=exp)? // defaults false 
-		{System.out.println("new properties = " + $title.text + ", " + $dims.ast+ ", " + $gens.ast + 
-					", " + $intervals.ast + ", "+ $pause.ast + ", " + $sb.ast);
-			$ast = new PropertiesStmt($title.text, $dims.ast, $dt.text, startConditions, $gens.ast, 
-						$intervals.ast, $pause.ast, $sb.ast);}
+				')')* '}' 
+				{properties.addAST(startConditions);})?
+			('Default Type' '=' dt=STRING)?
+			('Generations' '=' gens=exp {properties.addAST(new GenerationsStmt(gens));})? // otherwise infinite
+			('Interval' '=' intervals=exp {properties.addAST(new IntervalStmt(intervals));})? // otherwise 0.3 seconds
+			('Pausable' '=' pause=exp {properties.addAST(new PausableStmt());})? // defaults true
+			('Steppable' '=' sb=exp {properties.addAST(new SteppableStmt());})? // defaults false 
+			{$ast = new PropertiesStmt($title.text, $dt.text, properties);}
 	;
 
 coordexp returns [CoordExpr ast]

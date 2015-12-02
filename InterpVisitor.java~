@@ -24,6 +24,9 @@ public class InterpVisitor {
 	private CellMatrix cellMatrix;
 	private ArrayList<AST> 	typeStmts = new ArrayList<AST>(), 
 				worldStmts = new ArrayList<AST>();
+
+	private ArrayList<Integer> startConditionCoords = new ArrayList<Integer>();
+	private ArrayList<String> startConditionTypes = new ArrayList<String>();
 	
 	// our variable value memory.
 	private HashMap memory = new HashMap();
@@ -45,24 +48,35 @@ public class InterpVisitor {
 		else if (ast.getClass() == StmtList.class)		return interp((StmtList)ast);
 		else if (ast.getClass() == CreateStmt.class)		return interp((CreateStmt)ast);
 		else if (ast.getClass() == KillStmt.class)		return interp((KillStmt)ast);
-		else if (ast.getClass() == PropertiesStmt.class)	return interp((PropertiesStmt)ast);
 		else if (ast.getClass() == AliveStmt.class)		return interp((AliveStmt)ast);
 		else if (ast.getClass() == DeadStmt.class)		return interp((DeadStmt)ast);
 		else if (ast.getClass() == NeighborhoodStmt.class)	return interp((NeighborhoodStmt)ast);
 
+		else if (ast.getClass() == PropertiesStmt.class)	return interp((PropertiesStmt)ast);
+		else if (ast.getClass() == CellStmt.class)		return interp((CellStmt)ast);
+		else if (ast.getClass() == DimensionsStmt.class)	return interp((DimensionsStmt)ast);
+		else if (ast.getClass() == IntervalStmt.class)		return interp((IntervalStmt)ast);
+		else if (ast.getClass() == SteppableStmt.class)		return interp((SteppableStmt)ast);
+		else if (ast.getClass() == IntervalStmt.class)		return interp((IntervalStmt)ast);
+		else if (ast.getClass() == GenerationsStmt.class)	return interp((GenerationsStmt)ast);
+		else if (ast.getClass() == PausableStmt.class)		return interp((PausableStmt)ast);
+		else if (ast.getClass() == SteppableStmt.class)		return interp((SteppableStmt)ast);
+
 		else if (ast.getClass() == TypeStmt.class)		return interp((TypeStmt)ast);
 		else if (ast.getClass() == WorldStmt.class)		return interp((WorldStmt)ast);
+
 		else if (ast.getClass() == NeighborExpr.class)		return interp((NeighborExpr)ast);
 		else if (ast.getClass() == NeighborsExpr.class)		return interp((NeighborsExpr)ast);
 
 		else if (ast.getClass() == BooleanExpr.class)		return interp((BooleanExpr)ast);
+		else if (ast.getClass() == CoordExpr.class)		return interp((CoordExpr)ast);
 		else if (ast.getClass() == MathExpr.class)		return interp((MathExpr)ast);
 		else if (ast.getClass() == NumExpr.class)		return interp((NumExpr)ast);
 		else if (ast.getClass() == ParenExpr.class)		return interp((ParenExpr)ast);
 		else if (ast.getClass() == VarExpr.class)		return interp((VarExpr)ast);
 		else if (ast.getClass() == NegExpr.class)		return interp((NegExpr)ast);
 		else {
-		    System.out.println("PrettyPrintVisitor: unknown class type");
+		    System.out.println("PrettyPrintVisitor: unknown class type [" + ast.getClass() + "]");
 		    System.exit(1);
 		    return null;
 		}
@@ -105,16 +119,69 @@ public class InterpVisitor {
 		
 		return null;	
 	}
-	private Double interp(PropertiesStmt ast) {
-		simFrame = new LSFrame();
-		int[] size = {10, 10};
-		int[] coord = {5, 1};
-		String[] types = {"block"};
-		cellMatrix = new CellMatrix("block", size, coord, types);
+
+	private Double interp(DimensionsStmt ast)
+	{
+		Double x = this.dispatch(ast.getAST(0).getAST(0)), y = this.dispatch(ast.getAST(0).getAST(1));
+		cellMatrix.setDimensions(new int[]{x.intValue(), y.intValue()});
+		return null;
+	}
+	
+	private Double interp(GenerationsStmt ast) {
+		this.generations = this.dispatch(ast.getAST(0)).intValue();
 		return null;	
 	}
+
+	private Double interp(IntervalStmt ast)
+	{
+		System.out.println("setting interval: " + this.dispatch(ast.getAST(0)));
+		return null;
+	}
+
+	private Double interp(PausableStmt ast)
+	{
+		System.out.println("setting pausable: " + this.dispatch(ast.getAST(0)));
+		return null;
+	}
+
+	private Double interp(SteppableStmt ast)
+	{
+		System.out.println("setting steppable: " + this.dispatch(ast.getAST(0)));
+		return null;
+	}
+
+	private Double interp(CellStmt ast)
+	{
+		Double x = this.dispatch(ast.getAST(0).getAST(0)), y = this.dispatch(ast.getAST(0).getAST(1));
+		startConditionCoords.add(x.intValue());
+		startConditionCoords.add(y.intValue());
+		startConditionTypes.add(dequote(ast.name()));
+		return null;
+	}
+
+	private Double interp(PropertiesStmt ast) {
+		simFrame = new LSFrame();
+		cellMatrix = new CellMatrix();
+		this.dispatch(ast.getAST(0));
+	
+		cellMatrix.setDefaultType(ast.defaultType());
+
+		int[] coords = new int[startConditionCoords.size()];
+		for(int h = 0; h < coords.length; h++)
+			coords[h] = startConditionCoords.get(h);
+		String[] types = new String[startConditionTypes.size()];
+		for(int k = 0; k < types.length; k++)
+			types[k] = startConditionTypes.get(k);
+
+		cellMatrix.setStartConditions(coords, types);
+//		int[] size = {10, 10};
+//		int[] coord = {5, 1};
+//		String[] types = {"block"};
+//		cellMatrix = new CellMatrix("block", size, coord, types);
+		return null;	
+	}
+
 	private Double interp(AliveStmt ast) {
-		System.out.println("setting a cell alive");
 		cellMatrix.state(cellMatrix.ALIVE);
 		return null;	
 	}
@@ -125,19 +192,39 @@ public class InterpVisitor {
 	private Double interp(NeighborExpr ast) {
 		return 0.0;	
 	}
+	
+	public void nextCell()
+	{
+		cellMatrix.nextCell();
+	}
+
 	private Double interp(NeighborsExpr ast) {
 		// We're calling from inside a Type		
 		if(ast.size() == 0) {
+			System.out.println("neighbors = " + cellMatrix.neighborValues());
 			return new Double(cellMatrix.neighborValues());
 		}		
 		// otherwise we're calling from somewhere else and process a coord
 //		else
 		return 0.0;	
 	}
+
+	private ArrayList<Integer> currentNeighborhood = new ArrayList<Integer>();
+
 	private Double interp(NeighborhoodStmt ast) {
-		
+		if(!ast.isVar())
+			currentNeighborhood.add(this.dispatch(ast.getAST(0)).intValue());
+		else
+			currentNeighborhood.add(0);
 		return null;	
 	}
+
+	private Double interp(CoordExpr ast) {
+		this.dispatch(ast.getAST(0));
+		this.dispatch(ast.getAST(1));	
+		return null;
+	}
+
 	private Double interp(BooleanExpr ast) {
 		return ast.value() == true ? 1.0 : 0.0;	
 	}
@@ -145,11 +232,17 @@ public class InterpVisitor {
 	private Double interp(TypeStmt ast) {
 		if(saveStmts) {
 			typeStmts.add(ast);
-			int[] neighborhood = {3, 4, 2, 1, 0, 0, 0};
-			cellMatrix.addCellType("block", neighborhood, 4);
+			currentNeighborhood.add(this.dispatch(ast.getAST(0)).intValue());
 		}
 		for (int i = 0; i < ast.size(); i++) {
 			this.dispatch(ast.getAST(i));
+		}
+		if(saveStmts) {
+			int[] neighborhood = new int[currentNeighborhood.size()];
+			for(int i = 0; i < neighborhood.length; i++)
+				neighborhood[i] = currentNeighborhood.get(i);
+			cellMatrix.addCellType(ast.type(), neighborhood, this.dispatch(ast.getAST(0)).intValue());
+			currentNeighborhood = new ArrayList<Integer>();
 		}
 		return null;	
 	}
