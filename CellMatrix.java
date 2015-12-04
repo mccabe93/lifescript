@@ -117,19 +117,19 @@ public class CellMatrix {
 		if(types.get(Matrix[pos].type) == null) return 0;
 		Cell cell = types.get(Matrix[pos].type);
 		int[] hood = cell.neighborhood;
-
-//		System.out.println("PARSING CELL @ " + pos);
 	
 		int 	bufferTop = pos - cell.rowsAbove * matrixWidth, bufferBottom = pos + cell.rowsBelow * matrixWidth,
 			bufferLeft = pos%matrixWidth - cell.leftDisplacement, bufferRight = pos%matrixWidth + cell.rightDisplacement;
-//		System.out.println("Buffer Top = " +bufferTop + "\nBuffer Bottom = " +bufferBottom + "\nBuffer Left = " +bufferLeft + "\nBuffer Right = " +bufferRight);
 		// If there's enough room in the matrix -- centered at the VAR of the neighborhood -- then a transpose is possible		
 		if(bufferTop > -1 && bufferBottom < Matrix.length && bufferLeft > -1 && bufferRight < matrixWidth) {
+			System.out.println("PARSING CELL @ " + pos);
+			System.out.println("Buffer Top = " +bufferTop + "\nBuffer Bottom = " +bufferBottom + "\nBuffer Left = " +bufferLeft + "\nBuffer Right = " +bufferRight);
 //			System.out.println("we can transpose @ pos " + pos);
-			pos = bufferTop - bufferLeft;
+			pos = bufferTop - cell.leftDisplacement;
+			System.out.println(pos);
 			for(int i = 1; i < hood.length; i++) {
 //				System.out.println(pos-1 + "\n" + Matrix[pos-1].state);
-				if(Matrix[pos-1].state == 1) {
+				if(Matrix[pos].state == 1) {
 					System.out.println("Value @ pos " + (pos-1) + " = " + hood[i]);
 					values += hood[i];
 				}

@@ -1,7 +1,7 @@
 Properties:
 	Title = "Rule 30"
-	Dimensions = (5, 3)
-	Start = {("block", (0,3))}
+	Dimensions = (31, 10)
+	Start = {("block", (0,16))}
 	Default Type = "block"
 	Generations = 4
 	Interval = 0.5
