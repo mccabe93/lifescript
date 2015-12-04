@@ -1,7 +1,7 @@
 Properties:
 	Title = "Rule 30"
-	Dimensions = (15, 6)
-	Start = {("block", (0,10)), ("block", (0, 15))}
+	Dimensions = (3, 3)
+	Start = {("block", (0,2))}
 	Default Type = "block"
 	Generations = 4
 	Interval = 0.5
@@ -11,13 +11,15 @@ Properties:
 type block:
 	Neighborhood[3] = {4, 2, 1,
 			0, VAR, 0}
-	
-	if 4 <= neighbors  then
-		print "neighbors is <= 4"
-		if 0 == neighbors then
+	nebs = neighbors
+	print "neighbor value = ", nebs
+	if 4 <= nebs  then
+		print "neighbors is >= 4"
+		if 0 == nebs then
 			dead
 		else
 			alive
+			print "setting cell alive"
 		endif
 	else
 		dead

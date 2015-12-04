@@ -12,16 +12,18 @@ public class Simulator {
 		interpVisitor.saveStmts = false;
 		worlds	=	interpVisitor.getWorldStmts();
 		types	= 	interpVisitor.getTypeStmts();
-		matrix	= 	interpVisitor.getCellMatrix();
+//		matrix	= 	interpVisitor.getCellMatrix();
 		frame	= 	interpVisitor.getLSFrame();
 		System.out.println("World Statements: " + worlds.size());
 		System.out.println("Type Statements: " + types.size());
-		matrix.printMatrix();
+		interpVisitor.getCellMatrix().printMatrix();
+//		matrix.printMatrix();
 		run();
 	}
 
 	public void run(){
 		for(int i = 0; i < interpVisitor.getGenerations()-1; i++) {
+			CellMatrix matrix = interpVisitor.getCellMatrix();
 //			interpVisitor.setCellMatrix(matrix);
 //			interpVisitor.setLSFrame(frame);
 			System.out.println("Generation " + (i+1));
@@ -34,7 +36,9 @@ public class Simulator {
 //				interpVisitor.dispatch(world);
 			System.out.println();		
 			System.out.println();
-			matrix.printMatrix();
+			interpVisitor.getCellMatrix().printMatrix();
+//			matrix	= interpVisitor.getCellMatrix();
+//			frame	= interpVisitor.getLSFrame();
 		}
 	}
 

@@ -97,8 +97,9 @@ public class CellMatrix {
 				return 0;
 			// we don't count the variable cells in the neighborhood
 			if(i != cell.VAR) {
-				if(Matrix[place].state == 1)
-					values += hood[i];
+				if(Matrix[place].state == 1) {
+					values += hood[i];				
+				}
 			}
 			place++;
 		}
@@ -117,9 +118,9 @@ public class CellMatrix {
 	}
 
 	private int getPosition(int VAR, int neghborhoodWidth, int pos){
-		if(VAR > neighborhoodWidth) {
+//		if(VAR > neighborhoodWidth) {
 			// TODO: write code to calculate position from var, neighborhood width, and position in matrix
-		}
+//		}
 		return 0;
 	}
 
@@ -136,6 +137,7 @@ public class CellMatrix {
 		case 100:
 			Matrix[pos].type = add;
 		}
+//		System.out.println("Matrix["+pos+"].state set to " + state);
 	}
 
 	public void state(int state, String add) {
