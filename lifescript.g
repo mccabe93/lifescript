@@ -121,6 +121,7 @@ stmt	returns [Stmt ast]
 	|	'Properties' ':'
 			{BlockStmt properties = new BlockStmt();}
 			('Title' '=' title=STRING)? // otherwise sim
+			('Generation Type' '=' genType=STRING)?
 			('Dimensions' '=' dims=coordexp {properties.addAST(new DimensionsStmt(dims));})? // otherwise 540,540
 			('Start' '=' '{' {BlockStmt startConditions = new BlockStmt();}
 				'(' celltype=STRING ',' cellcoords=coordexp 
@@ -135,7 +136,7 @@ stmt	returns [Stmt ast]
 			('Interval' '=' intervals=exp {properties.addAST(new IntervalStmt(intervals));})? // otherwise 0.3 seconds
 			('Pausable' '=' pause=exp {properties.addAST(new PausableStmt(pause));})? // defaults true
 			('Steppable' '=' sb=exp {properties.addAST(new SteppableStmt(sb));})? // defaults false 
-			{$ast = new PropertiesStmt($title.text, $dt.text, properties);}
+			{$ast = new PropertiesStmt($title.text, $genType.text, $dt.text, properties);}
 	;
 
 coordexp returns [CoordExpr ast]
@@ -204,6 +205,7 @@ atom 	returns [Expr ast]
 	|	'neighbors' (':' 'type' '=' STRING)?
 		{	System.out.println("initializing neighbors w/ this, " + $STRING.text);
 			$ast = new NeighborsExpr($STRING.text);}
+	|	'alive'	{$ast = new AliveExpr();}
 //	|	'neighbors' ('of' ID | coordexp)? ('of type' STRING)?
 //		{ System.out.println("initializing neighbors w/ " + 
 //					$ID.text + "," + $coordexp.ast + "," + $STRING.text);

@@ -8,18 +8,23 @@ public class CellMatrix {
 	private HashMap<String, Cell> types; // stores info of each cell type for lookup
 	private CellNode[] Matrix; // tracks states of each cell (0 = dead, 1 = alive) and type
 	private int matrixWidth, matrixHeight;
+
+	private int current = 0;
 	/*
 		0,block 0,block 1,block 1,block 0,block 0,block
 		0,block	1,block	0,block	0,block	1,block	0,block
 	*/	
 
+	public boolean alive() {
+		return Matrix[current].state == 1;
+	}
+
 	public int cells() { 
 		return Matrix.length;
 	}
 
-	private int current = 0;
-
 	public class CellNode {
+		public boolean	changed = false; // whether this cell changed this generation
 		public int state = 0;
 		public String type; 
 		public CellNode(int state, String type){
@@ -29,15 +34,40 @@ public class CellMatrix {
 	}
 
 	public class Cell {
-		public int[] neighborhood;	// values of neighbors
+		public int[]	neighborhood;	// values of neighbors
 		public int 	VAR;		// location of VARs in neighborhood
-
+		public int	rowsAbove = 0, rowsBelow = -1, 
+				leftDisplacement = 0, rightDisplacement = 0;
 		// first value of any neighborhood is its width, height is implicit by array length
 		public Cell(String name, int[] neighborhood, int VAR)
 		{
 			this.neighborhood = neighborhood;
 			this.VAR = VAR;
+			// we set the value from -17 to 0 as to not affect calculations
+			neighborhood[VAR] = 0;
+			getTransposeData();
 		}
+		private void getTransposeData() {
+			// center the neighborhood matrix on VAR
+			for(int i = 1; i < neighborhood.length; i++){
+				if(i == VAR) { 
+					leftDisplacement = (i % neighborhood[0]) - 1;
+					rightDisplacement = (neighborhood[0] - leftDisplacement) - 1;
+				}
+				if(i % neighborhood[0] == 0){
+					System.out.println("row found");
+					if(i < VAR)
+						rowsAbove++;
+					else if(i > VAR)
+						rowsBelow++;
+				}
+			}
+		}
+	}
+
+	public void newGeneration() {
+		for(CellNode cn : Matrix)
+			cn.changed = false;
 	}
 
 	public CellMatrix()
@@ -83,25 +113,33 @@ public class CellMatrix {
 	}
 
 	public int neighborValues(int pos) {
-		int values = 0, place = pos;
+		int values = 0;
 		if(types.get(Matrix[pos].type) == null) return 0;
 		Cell cell = types.get(Matrix[pos].type);
 		int[] hood = cell.neighborhood;
-		for(int i = 1; i < hood.length; i++)
-		{		
-			// if we're going to the next row in the neighborhood, we must
-			// also go to the next row in the matrix
-			if(i % hood[0] == 0)
-				place += matrixWidth;
-			if(place >= Matrix.length)
-				return 0;
-			// we don't count the variable cells in the neighborhood
-			if(i != cell.VAR) {
-				if(Matrix[place].state == 1) {
-					values += hood[i];				
+
+//		System.out.println("PARSING CELL @ " + pos);
+	
+		int 	bufferTop = pos - cell.rowsAbove * matrixWidth, bufferBottom = pos + cell.rowsBelow * matrixWidth,
+			bufferLeft = pos%matrixWidth - cell.leftDisplacement, bufferRight = pos%matrixWidth + cell.rightDisplacement;
+//		System.out.println("Buffer Top = " +bufferTop + "\nBuffer Bottom = " +bufferBottom + "\nBuffer Left = " +bufferLeft + "\nBuffer Right = " +bufferRight);
+		// If there's enough room in the matrix -- centered at the VAR of the neighborhood -- then a transpose is possible		
+		if(bufferTop > -1 && bufferBottom < Matrix.length && bufferLeft > -1 && bufferRight < matrixWidth) {
+//			System.out.println("we can transpose @ pos " + pos);
+			pos = bufferTop - bufferLeft;
+			for(int i = 1; i < hood.length; i++) {
+//				System.out.println(pos-1 + "\n" + Matrix[pos-1].state);
+				if(Matrix[pos-1].state == 1) {
+					System.out.println("Value @ pos " + (pos-1) + " = " + hood[i]);
+					values += hood[i];
 				}
+				if(i % hood[0] == 0){
+					pos -= hood[0]-1;
+					pos += matrixWidth;
+				}
+				else
+					pos++;
 			}
-			place++;
 		}
 		return values;
 	}
@@ -117,15 +155,9 @@ public class CellMatrix {
 			current++;
 	}
 
-	private int getPosition(int VAR, int neghborhoodWidth, int pos){
-//		if(VAR > neighborhoodWidth) {
-			// TODO: write code to calculate position from var, neighborhood width, and position in matrix
-//		}
-		return 0;
-	}
-
 	public void state(int pos, int state, String add) {	
 		Cell cell = types.get(Matrix[pos].type);
+		if(Matrix[pos].changed) return;
 		switch(state)
 		{
 		case 0:
@@ -137,6 +169,7 @@ public class CellMatrix {
 		case 100:
 			Matrix[pos].type = add;
 		}
+		Matrix[pos].changed = true;
 //		System.out.println("Matrix["+pos+"].state set to " + state);
 	}
 

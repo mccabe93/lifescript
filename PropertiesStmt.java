@@ -1,13 +1,18 @@
 
 public class PropertiesStmt extends Stmt {
 
-	private String title, defaultType;
+	private String title, defaultType, generationType;
 
-	public PropertiesStmt(String title, String defaultType, BlockStmt properties)
+	public PropertiesStmt(String title, String generationType, String defaultType, BlockStmt properties)
 	{
 		this.title = "sim";
 		this.defaultType = "block";
+		this.generationType = generationType;
 		this.addAST(properties);
+	}
+
+	public String generationType() {
+		return generationType;
 	}
 
 	public String defaultType() {

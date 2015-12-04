@@ -69,6 +69,7 @@ public class InterpVisitor {
 		else if (ast.getClass() == NeighborsExpr.class)		return interp((NeighborsExpr)ast);
 
 		else if (ast.getClass() == BooleanExpr.class)		return interp((BooleanExpr)ast);
+		else if (ast.getClass() == AliveExpr.class)		return interp((AliveExpr)ast);
 		else if (ast.getClass() == CoordExpr.class)		return interp((CoordExpr)ast);
 		else if (ast.getClass() == MathExpr.class)		return interp((MathExpr)ast);
 		else if (ast.getClass() == NumExpr.class)		return interp((NumExpr)ast);
@@ -163,6 +164,15 @@ public class InterpVisitor {
 		simFrame = new LSFrame();
 		cellMatrix = new CellMatrix();
 		this.dispatch(ast.getAST(0));
+		String gt = ast.generationType();
+		if(gt == "AddRow"){
+		}
+		else if(gt == "Sequential"){
+			
+		}
+		else if(gt == "Simultaneous"){
+			
+		}
 	
 		cellMatrix.setDefaultType(ast.defaultType());
 
@@ -174,10 +184,6 @@ public class InterpVisitor {
 			types[k] = startConditionTypes.get(k);
 
 		cellMatrix.setStartConditions(coords, types);
-//		int[] size = {10, 10};
-//		int[] coord = {5, 1};
-//		String[] types = {"block"};
-//		cellMatrix = new CellMatrix("block", size, coord, types);
 		return null;	
 	}
 
@@ -192,17 +198,17 @@ public class InterpVisitor {
 	private Double interp(NeighborExpr ast) {
 		return 0.0;	
 	}
-	
-	public void nextCell()
-	{
+	private Double interp(AliveExpr ast) {
+		return cellMatrix.alive() ? 1.0 : 0.0;
+	}
+	public void nextCell() {
 		cellMatrix.nextCell();
 	}
 
 	private Double interp(NeighborsExpr ast) {
 		// We're calling from inside a Type		
-		if(ast.size() == 0) {
+		if(ast.size() == 0) 
 			return new Double(cellMatrix.neighborValues());
-		}		
 		// otherwise we're calling from somewhere else and process a coord
 //		else
 		return 0.0;	
@@ -214,7 +220,7 @@ public class InterpVisitor {
 		if(!ast.isVar())
 			currentNeighborhood.add(this.dispatch(ast.getAST(0)).intValue());
 		else
-			currentNeighborhood.add(0);
+			currentNeighborhood.add(-17);
 		return null;	
 	}
 
@@ -238,9 +244,13 @@ public class InterpVisitor {
 		}
 		if(saveStmts) {
 			int[] neighborhood = new int[currentNeighborhood.size()];
-			for(int i = 0; i < neighborhood.length; i++)
+			int var = 0;
+			for(int i = 0; i < neighborhood.length; i++) {
 				neighborhood[i] = currentNeighborhood.get(i);
-			cellMatrix.addCellType(ast.type(), neighborhood, this.dispatch(ast.getAST(0)).intValue());
+				if(neighborhood[i] == -17)
+					var = i;
+			}
+			cellMatrix.addCellType(ast.type(), neighborhood, var);// this.dispatch(ast.getAST(0)).intValue());
 			currentNeighborhood = new ArrayList<Integer>();
 		}
 		return null;	
