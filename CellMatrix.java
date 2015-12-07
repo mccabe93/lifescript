@@ -6,8 +6,9 @@ public class CellMatrix {
 	public static final int TRANSFORM 	= 100;	
 
 	private HashMap<String, Cell> types; // stores info of each cell type for lookup
-	private CellNode[] Matrix; // tracks states of each cell (0 = dead, 1 = alive) and type
+	private CellNode[] Matrix, OriginalMatrix; // tracks states of each cell (0 = dead, 1 = alive) and type
 	private int matrixWidth, matrixHeight;
+	private String defaultType;
 
 	private int current = 0;
 	/*
@@ -21,6 +22,26 @@ public class CellMatrix {
 
 	public int cells() { 
 		return Matrix.length;
+	}
+
+	public int[] getDimensions() {
+		return new int[]{matrixWidth, matrixHeight};
+	}
+
+	public int[] getStates() {
+		int[] vals = new int[Matrix.length];
+		for(int i = 0; i < vals.length; i++) {
+			vals[i] = Matrix[i].state;
+		}
+		return vals;
+	}
+
+	public String[] getTypes() {
+		String[] vals = new String[Matrix.length];
+		for(int i = 0; i < vals.length; i++) {
+			vals[i] = Matrix[i].type;
+		}
+		return vals;
 	}
 
 	public class CellNode {
@@ -55,7 +76,7 @@ public class CellMatrix {
 					rightDisplacement = (neighborhood[0] - leftDisplacement) - 1;
 				}
 				if(i % neighborhood[0] == 0){
-					System.out.println("row found");
+//					System.out.println("row found");
 					if(i < VAR)
 						rowsAbove++;
 					else if(i > VAR)
@@ -65,9 +86,33 @@ public class CellMatrix {
 		}
 	}
 
+	private CellNode copyCellNode(CellNode temp)
+	{
+		return new CellNode(temp.state, temp.type);
+	}
+
+	private void copyMatrix() {
+		OriginalMatrix = new CellNode[Matrix.length];
+		for(int i = 0; i < OriginalMatrix.length; i++)
+			OriginalMatrix[i] = copyCellNode(Matrix[i]);
+	}
+
+	public void addrow() {
+		CellNode[] prev = Matrix;
+		Matrix = new CellNode[prev.length+matrixWidth];
+		for(int i = 0; i < prev.length; i++)
+			Matrix[i] = prev[i];
+		for(int i = prev.length; i < Matrix.length; i++) {
+			Matrix[i] = new CellNode(0, defaultType);
+		}
+		copyMatrix();
+	}
+
 	public void newGeneration() {
 		for(CellNode cn : Matrix)
 			cn.changed = false;
+		copyMatrix();
+		current = 0;
 	}
 
 	public CellMatrix()
@@ -79,6 +124,7 @@ public class CellMatrix {
 	{
 		if(type == null || type == "")
 			type = "DEFAULT";
+		defaultType = type;
 		for(int i = 0; i < Matrix.length; i++) {
 			Matrix[i] = new CellNode(0, type);
 		}
@@ -97,6 +143,7 @@ public class CellMatrix {
 			int pos = coordinates[(i-1)]*matrixWidth+(coordinates[i]-1);
 			Matrix[pos] = new CellNode(1, types[j]);	
 		}
+		copyMatrix();
 	}
 
 	public void printMatrix() {
@@ -105,6 +152,15 @@ public class CellMatrix {
 				System.out.println();
 			CellNode c = Matrix[i];
 			System.out.print(c.state + " " + c.type + " | ");
+		}
+	}
+
+	public void printNeighborsMatrix() {
+		for(int i = 0; i < Matrix.length; i++) {
+			if(i%matrixWidth==0)
+				System.out.println();
+			CellNode c = Matrix[i];
+			System.out.print(neighborValues(i) + " " + c.type + " | ");
 		}
 	}
 
@@ -122,15 +178,15 @@ public class CellMatrix {
 			bufferLeft = pos%matrixWidth - cell.leftDisplacement, bufferRight = pos%matrixWidth + cell.rightDisplacement;
 		// If there's enough room in the matrix -- centered at the VAR of the neighborhood -- then a transpose is possible		
 		if(bufferTop > -1 && bufferBottom < Matrix.length && bufferLeft > -1 && bufferRight < matrixWidth) {
-			System.out.println("PARSING CELL @ " + pos);
-			System.out.println("Buffer Top = " +bufferTop + "\nBuffer Bottom = " +bufferBottom + "\nBuffer Left = " +bufferLeft + "\nBuffer Right = " +bufferRight);
+//			System.out.println("PARSING CELL @ " + pos);
+//			System.out.println("Buffer Top = " +bufferTop + "\nBuffer Bottom = " +bufferBottom + "\nBuffer Left = " +bufferLeft + "\nBuffer Right = " +bufferRight);
 //			System.out.println("we can transpose @ pos " + pos);
 			pos = bufferTop - cell.leftDisplacement;
-			System.out.println(pos);
+//			System.out.println(pos);
 			for(int i = 1; i < hood.length; i++) {
 //				System.out.println(pos-1 + "\n" + Matrix[pos-1].state);
-				if(Matrix[pos].state == 1) {
-					System.out.println("Value @ pos " + (pos-1) + " = " + hood[i]);
+				if(OriginalMatrix[pos].state == 1) {
+//					System.out.println("Value @ pos " + (pos-1) + " = " + hood[i]);
 					values += hood[i];
 				}
 				if(i % hood[0] == 0){
@@ -157,7 +213,7 @@ public class CellMatrix {
 
 	public void state(int pos, int state, String add) {	
 		Cell cell = types.get(Matrix[pos].type);
-		if(Matrix[pos].changed) return;
+//		if(Matrix[pos].changed) return;
 		switch(state)
 		{
 		case 0:

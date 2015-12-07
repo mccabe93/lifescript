@@ -18,10 +18,14 @@ NOTE:	Much of the implementation was in SIMPLE1MULTI and has been reused. All SI
 ***/
 
 public class InterpVisitor {
+	public String frameTitle = "sim";
+	public float interval = 0.5;
+	public boolean pausable = false, steppable = true;
+
 	public boolean saveStmts = true;
 	private int generations = 3;
-	private LSFrame simFrame;
 	private CellMatrix cellMatrix;
+	private String generationType = "Simultaneous";
 	private ArrayList<AST> 	typeStmts = new ArrayList<AST>(), 
 				worldStmts = new ArrayList<AST>();
 
@@ -61,6 +65,8 @@ public class InterpVisitor {
 		else if (ast.getClass() == GenerationsStmt.class)	return interp((GenerationsStmt)ast);
 		else if (ast.getClass() == PausableStmt.class)		return interp((PausableStmt)ast);
 		else if (ast.getClass() == SteppableStmt.class)		return interp((SteppableStmt)ast);
+		else if (ast.getClass() == AddRowStmt.class)		return interp((AddRowStmt)ast);
+		else if (ast.getClass() == AddColumnStmt.class)		return interp((AddColumnStmt)ast);
 
 		else if (ast.getClass() == TypeStmt.class)		return interp((TypeStmt)ast);
 		else if (ast.getClass() == WorldStmt.class)		return interp((WorldStmt)ast);
@@ -86,11 +92,6 @@ public class InterpVisitor {
 	public void setCellMatrix(CellMatrix matrix){
 		this.cellMatrix = matrix;
 	}
-
-	public void setLSFrame(LSFrame frame){
-		this.simFrame = frame;
-	}
-
 	public ArrayList<AST> getTypeStmts(){
 		return typeStmts;
 
@@ -104,10 +105,9 @@ public class InterpVisitor {
 		return generations;
 	}
 
-	public LSFrame getLSFrame(){
-		return simFrame;	
+	public String getGenerationType() {
+		return generationType;
 	}
-
 	public CellMatrix getCellMatrix(){
 		return cellMatrix;
 	}
@@ -132,22 +132,31 @@ public class InterpVisitor {
 		this.generations = this.dispatch(ast.getAST(0)).intValue();
 		return null;	
 	}
+	
+	private Double interp(AddRowStmt ast) {
+		cellMatrix.addrow();
+		return null;	
+	}
 
+	private Double interp(AddColumnStmt ast) {
+		return null;
+	}
+	
 	private Double interp(IntervalStmt ast)
 	{
-		System.out.println("setting interval: " + this.dispatch(ast.getAST(0)));
+		interval = this.dispatch(ast.getAST(0));
 		return null;
 	}
 
 	private Double interp(PausableStmt ast)
 	{
-		System.out.println("setting pausable: " + this.dispatch(ast.getAST(0)));
+		pausable = this.dispatch(ast.getAST(0)) == 1 ? true : false;
 		return null;
 	}
 
 	private Double interp(SteppableStmt ast)
 	{
-		System.out.println("setting steppable: " + this.dispatch(ast.getAST(0)));
+		steppable = this.dispatch(ast.getAST(0)) == 1 ? true : false;
 		return null;
 	}
 
@@ -161,10 +170,10 @@ public class InterpVisitor {
 	}
 
 	private Double interp(PropertiesStmt ast) {
-		simFrame = new LSFrame();
 		cellMatrix = new CellMatrix();
 		this.dispatch(ast.getAST(0));
-	
+		generationType = ast.generationType();
+		frameTitle = ast.title();
 		cellMatrix.setDefaultType(ast.defaultType());
 
 		int[] coords = new int[startConditionCoords.size()];
@@ -173,7 +182,7 @@ public class InterpVisitor {
 		String[] types = new String[startConditionTypes.size()];
 		for(int k = 0; k < types.length; k++)
 			types[k] = startConditionTypes.get(k);
-
+		int[] dims = cellMatrix.getDimensions();
 		cellMatrix.setStartConditions(coords, types);
 		return null;	
 	}
@@ -214,6 +223,10 @@ public class InterpVisitor {
 			currentNeighborhood.add(-17);
 		return null;	
 	}
+
+	public void newGeneration() {
+		cellMatrix.newGeneration();
+	}	
 
 	private Double interp(CoordExpr ast) {
 		this.dispatch(ast.getAST(0));
@@ -423,6 +436,14 @@ public class InterpVisitor {
 		    return new Double((left.doubleValue() == right.doubleValue())?1.0:0.0);
 		case MathExpr.LESSEQ:
 		    return new Double((left.doubleValue() <= right.doubleValue())?1.0:0.0);
+		case MathExpr.MOREEQ:
+		    return new Double((left.doubleValue() >= right.doubleValue())?1.0:0.0);
+		case MathExpr.STRICTLESS:
+		    return new Double((left.doubleValue() < right.doubleValue())?1.0:0.0);
+		case MathExpr.STRICTMORE:
+		    return new Double((left.doubleValue() > right.doubleValue())?1.0:0.0);
+		case MathExpr.NOTEQ:
+		    return new Double((left.doubleValue() != right.doubleValue())?1.0:0.0);
 		case MathExpr.AND:
 		    return new Double((left.intValue() * right.intValue()) != 0.0?1.0:0.0);
 		case MathExpr.OR:

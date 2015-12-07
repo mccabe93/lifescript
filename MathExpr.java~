@@ -10,10 +10,10 @@ public class MathExpr extends Expr {
 	public static final int LESSEQ = 60;
 	public static final int AND = 70;
 	public static final int OR = 80;
-	public static final int MOREEQ = 90;
-	public static final int STRICTLESS = 100;
-	public static final int STRICTMORE = 110;
-	public static final int NOTEQ = 120;
+	public static final int MOREEQ = 60;
+	public static final int STRICTLESS = 60;
+	public static final int STRICTMORE = 60;
+	public static final int NOTEQ = 60;
 
 	private int op;
 

@@ -105,6 +105,12 @@ stmt	returns [Stmt ast]
 	|	'kill' (ID)? 'at' coordexp
 		{$ast = new KillStmt($ID.text, $coordexp.ast);}
 
+	|	'addrow'
+		{$ast = new AddRowStmt();}
+
+	|	'addcolumn'
+		{$ast = new AddColumnStmt();}
+
 //	|	'neighbor' d=coordexp ('of' p=coordexp)?
 //		{$ast = new NeighborStmt($d.ast, $p.ast);}
 
@@ -170,7 +176,11 @@ relexp returns [Expr ast]
 	:	e1=addexp { $ast = $e1.ast; } 
 		(
 			('==' e2=addexp { $ast = new MathExpr(MathExpr.EQ,$ast,$e2.ast); })|
-			('<=' e3=addexp { $ast = new MathExpr(MathExpr.LESSEQ,$ast,$e3.ast); })
+			('<=' e3=addexp { $ast = new MathExpr(MathExpr.LESSEQ,$ast,$e3.ast); })|
+			('>=' e4=addexp { $ast = new MathExpr(MathExpr.MOREEQ,$ast,$e4.ast); })|
+			('<' e5=addexp { $ast = new MathExpr(MathExpr.STRICTLESS,$ast,$e5.ast); })|
+			('>' e6=addexp { $ast = new MathExpr(MathExpr.STRICTMORE,$ast,$e6.ast); })|
+			('!=' e7=addexp { $ast = new MathExpr(MathExpr.NOTEQ,$ast,$e7.ast); })
 		)*
 	;
 
@@ -242,8 +252,8 @@ ESC_SEQ
     :   '\\' ('b'|'t'|'n'|'f'|'r'|'\"'|'\''|'\\')
     ;
 
-COMMENT
-    :   'rem' ~('\n'|'\r')* '\r'? '\n' {$channel=HIDDEN;}
+COMMENT    
+    :   '//' ~('\n'|'\r')* '\r'? '\n' {$channel=HIDDEN;}
     ;
 
 WS  :   ( ' '

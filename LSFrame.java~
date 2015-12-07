@@ -64,7 +64,8 @@ class Grid extends JPanel {
 		System.out.println("cells len = " + cells.length);
 		cells = new Cell[states.length];
 		for(int i = 0; i < states.length; i++) {
-			cells[i] = new Cell(states[i], types[i]);	
+			cells[i].state = states[i];
+			cells[i].type = types[i];		
 		}
 	}
 

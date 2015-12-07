@@ -25,7 +25,7 @@ type block:
 			dead
 		endif
 	else
-		if neighbors == 3 then
+		if neighbors == 3
 			alive
 		endif
 	endif
