@@ -110,15 +110,9 @@ stmt	returns [Stmt ast]
 
 	|	'addcolumn'
 		{$ast = new AddColumnStmt();}
-
-//	|	'neighbor' d=coordexp ('of' p=coordexp)?
-//		{$ast = new NeighborStmt($d.ast, $p.ast);}
-
-//	|	'neighbor' coordexp 'is' (ID | exp)
-//		{$ast = new NeighborStmt($coordexp.ast, $ID.text, $exp.ast);}
-
-//	|	'neighbors' ('of' ID | coordexp)? ('of type' STRING)?
-//		{$ast = new NeighborsStmt($ID.text, $coordexp.ast, $STRING.text);}
+	
+	|	'setcolor' ('at' coordexp)? 'to' colorexp
+		{$ast = new SetColorStmt($coordexp.ast, $colorexp.ast);}
 
 	|	'world' ':' {BlockStmt worldBlock = new BlockStmt();}
 			(s=stmt {worldBlock.addAST($s.ast);})+
@@ -142,6 +136,7 @@ stmt	returns [Stmt ast]
 			('Interval' '=' intervals=exp {properties.addAST(new IntervalStmt(intervals));})? // otherwise 0.3 seconds
 			('Pausable' '=' pause=exp {properties.addAST(new PausableStmt(pause));})? // defaults true
 			('Steppable' '=' sb=exp {properties.addAST(new SteppableStmt(sb));})? // defaults false 
+			('Cell Size' '=' cs=coordexp {properties.addAST(new CellSizeStmt(cs));})? // defaults 10px
 			{$ast = new PropertiesStmt($title.text, $genType.text, $dt.text, properties);}
 	;
 
@@ -151,6 +146,7 @@ coordexp returns [CoordExpr ast]
 
 colorexp returns [ColorExpr ast]
 	:	'(' e1=exp ',' e2=exp ',' e3=exp ')'	{$ast = new ColorExpr($e1.ast, $e2.ast, $e3.ast);}
+	|	STRING					{$ast = new ColorExpr($STRING.text);} // hex color encoding
 	;
 
 imagexp returns [ImageExpr ast]
@@ -207,19 +203,12 @@ atom 	returns [Expr ast]
 	|	num		{ $ast = new NumExpr($num.text); }
 	|	'-' num		{ $ast = new NumExpr('-' + $num.text); }
 	|	BOOLEAN		{ $ast = new BooleanExpr($BOOLEAN.text); }	
-	|	'neighbor' d=coordexp ('of' p=coordexp)? 
-		{ $ast = new NeighborExpr($d.ast, $p.ast);}
-	|	'neighbors' coordexp (':' 'type' '=' STRING)?
-		{	System.out.println("initializing neighbors w/ " + $coordexp.ast + "," + $STRING.text);
-			$ast = new NeighborsExpr($coordexp.ast, $STRING.text);}
-	|	'neighbors' (':' 'type' '=' STRING)?
-		{	System.out.println("initializing neighbors w/ this, " + $STRING.text);
-			$ast = new NeighborsExpr($STRING.text);}
+	|	'cell' 'at' coordexp ('is' ID)? 
+		{ $ast = new CellCheckExpr($coordexp.ast, $ID.text);}
+	|	'neighbors' (('of' coordexp)? ('that' 'are' STRING)?)?
+		{$ast = new NeighborsExpr($coordexp.ast, $STRING.text);}
 	|	'alive'	{$ast = new AliveExpr();}
-//	|	'neighbors' ('of' ID | coordexp)? ('of type' STRING)?
-//		{ System.out.println("initializing neighbors w/ " + 
-//					$ID.text + "," + $coordexp.ast + "," + $STRING.text);
-//			$ast = new NeighborsExpr($ID.text, $coordexp.ast, $STRING.text);}
+	|	'random' '(' lb=exp ',' ub=exp ')' {$ast = new RandomExpr();}
 	;
 
 value 	returns [Expr ast]	

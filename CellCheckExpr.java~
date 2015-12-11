@@ -1,0 +1,13 @@
+
+public class NeighborExpr extends Expr {
+	private String type;
+	public NeighborExpr(CoordExpr location, String type)
+	{
+		this.addAST(location);
+		this.type = type;
+	}
+
+	public String type() {
+		return type;
+	}
+}

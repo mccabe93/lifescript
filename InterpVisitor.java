@@ -74,6 +74,8 @@ public class InterpVisitor {
 		else if (ast.getClass() == NeighborExpr.class)		return interp((NeighborExpr)ast);
 		else if (ast.getClass() == NeighborsExpr.class)		return interp((NeighborsExpr)ast);
 
+		else if (ast.getClass() == ColorExpr.class)		return interp((ColorExpr)ast);
+		else if (ast.getClass() == RandomExpr.class)		return interp((RandomExpr)ast);
 		else if (ast.getClass() == BooleanExpr.class)		return interp((BooleanExpr)ast);
 		else if (ast.getClass() == AliveExpr.class)		return interp((AliveExpr)ast);
 		else if (ast.getClass() == CoordExpr.class)		return interp((CoordExpr)ast);
@@ -134,11 +136,12 @@ public class InterpVisitor {
 	}
 	
 	private Double interp(AddRowStmt ast) {
-		cellMatrix.addrow();
+		cellMatrix.setDimensions(cellMatrix.DEFAULT, cellMatrix.PLUSONE);
 		return null;	
 	}
 
 	private Double interp(AddColumnStmt ast) {
+		cellMatrix.setDimensions(cellMatrix.PLUSONE, cellMatrix.DEFAULT);
 		return null;
 	}
 	
@@ -236,6 +239,28 @@ public class InterpVisitor {
 
 	private Double interp(BooleanExpr ast) {
 		return ast.value() == true ? 1.0 : 0.0;	
+	}
+
+	private Double interp(ColorExpr ast) {
+		String hex = ast.hex();
+		// if our color isn't already in hex, we convert it		
+		if(hex == null) {
+			int 	r = this.dispatch(ast.getAST(0)),
+				g = this.dispatch(ast.getAST(1)),
+				b = this.dispatch(ast.getAST(2));
+			// This conversion was found on Stack Overflow:
+			// http://stackoverflow.com/questions/3607858/how-to-convert-a-rgb-color-value-to-an-hexadecimal-value-in-java
+			hex = String.format("#%02x%02x%02x", r, g, b);
+		}
+//		cellMatrix.setColor(hex);
+		return hex.hashCode();
+	}
+
+	public Double interp(RandomExpr ast) {
+		Random r = new Random();
+		double lowerBound = this.dispatch(ast.getAST(0)),
+			upperBound = this.dispatch(ast.getAST(1));
+		return (upperBound - lowerBound) * r.nextDouble() + lowerBound;
 	}
 
 	private Double interp(TypeStmt ast) {

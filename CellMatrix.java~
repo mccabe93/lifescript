@@ -3,11 +3,12 @@ public class CellMatrix {
 
 	public static final int DEAD 		= 0;
 	public static final int ALIVE 		= 1;
-	public static final int TRANSFORM 	= 100;	
+	public static final int DEFAULT 	= -99;	
+	public static final int PLUSONE		= -999;
 
 	private HashMap<String, Cell> types; // stores info of each cell type for lookup
 	private CellNode[] Matrix, OriginalMatrix; // tracks states of each cell (0 = dead, 1 = alive) and type
-	private int matrixWidth, matrixHeight;
+	private int matrixWidth;
 	private String defaultType;
 
 	private int current = 0;
@@ -25,7 +26,7 @@ public class CellMatrix {
 	}
 
 	public int[] getDimensions() {
-		return new int[]{matrixWidth, matrixHeight};
+		return new int[]{matrixWidth, Matrix.length/matrixWidth};
 	}
 
 	public int[] getStates() {
@@ -44,13 +45,20 @@ public class CellMatrix {
 		return vals;
 	}
 
+	public String[] getColors() {
+		return Matrix[current].color;
+	}
+
 	public class CellNode {
 		public boolean	changed = false; // whether this cell changed this generation
 		public int state = 0;
-		public String type; 
+		public String type, color = "0xffffff"; 
 		public CellNode(int state, String type){
 			this.type = type;
 			this.state = state;
+		}
+		public void setColor(String hex) {
+			color = hex;		
 		}
 	}
 
@@ -132,9 +140,25 @@ public class CellMatrix {
 
 	public void setDimensions(int[] dimensions)
 	{
-		this.matrixWidth = dimensions[0];
-		this.matrixHeight = dimensions[1];
+		CellNode[] prev = Matrix;
+
+		if(dimensions[0] == DEFAULT)
+			dimensions[0] = matrixWidth;
+		else if(dimensions[1] == DEFAULT)
+			dimensions[1] = Matrix.length/matrixWidth;
+
+		if(dimensions[0] == PLUSONE)
+			dimensions[1] += 1;		// increase rows by one; "height" increased by one
+		else if(dimensions[1] == PLUSONE)
+			matrixWidth += 1;		// increase columns by one; simply add a cell to each row
+
 		Matrix = new CellNode[matrixWidth*dimensions[1]];
+		for(int i = 0; i < prev.length; i++)
+			Matrix[i] = prev[i];
+		for(int i = prev.length; i < Matrix.length; i++) {
+			Matrix[i] = new CellNode(0, defaultType);
+		}
+		copyMatrix();
 	}
 
 	public void setStartConditions(int[] coordinates, String[] types)
@@ -221,9 +245,6 @@ public class CellMatrix {
 			break;
 		case 1:
 			Matrix[pos].state = 1;
-			break;
-		case 100:
-			Matrix[pos].type = add;
 		}
 		Matrix[pos].changed = true;
 //		System.out.println("Matrix["+pos+"].state set to " + state);
