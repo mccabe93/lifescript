@@ -25,7 +25,7 @@ public class CellMatrix {
 	}
 
 	public int[] getDimensions() {
-		return new int[]{matrixWidth, matrixHeight};
+		return new int[]{matrixWidth, Matrix.length/matrixWidth};
 	}
 
 	public int[] getStates() {

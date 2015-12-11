@@ -28,7 +28,7 @@ public class CellMatrix {
 		return new int[]{matrixWidth, matrixHeight};
 	}
 
-	public int[] getAlive() {
+	public int[] getStates() {
 		int[] vals = new int[Matrix.length];
 		for(int i = 0; i < vals.length; i++) {
 			vals[i] = Matrix[i].state;
@@ -36,7 +36,7 @@ public class CellMatrix {
 		return vals;
 	}
 
-	public String[] type() {
+	public String[] getTypes() {
 		String[] vals = new String[Matrix.length];
 		for(int i = 0; i < vals.length; i++) {
 			vals[i] = Matrix[i].type;

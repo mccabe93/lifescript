@@ -7,7 +7,7 @@ Properties:
 //	Start = {	("block", (3,9)),	("block", (3,10)), 
 //			("block", (4,9)),	("block", (4,10))}
 	Default Type = "block"
-	Generations = 8
+	Generations = 800
 	Interval = 0.5
 	Pausable = false
 	Steppable = true
