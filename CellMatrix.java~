@@ -45,20 +45,35 @@ public class CellMatrix {
 		return vals;
 	}
 
-	public String[] getColors() {
-		return Matrix[current].color;
+	public int[][] getColorMatrix() {
+		int[][] cm = new int[Matrix.length][3];
+		for(int i = 0; i < Matrix.length; i++) {
+			cm[i] = Matrix[i].color;
+		}
+		return cm;
+	}
+
+	public void setColor(int pos, int[] rgb) {
+		Matrix[current].color = rgb;
+	}
+
+	public void setColor(int[] rgb) {
+		setColor(current, rgb);
 	}
 
 	public class CellNode {
 		public boolean	changed = false; // whether this cell changed this generation
 		public int state = 0;
-		public String type, color = "0xffffff"; 
+		public String type;
+		public int[] color; 
 		public CellNode(int state, String type){
 			this.type = type;
 			this.state = state;
+			this.color = new int[]{255, 255, 255};
 		}
-		public void setColor(String hex) {
-			color = hex;		
+		public CellNode(int state, String type, int[] rgb) {
+			this(state, type);
+			this.color = rgb;		
 		}
 	}
 
@@ -68,8 +83,7 @@ public class CellMatrix {
 		public int	rowsAbove = 0, rowsBelow = -1, 
 				leftDisplacement = 0, rightDisplacement = 0;
 		// first value of any neighborhood is its width, height is implicit by array length
-		public Cell(String name, int[] neighborhood, int VAR)
-		{
+		public Cell(String name, int[] neighborhood, int VAR) {
 			this.neighborhood = neighborhood;
 			this.VAR = VAR;
 			// we set the value from -17 to 0 as to not affect calculations
@@ -96,7 +110,7 @@ public class CellMatrix {
 
 	private CellNode copyCellNode(CellNode temp)
 	{
-		return new CellNode(temp.state, temp.type);
+		return new CellNode(temp.state, temp.type, temp.color);
 	}
 
 	private void copyMatrix() {
@@ -144,21 +158,28 @@ public class CellMatrix {
 
 		if(dimensions[0] == DEFAULT)
 			dimensions[0] = matrixWidth;
-		else if(dimensions[1] == DEFAULT)
-			dimensions[1] = Matrix.length/matrixWidth;
+		else if(dimensions[0] == PLUSONE)
+			matrixWidth += 1;
+		else
+			matrixWidth = dimensions[0];
 
-		if(dimensions[0] == PLUSONE)
-			dimensions[1] += 1;		// increase rows by one; "height" increased by one
+		if(dimensions[1] == DEFAULT)
+			dimensions[1] = Matrix.length/matrixWidth;					// increase rows by one; "height" increased by one
 		else if(dimensions[1] == PLUSONE)
-			matrixWidth += 1;		// increase columns by one; simply add a cell to each row
+			dimensions[1] += 1;		// increase columns by one; simply add a cell to each row
 
+		System.out.println("matrixWidth = " + matrixWidth + "dimensions[1] = " + dimensions[1]);
 		Matrix = new CellNode[matrixWidth*dimensions[1]];
-		for(int i = 0; i < prev.length; i++)
+		int offset = 0;
+		if(prev != null)
+			offset = prev.length;
+		for(int i = 0; i < offset; i++)
 			Matrix[i] = prev[i];
-		for(int i = prev.length; i < Matrix.length; i++) {
+		for(int i = offset; i < Matrix.length; i++) {
 			Matrix[i] = new CellNode(0, defaultType);
 		}
 		copyMatrix();
+		printMatrix();
 	}
 
 	public void setStartConditions(int[] coordinates, String[] types)
@@ -200,7 +221,7 @@ public class CellMatrix {
 	
 		int 	bufferTop = pos - cell.rowsAbove * matrixWidth, bufferBottom = pos + cell.rowsBelow * matrixWidth,
 			bufferLeft = pos%matrixWidth - cell.leftDisplacement, bufferRight = pos%matrixWidth + cell.rightDisplacement;
-		// If there's enough room in the matrix -- centered at the VAR of the neighborhood -- then a transpose is possible		
+		// If there's enough room in the matrix -- centered at the VAR of the neighborhood -- then a translation is possible		
 		if(bufferTop > -1 && bufferBottom < Matrix.length && bufferLeft > -1 && bufferRight < matrixWidth) {
 //			System.out.println("PARSING CELL @ " + pos);
 //			System.out.println("Buffer Top = " +bufferTop + "\nBuffer Bottom = " +bufferBottom + "\nBuffer Left = " +bufferLeft + "\nBuffer Right = " +bufferRight);
@@ -235,27 +256,13 @@ public class CellMatrix {
 			current++;
 	}
 
-	public void state(int pos, int state, String add) {	
-		Cell cell = types.get(Matrix[pos].type);
-//		if(Matrix[pos].changed) return;
-		switch(state)
-		{
-		case 0:
-			Matrix[pos].state = 0;
-			break;
-		case 1:
-			Matrix[pos].state = 1;
-		}
+	public void state(int pos, int state) {
+		Matrix[pos].state = state;
 		Matrix[pos].changed = true;
-//		System.out.println("Matrix["+pos+"].state set to " + state);
-	}
-
-	public void state(int state, String add) {
-		state(current, state, add);
 	}
 
 	public void state(int state) {
-		state(state, null);
+		state(current, state);
 	}
 
 	public void addCellType(String name, int[] neighborhood, int VAR)

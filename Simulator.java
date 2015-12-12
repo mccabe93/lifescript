@@ -14,25 +14,18 @@ public class Simulator {
 		interpVisitor.saveStmts = false;
 		worlds	=	interpVisitor.getWorldStmts();
 		types	= 	interpVisitor.getTypeStmts();
-//		System.out.println("World Statements: " + worlds.size());
-//		System.out.println("Type Statements: " + types.size());
-		interpVisitor.getCellMatrix().printMatrix();
 		CellMatrix matrix = interpVisitor.getCellMatrix();
 		int[] dims = matrix.getDimensions();
-//		System.out.println("dimensions loaded = " + dims);
-		frame = new LSFrame(interpVisitor.frameTitle, dims[0], dims[1], matrix.getStates(), matrix.getTypes());
+		frame = new LSFrame(interpVisitor.frameTitle, 
+					interpVisitor.cellWidth, interpVisitor.cellHeight, 
+					dims[0], dims[1], matrix.getColorMatrix());
 		run();
 	}
 
 	public void run(){
-		for(int i = 0; i < interpVisitor.getGenerations()-1; i++) {
-			try{
-				Thread.sleep((long)(interpVisitor.interval * 1000));
-			}catch(Exception e) {
-				// do nothing
-			}
+		for(int i = 0; i < interpVisitor.generations; i++) {
+			interval();
 			CellMatrix matrix = interpVisitor.getCellMatrix();
-
 			System.out.println("Generation " + (i+1));
 			for(int k = 0; k < matrix.cells(); k++) {
 				for(AST type : types)
@@ -46,7 +39,15 @@ public class Simulator {
 			matrix.printMatrix();
 			interpVisitor.newGeneration();
 			int[] dims = matrix.getDimensions();
-			frame.update(dims[0], dims[1], matrix.getStates(), matrix.getTypes());
+			frame.update(interpVisitor.cellWidth, interpVisitor.cellHeight, dims[0], dims[1], matrix.getColorMatrix());
+		}
+	}
+
+	private void interval() {
+		try{
+			Thread.sleep((long)(interpVisitor.interval * 1000));
+		}catch(Exception e) {
+			// do nothing
 		}
 	}
 

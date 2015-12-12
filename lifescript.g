@@ -36,7 +36,7 @@ prog	returns [AST ast]
 	;
 
 stmt	returns [Stmt ast]
-	:	ID '=' exp 
+	:	ID '=' exp
 		{$ast = new AssignStmt($ID.text, $exp.ast);}
 
 	|	'input' (STRING ',')? ID		
@@ -146,7 +146,7 @@ coordexp returns [CoordExpr ast]
 
 colorexp returns [ColorExpr ast]
 	:	'(' e1=exp ',' e2=exp ',' e3=exp ')'	{$ast = new ColorExpr($e1.ast, $e2.ast, $e3.ast);}
-	|	STRING					{$ast = new ColorExpr($STRING.text);} // hex color encoding
+	|	'(' STRING ')'					{$ast = new ColorExpr($STRING.text);} // hex color encoding
 	;
 
 imagexp returns [ImageExpr ast]
@@ -205,10 +205,10 @@ atom 	returns [Expr ast]
 	|	BOOLEAN		{ $ast = new BooleanExpr($BOOLEAN.text); }	
 	|	'cell' 'at' coordexp ('is' ID)? 
 		{ $ast = new CellCheckExpr($coordexp.ast, $ID.text);}
-	|	'neighbors' (('of' coordexp)? ('that' 'are' STRING)?)?
-		{$ast = new NeighborsExpr($coordexp.ast, $STRING.text);}
+//	|	'neighbors' (('of' coordexp)? ('that' 'are' STRING)?)?
+//		{$ast = new NeighborsExpr($coordexp.ast, $STRING.text);}
 	|	'alive'	{$ast = new AliveExpr();}
-	|	'random' '(' lb=exp ',' ub=exp ')' {$ast = new RandomExpr();}
+	|	'random' '(' lb=exp ',' ub=exp ')' {$ast = new RandomExpr($lb.ast, $ub.ast);}
 	;
 
 value 	returns [Expr ast]	

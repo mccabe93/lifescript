@@ -1,5 +1,6 @@
 import java.util.*;
 import java.io.*;
+import java.awt.Color;
 
 /***		
 	The InterpVisitor class is where we actually implement the behavior of our AST nodes. 
@@ -21,9 +22,11 @@ public class InterpVisitor {
 	public String frameTitle = "sim";
 	public double interval = 0.5;
 	public boolean pausable = false, steppable = true;
+	public int cellWidth = 6, cellHeight = 6;
+	public int generations = 3;
+	
 
 	public boolean saveStmts = true;
-	private int generations = 3;
 	private CellMatrix cellMatrix;
 	private String generationType = "Simultaneous";
 	private ArrayList<AST> 	typeStmts = new ArrayList<AST>(), 
@@ -57,6 +60,7 @@ public class InterpVisitor {
 		else if (ast.getClass() == NeighborhoodStmt.class)	return interp((NeighborhoodStmt)ast);
 
 		else if (ast.getClass() == PropertiesStmt.class)	return interp((PropertiesStmt)ast);
+		else if (ast.getClass() == CellSizeStmt.class)		return interp((CellSizeStmt)ast);
 		else if (ast.getClass() == CellStmt.class)		return interp((CellStmt)ast);
 		else if (ast.getClass() == DimensionsStmt.class)	return interp((DimensionsStmt)ast);
 		else if (ast.getClass() == IntervalStmt.class)		return interp((IntervalStmt)ast);
@@ -67,11 +71,12 @@ public class InterpVisitor {
 		else if (ast.getClass() == SteppableStmt.class)		return interp((SteppableStmt)ast);
 		else if (ast.getClass() == AddRowStmt.class)		return interp((AddRowStmt)ast);
 		else if (ast.getClass() == AddColumnStmt.class)		return interp((AddColumnStmt)ast);
+		else if (ast.getClass() == SetColorStmt.class)		return interp((SetColorStmt)ast);
 
 		else if (ast.getClass() == TypeStmt.class)		return interp((TypeStmt)ast);
 		else if (ast.getClass() == WorldStmt.class)		return interp((WorldStmt)ast);
 
-		else if (ast.getClass() == NeighborExpr.class)		return interp((NeighborExpr)ast);
+		else if (ast.getClass() == CellCheckExpr.class)		return interp((CellCheckExpr)ast);
 		else if (ast.getClass() == NeighborsExpr.class)		return interp((NeighborsExpr)ast);
 
 		else if (ast.getClass() == ColorExpr.class)		return interp((ColorExpr)ast);
@@ -79,6 +84,7 @@ public class InterpVisitor {
 		else if (ast.getClass() == BooleanExpr.class)		return interp((BooleanExpr)ast);
 		else if (ast.getClass() == AliveExpr.class)		return interp((AliveExpr)ast);
 		else if (ast.getClass() == CoordExpr.class)		return interp((CoordExpr)ast);
+
 		else if (ast.getClass() == MathExpr.class)		return interp((MathExpr)ast);
 		else if (ast.getClass() == NumExpr.class)		return interp((NumExpr)ast);
 		else if (ast.getClass() == ParenExpr.class)		return interp((ParenExpr)ast);
@@ -96,20 +102,12 @@ public class InterpVisitor {
 	}
 	public ArrayList<AST> getTypeStmts(){
 		return typeStmts;
-
 	}
 
 	public ArrayList<AST> getWorldStmts(){
 		return worldStmts;
 	}
 
-	public int getGenerations() {
-		return generations;
-	}
-
-	public String getGenerationType() {
-		return generationType;
-	}
 	public CellMatrix getCellMatrix(){
 		return cellMatrix;
 	}
@@ -126,6 +124,7 @@ public class InterpVisitor {
 	private Double interp(DimensionsStmt ast)
 	{
 		Double x = this.dispatch(ast.getAST(0).getAST(0)), y = this.dispatch(ast.getAST(0).getAST(1));
+		
 		cellMatrix.setDimensions(new int[]{x.intValue(), y.intValue()});
 		return null;
 	}
@@ -136,12 +135,12 @@ public class InterpVisitor {
 	}
 	
 	private Double interp(AddRowStmt ast) {
-		cellMatrix.setDimensions(cellMatrix.DEFAULT, cellMatrix.PLUSONE);
+		cellMatrix.setDimensions(new int[]{cellMatrix.DEFAULT, cellMatrix.PLUSONE});
 		return null;	
 	}
 
 	private Double interp(AddColumnStmt ast) {
-		cellMatrix.setDimensions(cellMatrix.PLUSONE, cellMatrix.DEFAULT);
+		cellMatrix.setDimensions(new int[]{cellMatrix.PLUSONE, cellMatrix.DEFAULT});
 		return null;
 	}
 	
@@ -198,7 +197,7 @@ public class InterpVisitor {
 		cellMatrix.state(cellMatrix.DEAD);
 		return null;	
 	}
-	private Double interp(NeighborExpr ast) {
+	private Double interp(CellCheckExpr ast) {
 		return 0.0;	
 	}
 	private Double interp(AliveExpr ast) {
@@ -232,28 +231,76 @@ public class InterpVisitor {
 	}	
 
 	private Double interp(CoordExpr ast) {
-		this.dispatch(ast.getAST(0));
-		this.dispatch(ast.getAST(1));	
+		String coord = "1" + thousandString(this.dispatch(ast.getAST(0)).intValue());
+		coord += thousandString(this.dispatch(ast.getAST(1)).intValue());
+		return Double.parseDouble(coord);
+	}
+
+	private String thousandString(int val) {
+		String ts = "";
+		if(val < 1000)
+			ts += "0";
+		return (ts + hundredString(val));
+	}
+
+	private String hundredString(int val) {
+		String ts = "";
+		if(val < 100)
+			ts += "0";
+		if(val < 10)
+			ts += "0";
+		return (ts + val);
+	}
+
+	private int[] decodeCoord(int val) {
+		String d = Integer.toString(val);
+		System.out.println(d);
+		return new int[]{Integer.parseInt(d.substring(1,5)), Integer.parseInt(d.substring(5,9))};
+	}
+
+	private Double interp(CellSizeStmt ast) {
+		int[] dims = decodeCoord(this.dispatch(ast.getAST(0)).intValue());
+		System.out.println("cell width: " + dims[0] + ", " + dims[1]);
+		this.cellWidth = dims[0];
+		this.cellHeight = dims[1];
 		return null;
+	}
+
+	private int[] decodeColor(int val) {
+		String d = Integer.toString(val);
+		return new int[]{Integer.parseInt(d.substring(1,4)), Integer.parseInt(d.substring(4,7)), Integer.parseInt(d.substring(7,10))};
 	}
 
 	private Double interp(BooleanExpr ast) {
 		return ast.value() == true ? 1.0 : 0.0;	
 	}
+	
+	private Double interp(SetColorStmt ast) {
+		int[] color, coord;
+		if(ast.size() == 2) {
+			coord = decodeCoord(this.dispatch(ast.getAST(0)).intValue());
+			color = decodeColor(this.dispatch(ast.getAST(1)).intValue());
+		} else {
+			color = decodeColor(this.dispatch(ast.getAST(0)).intValue());
+			cellMatrix.setColor(color);
+		}
+		return null;
+	}
 
 	private Double interp(ColorExpr ast) {
-		String hex = ast.hex();
+		String encode = "1";
 		// if our color isn't already in hex, we convert it		
-		if(hex == null) {
-			int 	r = this.dispatch(ast.getAST(0)),
-				g = this.dispatch(ast.getAST(1)),
-				b = this.dispatch(ast.getAST(2));
-			// This conversion was found on Stack Overflow:
-			// http://stackoverflow.com/questions/3607858/how-to-convert-a-rgb-color-value-to-an-hexadecimal-value-in-java
-			hex = String.format("#%02x%02x%02x", r, g, b);
+		if(ast.hex() != null) {
+			Color c = Color.decode(ast.hex());
+			encode += hundredString((int)(c.getRed()));
+			encode += hundredString((int)(c.getGreen()));
+			encode += hundredString((int)(c.getBlue()));
+		} else {
+			encode += hundredString(this.dispatch(ast.getAST(0)).intValue());
+			encode += hundredString(this.dispatch(ast.getAST(1)).intValue());
+			encode += hundredString(this.dispatch(ast.getAST(2)).intValue());
 		}
-//		cellMatrix.setColor(hex);
-		return hex.hashCode();
+		return Double.parseDouble(encode);
 	}
 
 	public Double interp(RandomExpr ast) {

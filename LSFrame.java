@@ -8,18 +8,16 @@ public class LSFrame extends Frame {
 
 	private Grid grid;
 
-	public LSFrame(String title, int rows, int columns, int[] states, String[] types) {
+	public LSFrame(String title, int cellWidth, int cellHeight, int rows, int columns, int[][] colorMatrix) {
 		super("sim");
 		if(title != null)
 			setTitle(title);
-		grid = new Grid(rows, columns, states, types);
-		grid.setCellValues(states, types);
 		// Frame & input setup
 //		addMouseListener(menu);
 //		addKeyListener(this);
 		setLayout(null);
-		int winX = (columns*15 < 400) ? 400 : columns*15; 
-		int winY = (rows*15 < 400) ? 400 : rows*15;
+		int winX = (columns*cellWidth < 400) ? 400 : columns*cellWidth; 
+		int winY = (rows*cellHeight < 400) ? 400 : rows*cellHeight;
 		setSize(winX,winY);
 		setBackground(Color.white);
 		setResizable(true);
@@ -29,16 +27,18 @@ public class LSFrame extends Frame {
 		addWindowListener( new WindowAdapter() {
 		    @Override
 		    public void windowClosing(WindowEvent we) {
-
 			System.exit(0);
 		    }
 		} );
+
+		update(cellWidth, cellHeight, rows, columns, colorMatrix);
 	}
 
-	public void update(int rows, int columns, int[] states, String[] types) {
-		if(columns != grid.columns() || rows != grid.rows())
-			grid = new Grid(rows, columns, states, types);
-		grid.setCellValues(states, types);
+	public void update(int cellWidth, int cellHeight, int rows, int columns, int[][] colorMatrix) {
+		if(grid == null || cellWidth != grid.cellWidth || cellHeight != grid.cellHeight || columns != grid.columns || rows != grid.rows)
+			grid = new Grid(cellWidth, cellHeight, rows, columns, colorMatrix);
+		else 
+			grid.updateColors(colorMatrix);
 		repaint();
 	}
 
@@ -52,64 +52,34 @@ public class LSFrame extends Frame {
 
 class Grid {
 
-	private int rows = 15, columns = 15;		// width and height of cells are
+	public int rows = 15, columns = 15;		// width and height of cells are
 							// proportional to the screen
+	public int cellWidth = 6, cellHeight = 6;
 	private String barColor = "0xff0000", backgroundColor; 	// hex colors of bars and background
 
 	private int[][] matrix = new int[rows*columns][4];	
-	private Cell[] cells = new Cell[rows*columns];
+	private int[][] colorMatrix = new int[rows*columns][3];
 
 	private boolean matrixGenerated = false;
 
-	public int rows() {return rows;}
-	public int columns() {return columns;}	
-
-	static class Cell{
-		public String color,
-				type;
-		public int state = 0;
-		public Cell()
-		{
-			color = "0xf0f0f0";
-			type = "prey";
-		}
-		public Cell(String color, String type)
-		{
-			this();
-			this.color = color;
-			this.type = type;
-		}
-		public Cell(int state, String type)
-		{
-			this();
-			this.type = type;
-			this.state = state;
-			if(state == 1) color = "0x000000";
-		}
-	}	
-
-	public Grid(int columns, int rows, int[] states, String[] types) {
+	public Grid(int cellWidth, int cellHeight, int columns, int rows, int[][] colors) {
 		this.rows = rows;
 		this.columns = columns;
+		this.cellWidth = cellWidth;
+		this.cellHeight = cellHeight;
 		matrix = new int[rows*columns][4];
-		cells = new Cell[rows*columns];
-		setCellValues(states, types);
+		calculateMatrix();
+		updateColors(colors);
 	}
 
-	public void setCellValues(int[] states, String[] types) {
-		System.out.println("Grid: cells len = " + cells.length);
-		calculateMatrix();
-		cells = new Cell[states.length];
-		for(int i = 0; i < states.length; i++) {
-			cells[i] = new Cell(states[i], types[i]);	
-		}
+	public void updateColors(int[][] colors) {
+		colorMatrix = colors;
 	}
 
 	private void calculateMatrix()
 	{
 		Rectangle bounds = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
 		int winWidth = bounds.width, winHeight = bounds.height;
-		int cellWidth = 6, cellHeight = 6;
 		System.out.println("rows = " + rows + ", columns = " + columns);
 		for(int i = 0; i < columns; i++)
 		{
@@ -124,7 +94,6 @@ class Grid {
 				matrix[pos][2] = cellWidth;
 				// fourth element is starting x
 				matrix[pos][3] = cellHeight;
-				cells[i] = new Cell();
 			}
 		}
 		matrixGenerated = true;
@@ -135,16 +104,11 @@ class Grid {
 			return;
 		Graphics2D g2 = (Graphics2D) g;
 		for(int i = 0; i < matrix.length; i++){
-			if(cells[i].state == 1)
-				g2.setPaint(Color.decode(cells[i].color));
-			else
-				g2.setPaint(Color.white);
+			int[] rgb = colorMatrix[i];
+			g2.setPaint(new Color(rgb[0], rgb[1], rgb[2]));
 			g2.fill(new Rectangle2D.Double(matrix[i][0], matrix[i][1], matrix[i][2], matrix[i][3]));
-//			g.fillRect(matrix[i][0], matrix[i][1], matrix[i][2], matrix[i][3]);
-//			g.setColor(Color.decode(barColor));
 			g2.setPaint(Color.decode(barColor));
 			g2.draw(new Rectangle2D.Double(matrix[i][0], matrix[i][1], matrix[i][2], matrix[i][3]));
-//			g.drawRect(matrix[i][0], matrix[i][1], matrix[i][2], matrix[i][3]);
 		}
 	}
 }

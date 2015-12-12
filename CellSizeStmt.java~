@@ -1,0 +1,7 @@
+// interval
+
+public class CellSizeStmt extends Stmt {
+	public CellSizeStmt(Expr exp){
+		this.addAST(exp);
+	}	
+}
