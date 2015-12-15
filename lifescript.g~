@@ -102,7 +102,7 @@ stmt	returns [Stmt ast]
 	|	'setstate' ('of' coordexp)? 'to' exp
 		{$ast = new SetStateStmt($coordexp.ast, $exp.ast);}
 
-	|	'statecolor' exp ' is ' colorexp
+	|	'statecolor' exp 'is' colorexp
 		{$ast = new StateColorStmt($exp.ast, $colorexp.ast);}
 
 	|	'create' STRING 'at' coordexp
@@ -211,7 +211,9 @@ atom 	returns [Expr ast]
 	|	'neighbors' ('of' coordexp)? ('that' 'are' STRING)?
 		{$ast = new NeighborsExpr($coordexp.ast, $STRING.text);}
 	|	'cell' 'at' coordexp ('is' ID)? 
-		{ $ast = new CellCheckExpr($coordexp.ast, $ID.text);}
+		{ $ast = new CellCheckExpr($coordexp.ast, $ID.text, false);}
+	|	'neighbor' coordexp ('is' ID)? 
+		{ $ast = new CellCheckExpr($coordexp.ast, $ID.text, true);}
 	|	'alive'	{$ast = new AliveExpr();}
 	|	'state' ('of' coordexp)? {$ast = new GetStateExpr($coordexp.ast);}
 	|	'random' '(' lb=exp ',' ub=exp ')' {$ast = new RandomExpr($lb.ast, $ub.ast);}

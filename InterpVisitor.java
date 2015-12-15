@@ -210,7 +210,7 @@ public class InterpVisitor {
 		return null;	
 	}
 	private Double interp(CellCheckExpr ast) {
-		return 0.0;	
+		return cellMatrix.cellCheck(ast.type(), decodeCoord(this.dispatch(ast.getAST(1))), ast.relative()) ? 1.0 : 0.0;
 	}
 	private Double interp(AliveExpr ast) {
 		return cellMatrix.alive() ? 1.0 : 0.0;

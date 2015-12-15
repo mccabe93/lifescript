@@ -51,6 +51,16 @@ public class CellMatrix {
 		Matrix[current].state = state;
 	}
 
+	public boolean cellCheck(String type, int[] coord, boolean relative) {
+		if(relative) {
+			coord[0] += current%matrixWidth;
+			coord[1] += current/matrixWidth;
+		}
+		if(Matrix[coord[0]*matrixWidth+coord[1]].type == type)
+			return true;
+		return false;
+	}
+
 	public void create(String type, int[] coord) {
 		Matrix[coord[0]*matrixWidth+coord[1]] = new CellNode(1, type);
 	}
@@ -242,40 +252,58 @@ public class CellMatrix {
 		}
 	}
 
+	private int addr(int pos, int m, int n) {
+		int matrixHeight = Matrix.length/matrixWidth;
+		int x = pos%matrixWidth, y = pos/matrixHeight;
+		return addr(x,y,m,n);
+	}
+
+	private int addr(int x, int y, int m, int n) {
+		if(x > 0 && y > 0)
+			return (y%n)*m+(x%m);
+		return 0;
+	}
+
 	public int neighborValues(int pos, String type) {
 		int values = 0;
 		if(types.get(Matrix[pos].type) == null) return 0;
 		Cell cell = types.get(Matrix[pos].type);
 		int[] hood = cell.neighborhood;
 	
-		int 	bufferTop = pos - cell.rowsAbove * matrixWidth, bufferBottom = pos + cell.rowsBelow * matrixWidth,
-			bufferLeft = pos%matrixWidth - cell.leftDisplacement, bufferRight = pos%matrixWidth + cell.rightDisplacement;
+//		int 	bufferTop = pos - cell.rowsAbove * matrixWidth, bufferBottom = pos + cell.rowsBelow * matrixWidth,
+//			bufferLeft = pos%matrixWidth - cell.leftDisplacement, bufferRight = pos%matrixWidth + cell.rightDisplacement;
+		int matrixHeight = Matrix.length/matrixWidth;
+		int x = pos%matrixWidth, y = pos/matrixHeight;
+		pos = addr(x-cell.leftDisplacement, y-cell.rowsAbove, matrixWidth, matrixHeight);
 		// If there's enough room in the matrix -- centered at the VAR of the neighborhood -- then a translation is possible	
-		if(bufferTop < 0)
-				
-		if(bufferTop > -1 && bufferBottom < Matrix.length && bufferLeft > -1 && bufferRight < matrixWidth) {
-//			System.out.println("PARSING CELL @ " + pos);
-//			System.out.println("Buffer Top = " +bufferTop + "\nBuffer Bottom = " +bufferBottom + "\nBuffer Left = " +bufferLeft + "\nBuffer Right = " +bufferRight);
-//			System.out.println("we can transpose @ pos " + pos);
-			pos = bufferTop - cell.leftDisplacement;
+
+//		if(bufferTop > -1 && bufferBottom < Matrix.length && bufferLeft > -1 && bufferRight < matrixWidth) {
+		System.out.println("PARSING CELL @ " + pos);
+//		System.out.println("Buffer Top = " +bufferTop + "\nBuffer Bottom = " +bufferBottom + "\nBuffer Left = " +bufferLeft + "\nBuffer Right = " +bufferRight);
+		System.out.println("we can transpose @ pos " + pos);
+//		pos = bufferTop - cell.leftDisplacement;
+//		if(pos < 0)
+//			pos = (pos/matrixWidth)*
 //			System.out.println(pos);
-			for(int i = 1; i < hood.length; i++) {
-				CellNode tmp = OriginalMatrix[pos];
-				
+		for(int i = 1; i < hood.length; i++) {
+			CellNode tmp = OriginalMatrix[pos];
+			
 //				System.out.println(pos-1 + "\n" + Matrix[pos-1].state);
-				if(tmp.state == 1) {
+			if(tmp.state == 1) {
 //					System.out.println("Value @ pos " + (pos-1) + " = " + hood[i]);
-					if((type != null && type == tmp.type) || type == null)
-						values += hood[i];
-				}
-				if(i % hood[0] == 0){
-					pos -= hood[0]-1;
-					pos += matrixWidth;
-				}
-				else
-					pos++;
+				if((type != null && type == tmp.type) || type == null)
+					values += hood[i];
 			}
+			if(i % hood[0] == 0){
+				pos -= hood[0]-1;
+				pos += matrixWidth;
+			}
+			else
+				pos++;
+			pos = addr(pos, matrixWidth, matrixHeight);
+//			System.out.println("pos of cell " + current + " = " + pos);
 		}
+//		}
 		return values;
 	}
 
