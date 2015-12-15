@@ -1,9 +1,9 @@
 Properties:
 	Title = "Rule 30"
-	Dimensions = (19, 1)
-	Start = {("block", (0,9))}
+	Dimensions = (81, 1)
+	Start = {("block", (0,40))}
 	Default Type = "block"
-	Generations = 10
+	Generations = 20
 	Interval = 0.5
 	Pausable = false
 	Steppable = true
@@ -12,8 +12,11 @@ Properties:
 type block:
 	Neighborhood[3] = {4, 2, 1,
 			0, VAR, 0}
-	
-	if neighbors <= 4 then
+
+	x = neighbors that are "block"
+	print "block nebs = ", x
+
+	if neighbors < 5 then
 		if neighbors == 0 then
 			if alive then
 				alive
@@ -26,6 +29,7 @@ type block:
 	else
 		dead
 	endif
+
 endtype
 
 world:

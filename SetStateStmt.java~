@@ -1,0 +1,7 @@
+
+public class SetStateStmt extends Stmt {
+
+	public SetStateStmt(Expr state) {
+		
+	}
+}

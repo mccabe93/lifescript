@@ -16,9 +16,9 @@ public class Simulator {
 		types	= 	interpVisitor.getTypeStmts();
 		CellMatrix matrix = interpVisitor.getCellMatrix();
 		int[] dims = matrix.getDimensions();
-//		frame = new LSFrame(interpVisitor.frameTitle, 
-//					interpVisitor.cellWidth, interpVisitor.cellHeight, 
-//					dims[0], dims[1], matrix.getColorMatrix());
+		frame = new LSFrame(interpVisitor.frameTitle, 
+					interpVisitor.cellWidth, interpVisitor.cellHeight, 
+					dims[0], dims[1], matrix.getColorMatrix());
 		run();
 	}
 
@@ -26,17 +26,19 @@ public class Simulator {
 		for(int i = 0; i < interpVisitor.generations; i++) {
 			interval();
 			CellMatrix matrix = interpVisitor.getCellMatrix();
-			System.out.println("Generation " + (i+1));
+			System.out.println("Generation " + (i+1));	
 			for(int k = 0; k < matrix.cells(); k++) {
 				for(AST type : types)
 					interpVisitor.dispatch(type);
 				interpVisitor.nextCell();
-			}
+			}		
 			for(AST world : worlds)
 				interpVisitor.dispatch(world);
 			System.out.println();		
 			System.out.println();
 			matrix.printMatrix();
+			int[] dims = matrix.getDimensions();
+			frame.update(interpVisitor.cellWidth, interpVisitor.cellHeight, dims[0], dims[1], matrix.getColorMatrix());
 			interpVisitor.newGeneration();
 		}
 	}

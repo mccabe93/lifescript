@@ -7,7 +7,12 @@ public class PropertiesStmt extends Stmt {
 	{
 		this.title = "sim";
 		this.defaultType = "block";
+		this.generationType = generationType;
 		this.addAST(properties);
+	}
+
+	public String generationType() {
+		return generationType;
 	}
 
 	public String defaultType() {

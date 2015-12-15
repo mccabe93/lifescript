@@ -26,12 +26,12 @@ public class Simulator {
 		for(int i = 0; i < interpVisitor.generations; i++) {
 			interval();
 			CellMatrix matrix = interpVisitor.getCellMatrix();
-			System.out.println("Generation " + (i+1));
+			System.out.println("Generation " + (i+1));	
 			for(int k = 0; k < matrix.cells(); k++) {
 				for(AST type : types)
 					interpVisitor.dispatch(type);
 				interpVisitor.nextCell();
-			}
+			}		
 			for(AST world : worlds)
 				interpVisitor.dispatch(world);
 			System.out.println();		

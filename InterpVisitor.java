@@ -28,7 +28,6 @@ public class InterpVisitor {
 
 	public boolean saveStmts = true;
 	private CellMatrix cellMatrix;
-	private String generationType = "Simultaneous";
 	private ArrayList<AST> 	typeStmts = new ArrayList<AST>(), 
 				worldStmts = new ArrayList<AST>();
 
@@ -71,7 +70,10 @@ public class InterpVisitor {
 		else if (ast.getClass() == SteppableStmt.class)		return interp((SteppableStmt)ast);
 		else if (ast.getClass() == AddRowStmt.class)		return interp((AddRowStmt)ast);
 		else if (ast.getClass() == AddColumnStmt.class)		return interp((AddColumnStmt)ast);
+
 		else if (ast.getClass() == SetColorStmt.class)		return interp((SetColorStmt)ast);
+		else if (ast.getClass() == StateColorStmt.class)	return interp((StateColorStmt)ast);
+		else if (ast.getClass() == SetStateStmt.class)		return interp((SetStateStmt)ast);
 
 		else if (ast.getClass() == TypeStmt.class)		return interp((TypeStmt)ast);
 		else if (ast.getClass() == WorldStmt.class)		return interp((WorldStmt)ast);
@@ -84,6 +86,7 @@ public class InterpVisitor {
 		else if (ast.getClass() == BooleanExpr.class)		return interp((BooleanExpr)ast);
 		else if (ast.getClass() == AliveExpr.class)		return interp((AliveExpr)ast);
 		else if (ast.getClass() == CoordExpr.class)		return interp((CoordExpr)ast);
+		else if (ast.getClass() == GetStateExpr.class)		return interp((GetStateExpr)ast);
 
 		else if (ast.getClass() == MathExpr.class)		return interp((MathExpr)ast);
 		else if (ast.getClass() == NumExpr.class)		return interp((NumExpr)ast);
@@ -113,11 +116,22 @@ public class InterpVisitor {
 	}
 	
 	private Double interp(CreateStmt ast) {
-		
+		cellMatrix.create(dequote(ast.type()), decodeCoord(this.dispatch(ast.getAST(0))));
 		return null;	
 	}
 	private Double interp(KillStmt ast) {
-		
+		cellMatrix.kill(dequote(ast.type()), decodeCoord(this.dispatch(ast.getAST(0))));
+		return null;
+	}
+	private Double interp(StateColorStmt ast) {
+		cellMatrix.setStateColor(this.dispatch(ast.getAST(0)).intValue(), decodeColor(this.dispatch(ast.getAST(1))));
+		return null;	
+	}
+	private Double interp(SetStateStmt ast) {
+		if(ast.size() == 1)
+			cellMatrix.setState(this.dispatch(ast.getAST(0)).intValue());
+		else
+			cellMatrix.setState(decodeCoord(this.dispatch(ast.getAST(0))), this.dispatch(ast.getAST(1)).intValue());
 		return null;	
 	}
 
@@ -174,10 +188,8 @@ public class InterpVisitor {
 	private Double interp(PropertiesStmt ast) {
 		cellMatrix = new CellMatrix();
 		this.dispatch(ast.getAST(0));
-		generationType = ast.generationType();
 		frameTitle = ast.title();
 		cellMatrix.setDefaultType(ast.defaultType());
-
 		int[] coords = new int[startConditionCoords.size()];
 		for(int h = 0; h < coords.length; h++)
 			coords[h] = startConditionCoords.get(h);
@@ -210,10 +222,15 @@ public class InterpVisitor {
 	private Double interp(NeighborsExpr ast) {
 		// We're calling from inside a Type		
 		if(ast.size() == 0) 
-			return new Double(cellMatrix.neighborValues());
+			return new Double(cellMatrix.neighborValues(dequote(ast.type())));
 		// otherwise we're calling from somewhere else and process a coord
-//		else
-		return 0.0;	
+		return new Double(cellMatrix.neighborValues(decodeCoord(this.dispatch(ast.getAST(0))), dequote(ast.type())));
+	}
+
+	private Double interp(GetStateExpr ast) {
+		if(ast.size() == 0)
+			return new Double(cellMatrix.getState());
+		return new Double(cellMatrix.getState(decodeCoord(this.dispatch(ast.getAST(0)))));
 	}
 
 	private ArrayList<Integer> currentNeighborhood = new ArrayList<Integer>();
@@ -252,22 +269,20 @@ public class InterpVisitor {
 		return (ts + val);
 	}
 
-	private int[] decodeCoord(int val) {
-		String d = Integer.toString(val);
-		System.out.println(d);
+	private int[] decodeCoord(Double val) {
+		String d = Integer.toString(val.intValue());
 		return new int[]{Integer.parseInt(d.substring(1,5)), Integer.parseInt(d.substring(5,9))};
 	}
 
 	private Double interp(CellSizeStmt ast) {
-		int[] dims = decodeCoord(this.dispatch(ast.getAST(0)).intValue());
-		System.out.println("cell width: " + dims[0] + ", " + dims[1]);
+		int[] dims = decodeCoord(this.dispatch(ast.getAST(0)));
 		this.cellWidth = dims[0];
 		this.cellHeight = dims[1];
 		return null;
 	}
 
-	private int[] decodeColor(int val) {
-		String d = Integer.toString(val);
+	private int[] decodeColor(Double val) {
+		String d = Integer.toString(val.intValue());
 		return new int[]{Integer.parseInt(d.substring(1,4)), Integer.parseInt(d.substring(4,7)), Integer.parseInt(d.substring(7,10))};
 	}
 
@@ -278,10 +293,10 @@ public class InterpVisitor {
 	private Double interp(SetColorStmt ast) {
 		int[] color, coord;
 		if(ast.size() == 2) {
-			coord = decodeCoord(this.dispatch(ast.getAST(0)).intValue());
-			color = decodeColor(this.dispatch(ast.getAST(1)).intValue());
+			coord = decodeCoord(this.dispatch(ast.getAST(0)));
+			color = decodeColor(this.dispatch(ast.getAST(1)));
 		} else {
-			color = decodeColor(this.dispatch(ast.getAST(0)).intValue());
+			color = decodeColor(this.dispatch(ast.getAST(0)));
 			cellMatrix.setColor(color);
 		}
 		return null;
@@ -401,6 +416,7 @@ public class InterpVisitor {
 	// Helper method that simply removes the quotations from given strings in the language
 	private String dequote(String val)
 	{	
+		if(val == null) return null;
 		int len = val.length();
 		// if there are 2 characters, then there are only quotes => empty string
 		if(len < 3)

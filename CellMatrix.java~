@@ -29,32 +29,55 @@ public class CellMatrix {
 		return new int[]{matrixWidth, Matrix.length/matrixWidth};
 	}
 
-	public int[] getStates() {
-		int[] vals = new int[Matrix.length];
-		for(int i = 0; i < vals.length; i++) {
-			vals[i] = Matrix[i].state;
-		}
-		return vals;
-	}
-
-	public String[] getTypes() {
-		String[] vals = new String[Matrix.length];
-		for(int i = 0; i < vals.length; i++) {
-			vals[i] = Matrix[i].type;
-		}
-		return vals;
-	}
-
 	public int[][] getColorMatrix() {
 		int[][] cm = new int[Matrix.length][3];
 		for(int i = 0; i < Matrix.length; i++) {
-			cm[i] = Matrix[i].color;
+			cm[i] = Matrix[i].color();
 		}
 		return cm;
 	}
 
+	public void setStateColor(int state, int[] color) {
+		Cell guy = types.get(Matrix[current].type);
+		if(guy != null)
+			guy.addStateColor(state, color);
+	}
+
+	public void setState(int[] coord, int state) {
+		Matrix[coord[0]*matrixWidth+coord[1]].state = state;
+	}
+
+	public void setState(int state) {
+		Matrix[current].state = state;
+	}
+
+	public void create(String type, int[] coord) {
+		Matrix[coord[0]*matrixWidth+coord[1]] = new CellNode(1, type);
+	}
+
+	public void kill(String type, int[] coord) {
+		CellNode cn = Matrix[coord[0]*matrixWidth+coord[1]];
+		cn.state = DEAD;
+		if(type != null)
+			if(type != cn.type)
+				cn.state = ALIVE;
+	}
+
+	public int getState(int pos) {
+		return Matrix[pos].state;
+	}
+
+	public int getState(int[] coord) {
+		return getState(coord[0]*matrixWidth+coord[1]);
+	}
+
+	public int getState() { 
+		return getState(current);
+	}
+
 	public void setColor(int pos, int[] rgb) {
-		Matrix[current].color = rgb;
+//		System.out.println("setting color @ " + pos + "
+		Matrix[pos].override = rgb;
 	}
 
 	public void setColor(int[] rgb) {
@@ -65,15 +88,30 @@ public class CellMatrix {
 		public boolean	changed = false; // whether this cell changed this generation
 		public int state = 0;
 		public String type;
-		public int[] color; 
+		public int[] color, override; 
 		public CellNode(int state, String type){
 			this.type = type;
 			this.state = state;
-			this.color = new int[]{255, 255, 255};
+			color = new int[]{255, 255, 255};
+			setColorFromState(state);
 		}
 		public CellNode(int state, String type, int[] rgb) {
 			this(state, type);
 			this.color = rgb;		
+		}
+		public int[] color() {
+			if(override != null)
+				return override;
+			setColorFromState(state);
+			return color;
+		}
+		public void setColorFromState(int state) {
+			Cell cell = types.get(type);
+			if(cell != null) {
+				int[] col = cell.stateColors.get(state);
+				if(col != null)
+					color = col;
+			}
 		}
 	}
 
@@ -82,6 +120,7 @@ public class CellMatrix {
 		public int 	VAR;		// location of VARs in neighborhood
 		public int	rowsAbove = 0, rowsBelow = -1, 
 				leftDisplacement = 0, rightDisplacement = 0;
+		public HashMap<Integer, int[]> stateColors = new HashMap<Integer, int[]>();
 		// first value of any neighborhood is its width, height is implicit by array length
 		public Cell(String name, int[] neighborhood, int VAR) {
 			this.neighborhood = neighborhood;
@@ -89,6 +128,11 @@ public class CellMatrix {
 			// we set the value from -17 to 0 as to not affect calculations
 			neighborhood[VAR] = 0;
 			getTransposeData();
+			stateColors.put(0, new int[]{255, 255, 255});
+			stateColors.put(1, new int[]{0, 0, 0});
+		}
+		public void addStateColor(int state, int[] color) {
+			stateColors.put(state, color);
 		}
 		private void getTransposeData() {
 			// center the neighborhood matrix on VAR
@@ -117,17 +161,6 @@ public class CellMatrix {
 		OriginalMatrix = new CellNode[Matrix.length];
 		for(int i = 0; i < OriginalMatrix.length; i++)
 			OriginalMatrix[i] = copyCellNode(Matrix[i]);
-	}
-
-	public void addrow() {
-		CellNode[] prev = Matrix;
-		Matrix = new CellNode[prev.length+matrixWidth];
-		for(int i = 0; i < prev.length; i++)
-			Matrix[i] = prev[i];
-		for(int i = prev.length; i < Matrix.length; i++) {
-			Matrix[i] = new CellNode(0, defaultType);
-		}
-		copyMatrix();
 	}
 
 	public void newGeneration() {
@@ -165,21 +198,21 @@ public class CellMatrix {
 
 		if(dimensions[1] == DEFAULT)
 			dimensions[1] = Matrix.length/matrixWidth;					// increase rows by one; "height" increased by one
-		else if(dimensions[1] == PLUSONE)
-			dimensions[1] += 1;		// increase columns by one; simply add a cell to each row
+		else if(dimensions[1] == PLUSONE) {
+			dimensions[1] = Matrix.length/matrixWidth + 1;		// increase columns by one; simply add a cell to each row
+		}
 
-		System.out.println("matrixWidth = " + matrixWidth + "dimensions[1] = " + dimensions[1]);
 		Matrix = new CellNode[matrixWidth*dimensions[1]];
 		int offset = 0;
 		if(prev != null)
 			offset = prev.length;
+		System.out.println("offset len = " + offset);
 		for(int i = 0; i < offset; i++)
 			Matrix[i] = prev[i];
 		for(int i = offset; i < Matrix.length; i++) {
 			Matrix[i] = new CellNode(0, defaultType);
 		}
 		copyMatrix();
-		printMatrix();
 	}
 
 	public void setStartConditions(int[] coordinates, String[] types)
@@ -205,15 +238,11 @@ public class CellMatrix {
 			if(i%matrixWidth==0)
 				System.out.println();
 			CellNode c = Matrix[i];
-			System.out.print(neighborValues(i) + " " + c.type + " | ");
+//			System.out.print(neighborValues(i) + " " + c.type + " | ");
 		}
 	}
 
-	public String[] neighborTypes() {
-		return null;
-	}
-
-	public int neighborValues(int pos) {
+	public int neighborValues(int pos, String type) {
 		int values = 0;
 		if(types.get(Matrix[pos].type) == null) return 0;
 		Cell cell = types.get(Matrix[pos].type);
@@ -229,10 +258,13 @@ public class CellMatrix {
 			pos = bufferTop - cell.leftDisplacement;
 //			System.out.println(pos);
 			for(int i = 1; i < hood.length; i++) {
+				CellNode tmp = OriginalMatrix[pos];
+				
 //				System.out.println(pos-1 + "\n" + Matrix[pos-1].state);
-				if(OriginalMatrix[pos].state == 1) {
+				if(tmp.state == 1) {
 //					System.out.println("Value @ pos " + (pos-1) + " = " + hood[i]);
-					values += hood[i];
+					if((type != null && type == tmp.type) || type == null)
+						values += hood[i];
 				}
 				if(i % hood[0] == 0){
 					pos -= hood[0]-1;
@@ -245,8 +277,12 @@ public class CellMatrix {
 		return values;
 	}
 
-	public int neighborValues() {
-		return neighborValues(current);	
+	public int neighborValues(int[] coord, String type) {
+		return neighborValues(coord[0]*matrixWidth+coord[1], type);
+	}
+
+	public int neighborValues(String type) {
+		return neighborValues(current, type);	
 	}
 
 	public void nextCell() {
@@ -259,6 +295,16 @@ public class CellMatrix {
 	public void state(int pos, int state) {
 		Matrix[pos].state = state;
 		Matrix[pos].changed = true;
+		Cell type = types.get(Matrix[pos].type);
+		if(type != null) {
+			int[] stateColor = type.stateColors.get(state);
+			if(stateColor != null)
+				Matrix[pos].color = stateColor;
+		}
+	}
+
+	public void state(int[] coord, int state) {
+		state(coord[0]*matrixWidth+coord[1], state);
 	}
 
 	public void state(int state) {

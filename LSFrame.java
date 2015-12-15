@@ -7,6 +7,7 @@ import java.awt.geom.Rectangle2D;
 public class LSFrame extends Frame {
 
 	private Grid grid;
+	private int winX, winY;
 
 	public LSFrame(String title, int cellWidth, int cellHeight, int rows, int columns, int[][] colorMatrix) {
 		super("sim");
@@ -16,8 +17,8 @@ public class LSFrame extends Frame {
 //		addMouseListener(menu);
 //		addKeyListener(this);
 		setLayout(null);
-		int winX = (columns*cellWidth < 400) ? 400 : columns*cellWidth; 
-		int winY = (rows*cellHeight < 400) ? 400 : rows*cellHeight;
+		winX = (columns*cellWidth < 540) ? 540 : columns*cellWidth; 
+		winY = (rows*cellHeight < 540) ? 540 : rows*cellHeight;
 		setSize(winX,winY);
 		setBackground(Color.white);
 		setResizable(true);
@@ -36,7 +37,7 @@ public class LSFrame extends Frame {
 
 	public void update(int cellWidth, int cellHeight, int rows, int columns, int[][] colorMatrix) {
 		if(grid == null || cellWidth != grid.cellWidth || cellHeight != grid.cellHeight || columns != grid.columns || rows != grid.rows)
-			grid = new Grid(cellWidth, cellHeight, rows, columns, colorMatrix);
+			grid = new Grid(cellWidth, cellHeight, rows, columns, colorMatrix, winX, winY);
 		else 
 			grid.updateColors(colorMatrix);
 		repaint();
@@ -52,40 +53,52 @@ public class LSFrame extends Frame {
 
 class Grid {
 
-	public int rows = 15, columns = 15;		// width and height of cells are
-							// proportional to the screen
-	public int cellWidth = 6, cellHeight = 6;
-	private String barColor = "0xff0000", backgroundColor; 	// hex colors of bars and background
+	public int 	rows, columns,		
+			winWidth, winHeight;
+	public int cellWidth, cellHeight;	// width and height of cells are
+	private String barColor = "0xff0000"; 	// hex colors of bars
 
-	private int[][] matrix = new int[rows*columns][4];	
-	private int[][] colorMatrix = new int[rows*columns][3];
+	private int[][] matrix;	
+	private int[][] colorMatrix;
 
 	private boolean matrixGenerated = false;
 
-	public Grid(int cellWidth, int cellHeight, int columns, int rows, int[][] colors) {
+	public Grid(int cellWidth, int cellHeight, int columns, int rows, int[][] colors, int winWidth, int winHeight) {
 		this.rows = rows;
 		this.columns = columns;
 		this.cellWidth = cellWidth;
 		this.cellHeight = cellHeight;
+		this.winWidth = winWidth;
+		this.winHeight = winHeight;
 		matrix = new int[rows*columns][4];
 		calculateMatrix();
 		updateColors(colors);
 	}
 
 	public void updateColors(int[][] colors) {
+		colorMatrix = new int[colors.length][3];
 		colorMatrix = colors;
+//		printColorMatrix();
+	}
+
+	private void printColorMatrix() {
+		for(int i = 0; i < colorMatrix.length; i++) {
+			System.out.print("RGB: ");
+			for(int j = 0; j < colorMatrix[i].length; j++)
+				System.out.print(colorMatrix[i][j] + " ");
+			System.out.println();
+		}
 	}
 
 	private void calculateMatrix()
 	{
-		Rectangle bounds = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
-		int winWidth = bounds.width, winHeight = bounds.height;
-		System.out.println("rows = " + rows + ", columns = " + columns);
+		int gridWidth = columns * cellWidth, gridHeight = rows * cellHeight;
+		int centerX =  winWidth/2-gridWidth/2, centerY = winHeight/2-gridHeight/2;
 		for(int i = 0; i < columns; i++)
 		{
 			for(int j = 0; j < rows; j++)
 			{	
-				int pos = (j*columns) + i, startX =43 + i * cellWidth, startY = 43 + j * cellHeight;
+				int pos = (j*columns) + i, startX = centerX + i * cellWidth, startY = centerY + j * cellHeight;
 				// first element is starting x
 				matrix[pos][0] = startX;
 				// second element is starting y
