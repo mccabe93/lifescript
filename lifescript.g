@@ -99,6 +99,9 @@ stmt	returns [Stmt ast]
 	|	'dead'
 		{$ast = new DeadStmt();}
 
+	|	'become' STRING
+		{$ast = new BecomeStmt($STRING.text);}
+
 	|	'setstate' ('of' coordexp)? 'to' exp
 		{$ast = new SetStateStmt($coordexp.ast, $exp.ast);}
 
@@ -210,10 +213,10 @@ atom 	returns [Expr ast]
 	|	BOOLEAN		{ $ast = new BooleanExpr($BOOLEAN.text); }	
 	|	'neighbors' ('of' coordexp)? ('that' 'are' STRING)?
 		{$ast = new NeighborsExpr($coordexp.ast, $STRING.text);}
-	|	'cell' 'at' coordexp ('is' ID)? 
-		{ $ast = new CellCheckExpr($ID.text, $coordexp.ast, false);}
-	|	'neighbor' coordexp ('is' ID)? 
-		{ $ast = new CellCheckExpr($ID.text, $coordexp.ast, true);}
+	|	'cell' 'at' coordexp ('is' STRING)? 
+		{ $ast = new CellCheckExpr($STRING.text, $coordexp.ast, false);}
+	|	'neighbor' 'at' coordexp ('is' STRING)? 
+		{ $ast = new CellCheckExpr($STRING.text, $coordexp.ast, true);}
 	|	'alive'	{$ast = new AliveExpr();}
 	|	'state' ('of' coordexp)? {$ast = new GetStateExpr($coordexp.ast);}
 	|	'random' '(' lb=exp ',' ub=exp ')' {$ast = new RandomExpr($lb.ast, $ub.ast);}

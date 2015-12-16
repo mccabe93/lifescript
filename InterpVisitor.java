@@ -21,7 +21,7 @@ NOTE:	Much of the implementation was in SIMPLE1MULTI and has been reused. All SI
 public class InterpVisitor {
 	public String frameTitle = "sim";
 	public double interval = 0.5;
-	public boolean pausable = false, steppable = true;
+	public boolean pausable = true, steppable = false;
 	public int cellWidth = 6, cellHeight = 6;
 	public int generations = 3;
 	
@@ -80,6 +80,7 @@ public class InterpVisitor {
 
 		else if (ast.getClass() == CellCheckExpr.class)		return interp((CellCheckExpr)ast);
 		else if (ast.getClass() == NeighborsExpr.class)		return interp((NeighborsExpr)ast);
+		else if (ast.getClass() == BecomeStmt.class)		return interp((BecomeStmt)ast);
 
 		else if (ast.getClass() == ColorExpr.class)		return interp((ColorExpr)ast);
 		else if (ast.getClass() == RandomExpr.class)		return interp((RandomExpr)ast);
@@ -185,11 +186,16 @@ public class InterpVisitor {
 		return null;
 	}
 
+	private Double interp(BecomeStmt ast)
+	{
+		cellMatrix.setType(dequote(ast.type()));
+		return null;
+	}
+
 	private Double interp(PropertiesStmt ast) {
 		cellMatrix = new CellMatrix();
 		this.dispatch(ast.getAST(0));
-		frameTitle = ast.title();
-		cellMatrix.setDefaultType(ast.defaultType());
+		frameTitle = dequote(ast.title());
 		int[] coords = new int[startConditionCoords.size()];
 		for(int h = 0; h < coords.length; h++)
 			coords[h] = startConditionCoords.get(h);
@@ -197,6 +203,7 @@ public class InterpVisitor {
 		for(int k = 0; k < types.length; k++)
 			types[k] = startConditionTypes.get(k);
 		int[] dims = cellMatrix.getDimensions();
+		cellMatrix.setDefaultType(dequote(ast.defaultType()));
 		cellMatrix.setStartConditions(coords, types);
 		return null;	
 	}
@@ -210,7 +217,7 @@ public class InterpVisitor {
 		return null;	
 	}
 	private Double interp(CellCheckExpr ast) {
-		return cellMatrix.cellCheck(ast.type(), decodeCoord(this.dispatch(ast.getAST(1))), ast.relative()) ? 1.0 : 0.0;
+		return cellMatrix.cellCheck(dequote(ast.type()), decodeCoord(this.dispatch(ast.getAST(0))), ast.relative()) ? 1.0 : 0.0;
 	}
 	private Double interp(AliveExpr ast) {
 		return cellMatrix.alive() ? 1.0 : 0.0;
@@ -248,8 +255,8 @@ public class InterpVisitor {
 	}	
 
 	private Double interp(CoordExpr ast) {
-		String coord = "1" + thousandString(this.dispatch(ast.getAST(0)).intValue());
-		coord += thousandString(this.dispatch(ast.getAST(1)).intValue());
+		String coord = "1" + thousandString(this.dispatch(ast.getAST(1)).intValue());
+		coord += thousandString(this.dispatch(ast.getAST(0)).intValue());
 		return Double.parseDouble(coord);
 	}
 
@@ -326,13 +333,16 @@ public class InterpVisitor {
 	}
 
 	private Double interp(TypeStmt ast) {
+		if(!saveStmts && !ast.type().equals(cellMatrix.currentType())) return null;
 		if(saveStmts) {
 			typeStmts.add(ast);
 			currentNeighborhood.add(this.dispatch(ast.getAST(0)).intValue());
+			for (int i = 0; i < ast.size(); i++)
+				this.dispatch(ast.getAST(i));
 		}
-		for (int i = 0; i < ast.size(); i++) {
-			this.dispatch(ast.getAST(i));
-		}
+		else
+			for (int i = 0; i < ast.size(); i++)
+				this.dispatch(ast.getAST(i));
 		if(saveStmts) {
 			int[] neighborhood = new int[currentNeighborhood.size()];
 			int var = 0;

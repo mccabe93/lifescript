@@ -13,9 +13,7 @@ public class LSFrame extends Frame {
 		super("sim");
 		if(title != null)
 			setTitle(title);
-		// Frame & input setup
-//		addMouseListener(menu);
-//		addKeyListener(this);
+		// Frame setup
 		setLayout(null);
 		winX = (columns*cellWidth < 540) ? 540 : columns*cellWidth; 
 		winY = (rows*cellHeight < 540) ? 540 : rows*cellHeight;
@@ -45,7 +43,7 @@ public class LSFrame extends Frame {
 
 	public void paint(Graphics g) {
 		grid.paint(g);
-//		repaint();
+		g.setColor(Color.white);
 	}
 	
 
@@ -78,7 +76,6 @@ class Grid {
 	public void updateColors(int[][] colors) {
 		colorMatrix = new int[colors.length][3];
 		colorMatrix = colors;
-//		printColorMatrix();
 	}
 
 	private void printColorMatrix() {
