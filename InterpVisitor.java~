@@ -180,6 +180,7 @@ public class InterpVisitor {
 	private Double interp(CellStmt ast)
 	{
 		Double x = this.dispatch(ast.getAST(0).getAST(0)), y = this.dispatch(ast.getAST(0).getAST(1));
+		if(x == 0 && y == 0) return null;
 		startConditionCoords.add(x.intValue());
 		startConditionCoords.add(y.intValue());
 		startConditionTypes.add(dequote(ast.name()));
@@ -255,8 +256,8 @@ public class InterpVisitor {
 	}	
 
 	private Double interp(CoordExpr ast) {
-		String coord = "1" + thousandString(this.dispatch(ast.getAST(0)).intValue());
-		coord += thousandString(this.dispatch(ast.getAST(1)).intValue());
+		String coord = "1" + thousandString(this.dispatch(ast.getAST(1)).intValue());
+		coord += thousandString(this.dispatch(ast.getAST(0)).intValue());
 		return Double.parseDouble(coord);
 	}
 

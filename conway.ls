@@ -1,5 +1,6 @@
 Properties:
 	Title = "Conway's Game of Life"
+	Cell Size = (10, 10)
 	Dimensions = (60, 60)
 	// The glider gun shown on the Wikipedia page
 	Start = {("block", (2,9)),("block", (3,9)),("block", (2,10)),("block", (3,10)),							

@@ -41,7 +41,7 @@ public class LSFrame extends Frame {
 		repaint();
 	}
 
-	public void paint(Graphics g) {
+	public void update(Graphics g) {
 		grid.paint(g);
 		g.setColor(Color.white);
 	}

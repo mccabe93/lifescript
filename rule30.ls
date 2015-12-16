@@ -1,10 +1,10 @@
 Properties:
 	Title = "Rule 30"
-	Dimensions = (81, 1)
-	Start = {("block", (40,0))}
+	Dimensions = (121, 1)
+	Start = {("block", (60,0))}
 	Default Type = "block"
-	Generations = 30
-	Interval = 0.5
+	Generations = 110
+	Interval = 0.1
 	Pausable = true
 	Steppable = false
 

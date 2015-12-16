@@ -31,11 +31,12 @@ public class Simulator implements KeyListener {
 	}
 
 	public void run(){
-		for(int i = breakPoint; i < interpVisitor.generations; i++) {
+		int gens = interpVisitor.generations;
+		for(int i = breakPoint; i < gens; i++) {
 			interval();
 			if(paused){breakPoint = i; break;}
 			CellMatrix matrix = interpVisitor.getCellMatrix();
-			System.out.println("Generation " + (i+1));	
+			System.out.println("Generation " + (i+1) + "/" + gens);	
 			for(int k = 0; k < matrix.cells(); k++) {
 				for(AST type : types)
 					interpVisitor.dispatch(type);
@@ -43,9 +44,9 @@ public class Simulator implements KeyListener {
 			}		
 			for(AST world : worlds)
 				interpVisitor.dispatch(world);
-			System.out.println();		
-			System.out.println();
-			matrix.printMatrix();
+//			System.out.println();		
+//			System.out.println();
+//			matrix.printMatrix();
 			interpVisitor.newGeneration();
 			int[] dims = matrix.getDimensions();
 			frame.update(interpVisitor.cellWidth, interpVisitor.cellHeight, dims[0], dims[1], matrix.getColorMatrix());

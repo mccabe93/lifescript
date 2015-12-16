@@ -239,7 +239,7 @@ public class CellMatrix {
 	public void setStartConditions(int[] coordinates, String[] types)
 	{
 		for(int i = 1, j = 0; j < types.length; i+=2, j++){
-			int pos = coordinates[(i)]*matrixWidth+(coordinates[i-1]-1);
+			int pos = coordinates[i]*matrixWidth+(coordinates[i-1]);
 			Matrix[pos] = new CellNode(1, types[j]);	
 		}
 		copyMatrix();

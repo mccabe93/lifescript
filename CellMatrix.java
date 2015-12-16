@@ -204,7 +204,6 @@ public class CellMatrix {
 		System.out.println("Matrix length = " + Matrix.length);
 		for(int i = 0; i < Matrix.length; i++)
 			Matrix[i] = new CellNode(0, type);
-		printMatrix();
 	}
 
 	public void setDimensions(int[] dimensions)

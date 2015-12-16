@@ -1,23 +1,18 @@
 Properties:
 	Title = "Wireworld"
 	Cell Size = (15, 15)
-	Dimensions = (20, 20)
+	Dimensions = (23, 23)
 	Start = {								("Conductor", (11,9)),("Conductor", (12,9)),
 			("ElectronHead", (4,10)),("Conductor", (5,10)), ("Conductor", (6,10)), ("Conductor", (7,10)), ("Conductor", (8,10)), ("Conductor", (9,10)), ("Conductor", (10,10)), ("Conductor", (11,10)), ("Conductor", (13,10)),("Conductor", (14,10)),("Conductor", (15,10)),("Conductor", (16,10)),("Conductor", (17,10)),("Conductor", (18,10)),
 										("Conductor", (11,11)),("Conductor", (12,11))}
 	Default Type = "Empty"
-	Generations = 200
+	Generations = 150
 	Interval = 0.20
-
-type Empty:
-	Neighborhood[0] = {VAR}
-	setcolor to (0,0,0)
-endtype
 
 type ElectronHead:
 	Neighborhood[0] = {VAR}
 
-	setcolor to (0,255,0)
+	setcolor to (0,0,255)
 	
 	if state == 2 then
 		become "ElectronTail"
@@ -48,5 +43,9 @@ type Conductor:
 	if heads == 1 | heads == 2 then
 		become "ElectronHead"
 	endif
-	setcolor to (255,255,0)
+endtype
+
+type Empty:
+	Neighborhood[0] = {VAR}
+	setcolor to (0,0,0)
 endtype
