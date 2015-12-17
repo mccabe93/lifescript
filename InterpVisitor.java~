@@ -11,37 +11,50 @@ import java.awt.Color;
 	Additionally, a hashmap is used to store and retrieve the variables, and a scanner is 
 	used to receive input from the user.
 	
-NOTE:	Much of the implementation was in SIMPLE1MULTI and has been reused. All SIMPLE1MULTI
+NOTE:	Some of the implementation was in SIMPLE1MULTI and has been reused. All SIMPLE1MULTI
 	code was written by Lutz Hamel. 
 
 	These methods have been separated from those that were written from scratch for the 
-	Mini2Basic language.
+	lifescript language.
 ***/
 
 public class InterpVisitor {
+	// The collected GUI and simulator settings.
 	public String frameTitle = "sim";
 	public double interval = 0.5;
-	public boolean pausable = true, steppable = false;
+	public boolean pausable = false, steppable = true;
 	public int cellWidth = 6, cellHeight = 6;
 	public int generations = 3;
 	
-
+	// saveStmts indicates whether we will be storing the Type and World statements.
+	// It's essentially a "do-once" variable.
 	public boolean saveStmts = true;
+
+	// Our CellMatrix object that we'll be using regularly for matrix transformations/
+	// cell behavior
 	private CellMatrix cellMatrix;
+
+	// All Type and World statements in the source file, to be returned to the Simulator for calling.
 	private ArrayList<AST> 	typeStmts = new ArrayList<AST>(), 
 				worldStmts = new ArrayList<AST>();
 
+	// Arrays for processing starting conditions and coordinates. [This could have be overhauled.]
 	private ArrayList<Integer> startConditionCoords = new ArrayList<Integer>();
 	private ArrayList<String> startConditionTypes = new ArrayList<String>();
+
+	// The neighborhood values of the current cell. Used only on the initial runthrough for collection
+	// of neighborhood information.
+	private ArrayList<Integer> currentNeighborhood = new ArrayList<Integer>();
 	
-	// our variable value memory.
+	// Our variable value memory.
 	private HashMap memory = new HashMap();
 	
 	// Get the value of the variable
 	private Scanner consoleInput = new Scanner(System.in);
 
-	// the dispatcher for the interpreter visitor
+	// The dispatcher which finds and begins execution of each AST node.
 	public Double dispatch(AST ast) {
+		// General statements
 		if      (ast.getClass() == AssignStmt.class)		return interp((AssignStmt)ast);
 		else if (ast.getClass() == BlockStmt.class)		return interp((BlockStmt)ast);
 		else if (ast.getClass() == IfStmt.class)		return interp((IfStmt)ast);
@@ -52,6 +65,8 @@ public class InterpVisitor {
 		else if (ast.getClass() == EndStmt.class)		return interp((EndStmt)ast);
 		else if (ast.getClass() == WhileStmt.class)		return interp((WhileStmt)ast);
 		else if (ast.getClass() == StmtList.class)		return interp((StmtList)ast);
+
+		// Lifescript specific statements
 		else if (ast.getClass() == CreateStmt.class)		return interp((CreateStmt)ast);
 		else if (ast.getClass() == KillStmt.class)		return interp((KillStmt)ast);
 		else if (ast.getClass() == AliveStmt.class)		return interp((AliveStmt)ast);
@@ -78,9 +93,9 @@ public class InterpVisitor {
 		else if (ast.getClass() == TypeStmt.class)		return interp((TypeStmt)ast);
 		else if (ast.getClass() == WorldStmt.class)		return interp((WorldStmt)ast);
 
+		// Lifescript specific expressions
 		else if (ast.getClass() == CellCheckExpr.class)		return interp((CellCheckExpr)ast);
 		else if (ast.getClass() == NeighborsExpr.class)		return interp((NeighborsExpr)ast);
-		else if (ast.getClass() == BecomeStmt.class)		return interp((BecomeStmt)ast);
 
 		else if (ast.getClass() == ColorExpr.class)		return interp((ColorExpr)ast);
 		else if (ast.getClass() == RandomExpr.class)		return interp((RandomExpr)ast);
@@ -89,6 +104,7 @@ public class InterpVisitor {
 		else if (ast.getClass() == CoordExpr.class)		return interp((CoordExpr)ast);
 		else if (ast.getClass() == GetStateExpr.class)		return interp((GetStateExpr)ast);
 
+		// General expressions
 		else if (ast.getClass() == MathExpr.class)		return interp((MathExpr)ast);
 		else if (ast.getClass() == NumExpr.class)		return interp((NumExpr)ast);
 		else if (ast.getClass() == ParenExpr.class)		return interp((ParenExpr)ast);
@@ -100,10 +116,12 @@ public class InterpVisitor {
 		    return null;
 		}
 	}
-
-	public void setCellMatrix(CellMatrix matrix){
-		this.cellMatrix = matrix;
+	
+	// Methods for getting various arrays/objects
+	public ArrayList<AST> getTypeStmts(){
+		return typeStmts;
 	}
+
 	public ArrayList<AST> getTypeStmts(){
 		return typeStmts;
 	}
@@ -177,22 +195,6 @@ public class InterpVisitor {
 		return null;
 	}
 
-	private Double interp(CellStmt ast)
-	{
-		Double x = this.dispatch(ast.getAST(0).getAST(0)), y = this.dispatch(ast.getAST(0).getAST(1));
-		if(x == 0 && y == 0) return null;
-		startConditionCoords.add(x.intValue());
-		startConditionCoords.add(y.intValue());
-		startConditionTypes.add(dequote(ast.name()));
-		return null;
-	}
-
-	private Double interp(BecomeStmt ast)
-	{
-		cellMatrix.setType(dequote(ast.type()));
-		return null;
-	}
-
 	private Double interp(PropertiesStmt ast) {
 		cellMatrix = new CellMatrix();
 		this.dispatch(ast.getAST(0));
@@ -209,6 +211,42 @@ public class InterpVisitor {
 		return null;	
 	}
 
+	private Double interp(TypeStmt ast) {
+		if(!saveStmts && !ast.type().equals(cellMatrix.currentType())) return null;
+		if(saveStmts) {
+			typeStmts.add(ast);
+			currentNeighborhood.add(this.dispatch(ast.getAST(0)).intValue());
+		}
+		for (int i = 0; i < ast.size(); i++)
+			this.dispatch(ast.getAST(i));
+		if(saveStmts) {
+			int[] neighborhood = new int[currentNeighborhood.size()];
+			int var = 0;
+			for(int i = 0; i < neighborhood.length; i++) {
+				neighborhood[i] = currentNeighborhood.get(i);
+				if(neighborhood[i] == -17)
+					var = i;
+			}
+			cellMatrix.addCellType(ast.type(), neighborhood, var);// this.dispatch(ast.getAST(0)).intValue());
+			currentNeighborhood = new ArrayList<Integer>();
+		}
+		return null;	
+	}
+
+	private Double interp(CellStmt ast) {
+		// Legacy way of getting coordinates - simply get the x,y AST node values through dispatch.
+		Double x = this.dispatch(ast.getAST(0).getAST(0)), y = this.dispatch(ast.getAST(0).getAST(1));
+		startConditionCoords.add(x.intValue());
+		startConditionCoords.add(y.intValue());
+		startConditionTypes.add(dequote(ast.name()));
+		return null;
+	}
+
+	private Double interp(BecomeStmt ast) {
+		cellMatrix.setType(dequote(ast.type()));
+		return null;
+	}
+
 	private Double interp(AliveStmt ast) {
 		cellMatrix.state(cellMatrix.ALIVE);
 		return null;	
@@ -216,15 +254,6 @@ public class InterpVisitor {
 	private Double interp(DeadStmt ast) {
 		cellMatrix.state(cellMatrix.DEAD);
 		return null;	
-	}
-	private Double interp(CellCheckExpr ast) {
-		return cellMatrix.cellCheck(dequote(ast.type()), decodeCoord(this.dispatch(ast.getAST(0))), ast.relative()) ? 1.0 : 0.0;
-	}
-	private Double interp(AliveExpr ast) {
-		return cellMatrix.alive() ? 1.0 : 0.0;
-	}
-	public void nextCell() {
-		cellMatrix.nextCell();
 	}
 
 	private Double interp(NeighborsExpr ast) {
@@ -240,8 +269,6 @@ public class InterpVisitor {
 			return new Double(cellMatrix.getState());
 		return new Double(cellMatrix.getState(decodeCoord(this.dispatch(ast.getAST(0)))));
 	}
-
-	private ArrayList<Integer> currentNeighborhood = new ArrayList<Integer>();
 
 	private Double interp(NeighborhoodStmt ast) {
 		if(!ast.isVar())
@@ -277,21 +304,11 @@ public class InterpVisitor {
 		return (ts + val);
 	}
 
-	private int[] decodeCoord(Double val) {
-		String d = Integer.toString(val.intValue());
-		return new int[]{Integer.parseInt(d.substring(1,5)), Integer.parseInt(d.substring(5,9))};
-	}
-
 	private Double interp(CellSizeStmt ast) {
 		int[] dims = decodeCoord(this.dispatch(ast.getAST(0)));
 		this.cellWidth = dims[0];
 		this.cellHeight = dims[1];
 		return null;
-	}
-
-	private int[] decodeColor(Double val) {
-		String d = Integer.toString(val.intValue());
-		return new int[]{Integer.parseInt(d.substring(1,4)), Integer.parseInt(d.substring(4,7)), Integer.parseInt(d.substring(7,10))};
 	}
 
 	private Double interp(BooleanExpr ast) {
@@ -308,54 +325,6 @@ public class InterpVisitor {
 			cellMatrix.setColor(color);
 		}
 		return null;
-	}
-
-	private Double interp(ColorExpr ast) {
-		String encode = "1";
-		// if our color isn't already in hex, we convert it		
-		if(ast.hex() != null) {
-			Color c = Color.decode(ast.hex());
-			encode += hundredString((int)(c.getRed()));
-			encode += hundredString((int)(c.getGreen()));
-			encode += hundredString((int)(c.getBlue()));
-		} else {
-			encode += hundredString(this.dispatch(ast.getAST(0)).intValue());
-			encode += hundredString(this.dispatch(ast.getAST(1)).intValue());
-			encode += hundredString(this.dispatch(ast.getAST(2)).intValue());
-		}
-		return Double.parseDouble(encode);
-	}
-
-	public Double interp(RandomExpr ast) {
-		Random r = new Random();
-		double lowerBound = this.dispatch(ast.getAST(0)),
-			upperBound = this.dispatch(ast.getAST(1));
-		return (upperBound - lowerBound) * r.nextDouble() + lowerBound;
-	}
-
-	private Double interp(TypeStmt ast) {
-		if(!saveStmts && !ast.type().equals(cellMatrix.currentType())) return null;
-		if(saveStmts) {
-			typeStmts.add(ast);
-			currentNeighborhood.add(this.dispatch(ast.getAST(0)).intValue());
-			for (int i = 0; i < ast.size(); i++)
-				this.dispatch(ast.getAST(i));
-		}
-		else
-			for (int i = 0; i < ast.size(); i++)
-				this.dispatch(ast.getAST(i));
-		if(saveStmts) {
-			int[] neighborhood = new int[currentNeighborhood.size()];
-			int var = 0;
-			for(int i = 0; i < neighborhood.length; i++) {
-				neighborhood[i] = currentNeighborhood.get(i);
-				if(neighborhood[i] == -17)
-					var = i;
-			}
-			cellMatrix.addCellType(ast.type(), neighborhood, var);// this.dispatch(ast.getAST(0)).intValue());
-			currentNeighborhood = new ArrayList<Integer>();
-		}
-		return null;	
 	}
 
 	private Double interp(WorldStmt ast) {
@@ -424,6 +393,37 @@ public class InterpVisitor {
 		return null;
 	}
 
+	private Double interp(ColorExpr ast) {
+		String encode = "1";
+		// if our color isn't already in hex, we convert it		
+		if(ast.hex() != null) {
+			Color c = Color.decode(ast.hex());
+			encode += hundredString((int)(c.getRed()));
+			encode += hundredString((int)(c.getGreen()));
+			encode += hundredString((int)(c.getBlue()));
+		} else {
+			encode += hundredString(this.dispatch(ast.getAST(0)).intValue());
+			encode += hundredString(this.dispatch(ast.getAST(1)).intValue());
+			encode += hundredString(this.dispatch(ast.getAST(2)).intValue());
+		}
+		return Double.parseDouble(encode);
+	}
+
+	public Double interp(RandomExpr ast) {
+		Random r = new Random();
+		double lowerBound = this.dispatch(ast.getAST(0)),
+			upperBound = this.dispatch(ast.getAST(1));
+		return (upperBound - lowerBound) * r.nextDouble() + lowerBound;
+	}
+
+	private Double interp(CellCheckExpr ast) {
+		return cellMatrix.cellCheck(dequote(ast.type()), decodeCoord(this.dispatch(ast.getAST(0))), ast.relative()) ? 1.0 : 0.0;
+	}
+
+	private Double interp(AliveExpr ast) {
+		return cellMatrix.alive() ? 1.0 : 0.0;
+	}
+
 	// Helper method that simply removes the quotations from given strings in the language
 	private String dequote(String val)
 	{	
@@ -433,6 +433,20 @@ public class InterpVisitor {
 		if(len < 3)
 			return "";
 		return val.substring(1,len-1);
+	}
+
+	private int[] decodeCoord(Double val) {
+		String d = Integer.toString(val.intValue());
+		return new int[]{Integer.parseInt(d.substring(1,5)), Integer.parseInt(d.substring(5,9))};
+	}
+
+	public void nextCell() {
+		cellMatrix.nextCell();
+	}
+
+	private int[] decodeColor(Double val) {
+		String d = Integer.toString(val.intValue());
+		return new int[]{Integer.parseInt(d.substring(1,4)), Integer.parseInt(d.substring(4,7)), Integer.parseInt(d.substring(7,10))};
 	}
 
 /*** 
