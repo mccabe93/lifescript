@@ -1,10 +1,11 @@
+// Node for an cell or neighbor expression
 
 public class CellCheckExpr extends Expr {
 
 	private String type;
 	private boolean relative;
 
-	public CellCheckExpr(CoordExpr location, String type, boolean relative)
+	public CellCheckExpr(String type, CoordExpr location, boolean relative)
 	{
 		this.addAST(location);
 		this.type = type;

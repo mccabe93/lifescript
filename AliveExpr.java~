@@ -1,4 +1,5 @@
+// Node for an alive statement
 
-public class AliveExpr extends AliveExpr {
+public class AliveExpr extends Expr {
 
 }

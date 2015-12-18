@@ -1,4 +1,4 @@
-// interval
+// Node for an become statement
 
 public class BecomeStmt extends Stmt {
 	private String type;

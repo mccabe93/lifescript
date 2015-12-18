@@ -1,4 +1,3 @@
-// Node for an boolean expression
 
 public class BooleanExpr extends Expr {
 	private boolean value;
