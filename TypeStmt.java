@@ -1,3 +1,4 @@
+// Node for a type statement
 
 public class TypeStmt extends Stmt{
 

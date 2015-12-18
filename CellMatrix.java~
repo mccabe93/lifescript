@@ -104,8 +104,7 @@ public class CellMatrix {
 	}
 
 	// The constructor doesn't really do much except instantiate the types hashmap. 
-	public CellMatrix()
-	{
+	public CellMatrix() {
 		this.types = new HashMap<String, Cell>();
 	}
 
@@ -119,8 +118,7 @@ public class CellMatrix {
 	}
 
 	// Copies a cell node by values (workaround as Java would prefer by reference.)
-	private CellNode copyCellNode(CellNode temp)
-	{
+	private CellNode copyCellNode(CellNode temp) {
 		return new CellNode(temp.state, temp.type, temp.override);
 	}
 
@@ -134,8 +132,7 @@ public class CellMatrix {
 	}
 
 	// Fills the working matrix with the given (and hereafter saved as default) type
-	public void setDefaultType(String type)
-	{
+	public void setDefaultType(String type) {
 		if(type == null || type == "")
 			type = "DEFAULT";
 		defaultType = type;
@@ -145,25 +142,26 @@ public class CellMatrix {
 	}
 
 	// Sets the dimensions of the matrix to [x,y]
-	public void setDimensions(int[] dimensions)
-	{
+	public void setDimensions(int[] dimensions) {
 		CellNode[] prev = Matrix;
 
 		// Change the number of columns
 		if(dimensions[0] == DEFAULT)
 			dimensions[0] = matrixWidth;
-		else if(dimensions[0] == PLUSONE)
-			matrixWidth += 1;
+		else if(dimensions[0] == PLUSONE) 
+			matrixWidth += 1;	// increase columns by one; simply add a cell to each row
 		else
 			matrixWidth = dimensions[0];
 
 		// Change the number of rows
-		int matrixHeight = Matrix.length/matrixWidth;
+		int matrixHeight = 0;
+		if(Matrix != null)
+			matrixHeight = (Matrix.length+1)/matrixWidth;
 		if(dimensions[1] == DEFAULT)
-			dimensions[1] = matrixHeight; // increase rows by one; "height" increased by one
+			dimensions[1] = matrixHeight;
 		else if(dimensions[1] == PLUSONE)
-			dimensions[1] = matrixHeight + 1; // increase columns by one; simply add a cell to each row
-
+			dimensions[1] = matrixHeight + 1; // increase rows by one; "height" increased by one
+	
 		// Matrix's new length is adjusted rows*columns
 		Matrix = new CellNode[matrixWidth*dimensions[1]];
 
@@ -374,7 +372,7 @@ public class CellMatrix {
 		return Matrix[current].type;
 	}
 
-	// Adds a cell type to the list of types.
+	// Adds a cell type to the hashmap of types.
 	public void addCellType(String name, int[] neighborhood, int VAR)
 	{
 		if(!types.containsKey(name)) {

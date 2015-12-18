@@ -1,3 +1,5 @@
+// Node for a neighborhood. A neighborhood in a type statement is made of an arbitrary
+// number of these (a la a linked list.)
 
 public class NeighborhoodStmt extends Stmt {
 	private boolean isVar;	

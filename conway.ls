@@ -17,7 +17,7 @@ Properties:
 ("block", (36,7)),("block", (37,7)),("block", (36,8)),("block", (37,8))
 }
 	Default Type = "block"
-	Generations = 1026
+	Generations = 1024
 	Interval = 0.10
 	Pausable = true
 

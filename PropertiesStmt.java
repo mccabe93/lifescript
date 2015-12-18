@@ -1,3 +1,4 @@
+// Node for a properties statement
 
 public class PropertiesStmt extends Stmt {
 

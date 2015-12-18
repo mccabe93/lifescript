@@ -157,10 +157,6 @@ colorexp returns [ColorExpr ast]
 	|	'(' STRING ')'					{$ast = new ColorExpr($STRING.text);} // hex color encoding
 	;
 
-imagexp returns [ImageExpr ast]
-	:	STRING					{$ast = new ImageExpr($STRING.text);}
-	;
-
 // Mathematical / numerical expressions
 
 exp	returns [Expr ast]

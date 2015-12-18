@@ -1,7 +1,7 @@
 // interval
 
 public class CellSizeStmt extends Stmt {
-	public CellSizeStmt(Expr exp){
+	public CellSizeStmt(CoordExpr exp){
 		this.addAST(exp);
 	}	
 }

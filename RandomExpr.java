@@ -1,4 +1,4 @@
-// implementation of rhsvar expression
+// Node for a random expression
 
 public class RandomExpr extends Expr {
 

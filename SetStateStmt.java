@@ -1,3 +1,4 @@
+// Node for a state statement
 
 public class SetStateStmt extends Stmt {
 

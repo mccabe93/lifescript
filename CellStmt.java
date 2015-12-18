@@ -1,3 +1,4 @@
+// Node for a cell in the starting conditions
 
 public class CellStmt extends Stmt {
 	private String name;

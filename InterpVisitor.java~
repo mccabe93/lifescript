@@ -12,17 +12,17 @@ import java.awt.Color;
 	used to receive input from the user.
 	
 NOTE:	Some of the implementation was in SIMPLE1MULTI and has been reused. All SIMPLE1MULTI
-	code was written by Lutz Hamel. 
+	code was written by Lutz Hamel. Additionally, some of the "general functionality" was
+	written for the midterm and has not been changed.
 
-	These methods have been separated from those that were written from scratch for the 
-	lifescript language.
+	Both categories have been separated from the lifescript statements and expressions.
 ***/
 
 public class InterpVisitor {
 	// The collected GUI and simulator settings.
 	public String frameTitle = "sim";
 	public double interval = 0.5;
-	public boolean pausable = false, steppable = true;
+	public boolean pausable = true, steppable = false;
 	public int cellWidth = 6, cellHeight = 6;
 	public int generations = 3;
 	
@@ -48,6 +48,7 @@ public class InterpVisitor {
 	
 	// Our variable value memory.
 	private HashMap memory = new HashMap();
+	private SymbolTable symbolTable = new SymbolTable();
 	
 	// Get the value of the variable
 	private Scanner consoleInput = new Scanner(System.in);
@@ -66,7 +67,7 @@ public class InterpVisitor {
 		else if (ast.getClass() == WhileStmt.class)		return interp((WhileStmt)ast);
 		else if (ast.getClass() == StmtList.class)		return interp((StmtList)ast);
 
-		// Lifescript specific statements
+		// lifescript statements
 		else if (ast.getClass() == CreateStmt.class)		return interp((CreateStmt)ast);
 		else if (ast.getClass() == KillStmt.class)		return interp((KillStmt)ast);
 		else if (ast.getClass() == AliveStmt.class)		return interp((AliveStmt)ast);
@@ -89,11 +90,12 @@ public class InterpVisitor {
 		else if (ast.getClass() == SetColorStmt.class)		return interp((SetColorStmt)ast);
 		else if (ast.getClass() == StateColorStmt.class)	return interp((StateColorStmt)ast);
 		else if (ast.getClass() == SetStateStmt.class)		return interp((SetStateStmt)ast);
+		else if (ast.getClass() == BecomeStmt.class)		return interp((BecomeStmt)ast);
 
 		else if (ast.getClass() == TypeStmt.class)		return interp((TypeStmt)ast);
 		else if (ast.getClass() == WorldStmt.class)		return interp((WorldStmt)ast);
 
-		// Lifescript specific expressions
+		// lifescript expressions
 		else if (ast.getClass() == CellCheckExpr.class)		return interp((CellCheckExpr)ast);
 		else if (ast.getClass() == NeighborsExpr.class)		return interp((NeighborsExpr)ast);
 
@@ -116,101 +118,51 @@ public class InterpVisitor {
 		    return null;
 		}
 	}
+
+	/*** lifescript Statements ***/
 	
-	// Methods for getting various arrays/objects
-	public ArrayList<AST> getTypeStmts(){
-		return typeStmts;
-	}
-
-	public ArrayList<AST> getTypeStmts(){
-		return typeStmts;
-	}
-
-	public ArrayList<AST> getWorldStmts(){
-		return worldStmts;
-	}
-
-	public CellMatrix getCellMatrix(){
-		return cellMatrix;
-	}
-	
+	// Creates cell of given type at (optional) given coordinate
 	private Double interp(CreateStmt ast) {
 		cellMatrix.create(dequote(ast.type()), decodeCoord(this.dispatch(ast.getAST(0))));
 		return null;	
 	}
+
+	// Kills cell of given type at (optional) given coordinate
 	private Double interp(KillStmt ast) {
 		cellMatrix.kill(dequote(ast.type()), decodeCoord(this.dispatch(ast.getAST(0))));
 		return null;
 	}
+
+	// Associate a state with a color in given cell type
 	private Double interp(StateColorStmt ast) {
 		cellMatrix.setStateColor(this.dispatch(ast.getAST(0)).intValue(), decodeColor(this.dispatch(ast.getAST(1))));
 		return null;	
 	}
+
+	// Set the state of current or given cell (by coordinate) to given state value
 	private Double interp(SetStateStmt ast) {
 		if(ast.size() == 1)
-			cellMatrix.setState(this.dispatch(ast.getAST(0)).intValue());
+			cellMatrix.state(this.dispatch(ast.getAST(0)).intValue());
 		else
-			cellMatrix.setState(decodeCoord(this.dispatch(ast.getAST(0))), this.dispatch(ast.getAST(1)).intValue());
-		return null;	
-	}
-
-	private Double interp(DimensionsStmt ast)
-	{
-		Double x = this.dispatch(ast.getAST(0).getAST(0)), y = this.dispatch(ast.getAST(0).getAST(1));
-		
-		cellMatrix.setDimensions(new int[]{x.intValue(), y.intValue()});
-		return null;
-	}
-	
-	private Double interp(GenerationsStmt ast) {
-		this.generations = this.dispatch(ast.getAST(0)).intValue();
+			cellMatrix.state(decodeCoord(this.dispatch(ast.getAST(0))), this.dispatch(ast.getAST(1)).intValue());
 		return null;	
 	}
 	
+	// Adds one row to the matrix (row count+=1)
 	private Double interp(AddRowStmt ast) {
 		cellMatrix.setDimensions(new int[]{cellMatrix.DEFAULT, cellMatrix.PLUSONE});
 		return null;	
 	}
 
+	// Adds one column to the matrix (row width+=1)
 	private Double interp(AddColumnStmt ast) {
 		cellMatrix.setDimensions(new int[]{cellMatrix.PLUSONE, cellMatrix.DEFAULT});
 		return null;
 	}
-	
-	private Double interp(IntervalStmt ast)
-	{
-		interval = this.dispatch(ast.getAST(0));
-		return null;
-	}
 
-	private Double interp(PausableStmt ast)
-	{
-		pausable = this.dispatch(ast.getAST(0)) == 1 ? true : false;
-		return null;
-	}
-
-	private Double interp(SteppableStmt ast)
-	{
-		steppable = this.dispatch(ast.getAST(0)) == 1 ? true : false;
-		return null;
-	}
-
-	private Double interp(PropertiesStmt ast) {
-		cellMatrix = new CellMatrix();
-		this.dispatch(ast.getAST(0));
-		frameTitle = dequote(ast.title());
-		int[] coords = new int[startConditionCoords.size()];
-		for(int h = 0; h < coords.length; h++)
-			coords[h] = startConditionCoords.get(h);
-		String[] types = new String[startConditionTypes.size()];
-		for(int k = 0; k < types.length; k++)
-			types[k] = startConditionTypes.get(k);
-		int[] dims = cellMatrix.getDimensions();
-		cellMatrix.setDefaultType(dequote(ast.defaultType()));
-		cellMatrix.setStartConditions(coords, types);
-		return null;	
-	}
-
+	// On the first run (saveStmts == true) the neighborhood data will be saved, this 
+	// AST node will be saved, and the logic executed. 
+	// From then on (saveStmsts == false), only the logic will be executed.
 	private Double interp(TypeStmt ast) {
 		if(!saveStmts && !ast.type().equals(cellMatrix.currentType())) return null;
 		if(saveStmts) {
@@ -227,12 +179,14 @@ public class InterpVisitor {
 				if(neighborhood[i] == -17)
 					var = i;
 			}
-			cellMatrix.addCellType(ast.type(), neighborhood, var);// this.dispatch(ast.getAST(0)).intValue());
+			cellMatrix.addCellType(ast.type(), neighborhood, var);
 			currentNeighborhood = new ArrayList<Integer>();
 		}
 		return null;	
 	}
 
+	// Cell in the starting conditions. This is basically one element in the array of
+	// starting condition values -- e.g ("block",(20,16))
 	private Double interp(CellStmt ast) {
 		// Legacy way of getting coordinates - simply get the x,y AST node values through dispatch.
 		Double x = this.dispatch(ast.getAST(0).getAST(0)), y = this.dispatch(ast.getAST(0).getAST(1));
@@ -242,34 +196,26 @@ public class InterpVisitor {
 		return null;
 	}
 
+	// A become statement is just a cooler name for setType.
 	private Double interp(BecomeStmt ast) {
 		cellMatrix.setType(dequote(ast.type()));
 		return null;
 	}
 
+	// Sets the current cell alive
 	private Double interp(AliveStmt ast) {
 		cellMatrix.state(cellMatrix.ALIVE);
 		return null;	
 	}
+
+	// Kills the current cell
 	private Double interp(DeadStmt ast) {
 		cellMatrix.state(cellMatrix.DEAD);
 		return null;	
 	}
 
-	private Double interp(NeighborsExpr ast) {
-		// We're calling from inside a Type		
-		if(ast.size() == 0) 
-			return new Double(cellMatrix.neighborValues(dequote(ast.type())));
-		// otherwise we're calling from somewhere else and process a coord
-		return new Double(cellMatrix.neighborValues(decodeCoord(this.dispatch(ast.getAST(0))), dequote(ast.type())));
-	}
-
-	private Double interp(GetStateExpr ast) {
-		if(ast.size() == 0)
-			return new Double(cellMatrix.getState());
-		return new Double(cellMatrix.getState(decodeCoord(this.dispatch(ast.getAST(0)))));
-	}
-
+	// Cell neighborhood node. The VAR in a neighborhood gets the arbitrary
+	// but distinct value -17 to signal that it is the VAR of the neighborhood.
 	private Double interp(NeighborhoodStmt ast) {
 		if(!ast.isVar())
 			currentNeighborhood.add(this.dispatch(ast.getAST(0)).intValue());
@@ -277,44 +223,8 @@ public class InterpVisitor {
 			currentNeighborhood.add(-17);
 		return null;	
 	}
-
-	public void newGeneration() {
-		cellMatrix.newGeneration();
-	}	
-
-	private Double interp(CoordExpr ast) {
-		String coord = "1" + thousandString(this.dispatch(ast.getAST(1)).intValue());
-		coord += thousandString(this.dispatch(ast.getAST(0)).intValue());
-		return Double.parseDouble(coord);
-	}
-
-	private String thousandString(int val) {
-		String ts = "";
-		if(val < 1000)
-			ts += "0";
-		return (ts + hundredString(val));
-	}
-
-	private String hundredString(int val) {
-		String ts = "";
-		if(val < 100)
-			ts += "0";
-		if(val < 10)
-			ts += "0";
-		return (ts + val);
-	}
-
-	private Double interp(CellSizeStmt ast) {
-		int[] dims = decodeCoord(this.dispatch(ast.getAST(0)));
-		this.cellWidth = dims[0];
-		this.cellHeight = dims[1];
-		return null;
-	}
-
-	private Double interp(BooleanExpr ast) {
-		return ast.value() == true ? 1.0 : 0.0;	
-	}
 	
+	// Overrides the color of the cell at the given coordinate.
 	private Double interp(SetColorStmt ast) {
 		int[] color, coord;
 		if(ast.size() == 2) {
@@ -327,14 +237,213 @@ public class InterpVisitor {
 		return null;
 	}
 
+	// A world statement is just a block of logic that will be ran each generation.
 	private Double interp(WorldStmt ast) {
 		if(saveStmts)
 			worldStmts.add(ast);
-		for (int i = 0; i < ast.size(); i++) {
+		for (int i = 0; i < ast.size(); i++)
 			this.dispatch(ast.getAST(i));
-		}
 		return null;	
 	}
+
+	/* Properties Statements: Following statements are used only in getting properties. */ 
+	
+	// The actual Properties statement, loops through all of its children and snags some values
+	// for later use
+	private Double interp(PropertiesStmt ast) {
+		cellMatrix = new CellMatrix();
+		this.dispatch(ast.getAST(0));
+		frameTitle = dequote(ast.title());
+		int[] coords = new int[startConditionCoords.size()];
+		for(int h = 0; h < coords.length; h++)
+			coords[h] = startConditionCoords.get(h);
+		String[] types = new String[startConditionTypes.size()];
+		for(int k = 0; k < types.length; k++)
+			types[k] = startConditionTypes.get(k);
+		int[] dims = cellMatrix.getDimensions();
+		cellMatrix.setDefaultType(dequote(ast.defaultType()));
+		cellMatrix.setStartConditions(coords, types);
+		return null;	
+	}
+	
+	// Dimensions of the window -- Uses old way of reading a CoordExpr
+	private Double interp(DimensionsStmt ast) {
+		Double x = this.dispatch(ast.getAST(0).getAST(0)), y = this.dispatch(ast.getAST(0).getAST(1));
+		System.out.println("x = " + x.intValue() + " y = " + y.intValue());
+		cellMatrix.setDimensions(new int[]{x.intValue(), y.intValue()});
+		return null;
+	}
+	
+	// Number of generations to simulate
+	private Double interp(GenerationsStmt ast) {
+		this.generations = this.dispatch(ast.getAST(0)).intValue();
+		return null;	
+	}
+	
+	// Time interval between generations
+	private Double interp(IntervalStmt ast) {
+		interval = this.dispatch(ast.getAST(0));
+		return null;
+	}
+
+	// Whether the simulation can be paused (with spacebar)
+	private Double interp(PausableStmt ast) {
+		pausable = this.dispatch(ast.getAST(0)) == 1 ? true : false;
+		return null;
+	}
+
+	// Whether the simulation must be unpaused (with spacebar) each generation
+	// i.e You step through the sim generation by generation.
+	private Double interp(SteppableStmt ast) {
+		steppable = this.dispatch(ast.getAST(0)) == 1 ? true : false;
+		return null;
+	}
+
+	// Sets the size of the cells that are drawn in pixels.
+	private Double interp(CellSizeStmt ast) {
+		int[] dims = decodeCoord(this.dispatch(ast.getAST(0)));
+		this.cellWidth = dims[0];
+		this.cellHeight = dims[1];
+		return null;
+	}
+
+	/*** lifescript Expressions ***/
+
+	// Returns the value of the neighborhood of the current or given (by coordinate) cell
+	private Double interp(NeighborsExpr ast) {
+		// We're calling from inside a Type		
+		if(ast.size() == 0) 
+			return new Double(cellMatrix.neighborValues(dequote(ast.type())));
+		// otherwise we're calling from somewhere else and process a coord
+		return new Double(cellMatrix.neighborValues(decodeCoord(this.dispatch(ast.getAST(0))), dequote(ast.type())));
+	}
+
+	// A coordinate in the matrix. Encodes its [x,y] inputs to a single Double of formate 1xxxxyyyy
+	// for later interpretation.
+	private Double interp(CoordExpr ast) {
+		String coord = "1" + thousandString(this.dispatch(ast.getAST(1)).intValue());
+		coord += thousandString(this.dispatch(ast.getAST(0)).intValue());
+		return Double.parseDouble(coord);
+	}
+
+	// Returns the state of the current or given (by coordinate) cell
+	private Double interp(GetStateExpr ast) {
+		if(ast.size() == 0)
+			return new Double(cellMatrix.getState());
+		return new Double(cellMatrix.getState(decodeCoord(this.dispatch(ast.getAST(0)))));
+	}
+
+	// A boolean... 1.0 = true, 0.0 = false
+	private Double interp(BooleanExpr ast) {
+		return ast.value() == true ? 1.0 : 0.0;	
+	}
+
+	// Creates a color.  Encodes its [r,g,b] or hex inputs to a single Double of format 1rrrgggbbb 
+	// NOT usable in assignment statement!
+	private Double interp(ColorExpr ast) {
+		String encode = "1";
+		// if our color isn't already in hex, we convert it		
+		if(ast.hex() != null) {
+			Color c = Color.decode(ast.hex());
+			encode += hundredString((int)(c.getRed()));
+			encode += hundredString((int)(c.getGreen()));
+			encode += hundredString((int)(c.getBlue()));
+		} else {
+			encode += hundredString(this.dispatch(ast.getAST(0)).intValue());
+			encode += hundredString(this.dispatch(ast.getAST(1)).intValue());
+			encode += hundredString(this.dispatch(ast.getAST(2)).intValue());
+		}
+		return Double.parseDouble(encode);
+	}
+
+	// Generates a random double between given bounds.
+	public Double interp(RandomExpr ast) {
+		Random r = new Random();
+		double lowerBound = this.dispatch(ast.getAST(0)),
+			upperBound = this.dispatch(ast.getAST(1));
+		return (upperBound - lowerBound) * r.nextDouble() + lowerBound;
+	}
+
+	// Checks if the cell at [x,y] is of given type (see CellMatrix for more info)
+	private Double interp(CellCheckExpr ast) {
+		return cellMatrix.cellCheck(dequote(ast.type()), decodeCoord(this.dispatch(ast.getAST(0))), ast.relative()) ? 1.0 : 0.0;
+	}
+	
+	// Returns whether the current cell is alive (1.0 or true) or dead (0.0 or false)
+	private Double interp(AliveExpr ast) {
+		return cellMatrix.getState() == 1 ? 1.0 : 0.0;
+	}
+	
+	/*** lifescript helper methods and getters ***/
+
+	// Removes the quotations from given strings in the language
+	private String dequote(String val) {	
+		if(val == null) return null;
+		int len = val.length();
+		// if there are 2 characters, then there are only quotes => empty string
+		if(len < 3)
+			return "";
+		return val.substring(1,len-1);
+	}
+
+	// Double->String->int array decoding. 
+	// Converts Double 1xxxxyyyy to a string, substrings 1-5 (xxxx) and 5-9 (yyyy)
+	// Converts both substrings to integers.
+	private int[] decodeCoord(Double val) {
+		String d = Integer.toString(val.intValue());
+		return new int[]{Integer.parseInt(d.substring(1,5)), Integer.parseInt(d.substring(5,9))};
+	}
+	
+	// Same idea as decodeCoord except with Double 1rrrgggbbb
+	private int[] decodeColor(Double val) {
+		String d = Integer.toString(val.intValue());
+		return new int[]{Integer.parseInt(d.substring(1,4)), Integer.parseInt(d.substring(4,7)), Integer.parseInt(d.substring(7,10))};
+	}
+
+	// Used in generating encoded coordinates. Adds leading zeroes. 2 becomes 0002
+	private String thousandString(int val) {
+		String ts = "";
+		if(val < 1000)
+			ts += "0";
+		return (ts + hundredString(val));
+	}
+
+	// Used in generating encoded colors. Adds leading zeroes. 2 becomes 002.
+	private String hundredString(int val) {
+		String ts = "";
+		if(val < 100)
+			ts += "0";
+		if(val < 10)
+			ts += "0";
+		return (ts + val);
+	}
+
+	// Proxy method for Simulator, just calls nextCell in cellMatrix
+	public void nextCell() {
+		cellMatrix.nextCell();
+	}
+	
+	// Proxy method for Simulator, just calls newGeneration in cellMatrix
+	public void newGeneration() {
+		cellMatrix.newGeneration();
+	}	
+
+	// Returns all type statements in the source file
+	public ArrayList<AST> getTypeStmts() {
+		return typeStmts;
+	}
+
+	// Returns all world statements in the source file
+	public ArrayList<AST> getWorldStmts() {
+		return worldStmts;
+	}
+
+	// Returns a reference to the current CellMatrix
+	public CellMatrix getCellMatrix() {
+		return cellMatrix;
+	}
+
+	/*** General functionality (same code as on the midterm) ***/
 
 	private Double interp(ForStmt ast) {
 		// First we check if the variable given at the start is the same as the one
@@ -363,14 +472,15 @@ public class InterpVisitor {
 	private Double interp(InputStmt ast) {
 		// Print out the prompt
 		System.out.print(dequote(ast.prompt()));
-		int value = consoleInput.nextInt();
+		Double value = new Double(consoleInput.nextInt());
 		// and assign it in the hashmap
-		memory.put(ast.var(),value);
+		symbolTable.declareVariable(ast.var(),value);
+//		memory.put(ast.var(),value);
 		return null;
 	}
 
+	// The End statement just calls System.exit()
 	private Double interp(EndStmt ast) {
-		// The End statement just calls System.exit()
 		System.exit(1);
 		return null;
 	}
@@ -393,62 +503,6 @@ public class InterpVisitor {
 		return null;
 	}
 
-	private Double interp(ColorExpr ast) {
-		String encode = "1";
-		// if our color isn't already in hex, we convert it		
-		if(ast.hex() != null) {
-			Color c = Color.decode(ast.hex());
-			encode += hundredString((int)(c.getRed()));
-			encode += hundredString((int)(c.getGreen()));
-			encode += hundredString((int)(c.getBlue()));
-		} else {
-			encode += hundredString(this.dispatch(ast.getAST(0)).intValue());
-			encode += hundredString(this.dispatch(ast.getAST(1)).intValue());
-			encode += hundredString(this.dispatch(ast.getAST(2)).intValue());
-		}
-		return Double.parseDouble(encode);
-	}
-
-	public Double interp(RandomExpr ast) {
-		Random r = new Random();
-		double lowerBound = this.dispatch(ast.getAST(0)),
-			upperBound = this.dispatch(ast.getAST(1));
-		return (upperBound - lowerBound) * r.nextDouble() + lowerBound;
-	}
-
-	private Double interp(CellCheckExpr ast) {
-		return cellMatrix.cellCheck(dequote(ast.type()), decodeCoord(this.dispatch(ast.getAST(0))), ast.relative()) ? 1.0 : 0.0;
-	}
-
-	private Double interp(AliveExpr ast) {
-		return cellMatrix.alive() ? 1.0 : 0.0;
-	}
-
-	// Helper method that simply removes the quotations from given strings in the language
-	private String dequote(String val)
-	{	
-		if(val == null) return null;
-		int len = val.length();
-		// if there are 2 characters, then there are only quotes => empty string
-		if(len < 3)
-			return "";
-		return val.substring(1,len-1);
-	}
-
-	private int[] decodeCoord(Double val) {
-		String d = Integer.toString(val.intValue());
-		return new int[]{Integer.parseInt(d.substring(1,5)), Integer.parseInt(d.substring(5,9))};
-	}
-
-	public void nextCell() {
-		cellMatrix.nextCell();
-	}
-
-	private int[] decodeColor(Double val) {
-		String d = Integer.toString(val.intValue());
-		return new int[]{Integer.parseInt(d.substring(1,4)), Integer.parseInt(d.substring(4,7)), Integer.parseInt(d.substring(7,10))};
-	}
-
 /*** 
 
 
@@ -463,7 +517,11 @@ public class InterpVisitor {
 		// evaluate the expression
 		Double value = this.dispatch(ast.getAST(0));
 		// assign the value to the lhs var
-		memory.put(ast.lhsVar(),value);
+		try{
+			symbolTable.updateVariable(ast.lhsVar(),value);
+		}catch(Exception e) {
+			symbolTable.declareVariable(ast.lhsVar(),value);
+//		memory.put(ast.lhsVar(),value);
 
 		// statements do not have return values -- null
 		return null;
@@ -471,10 +529,12 @@ public class InterpVisitor {
 
 	// block statements
 	private Double interp(BlockStmt ast) {
+		symbolTable.pushScope();
 		// interpret each of the statements in the block
 		for (int i = 0; i < ast.size(); i++) {
 		    this.dispatch(ast.getAST(i));
 		}
+		symbolTable.popScope();
 
 		// statements do not have return values -- null
 		return null;
@@ -581,7 +641,7 @@ public class InterpVisitor {
 	// rhs variable expressions
 	private Double interp(VarExpr ast) {
 		// fetch the variable value from memory
-		Double v = (Double)memory.get(ast.rhsVar());
+		Double v = symbolTable.lookupVariable(ast.rhsVar());
 
 		// if not there, return 0.0
 		if (v == null) 

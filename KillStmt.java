@@ -1,6 +1,6 @@
+// Node for a kill statement
 
 public class KillStmt extends Stmt {
-	// the text to be written to console, if any
 	private String type;
 
 	public KillStmt(String type, CoordExpr coords)

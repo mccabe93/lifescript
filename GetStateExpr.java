@@ -1,4 +1,4 @@
-// Negative (inverse) expression
+// Node for a state statement
 
 public class GetStateExpr extends Expr {
 

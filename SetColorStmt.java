@@ -1,3 +1,4 @@
+// Node for a setcolor statement
 
 public class SetColorStmt extends Stmt{	
 

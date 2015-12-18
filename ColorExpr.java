@@ -1,4 +1,4 @@
-// implementation of rhsvar expression
+// Node for a color expression
 
 public class ColorExpr extends AST {
 

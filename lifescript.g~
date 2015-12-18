@@ -99,6 +99,9 @@ stmt	returns [Stmt ast]
 	|	'dead'
 		{$ast = new DeadStmt();}
 
+	|	'become' STRING
+		{$ast = new BecomeStmt($STRING.text);}
+
 	|	'setstate' ('of' coordexp)? 'to' exp
 		{$ast = new SetStateStmt($coordexp.ast, $exp.ast);}
 

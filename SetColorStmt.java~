@@ -2,7 +2,8 @@
 public class SetColorStmt extends Stmt{	
 
 	public SetColorStmt(CoordExpr loc, ColorExpr color) {
-		this.addAST(loc);
+		if(loc != null)
+			this.addAST(loc);
 		this.addAST(color);
 	}
 	

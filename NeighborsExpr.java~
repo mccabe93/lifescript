@@ -1,9 +1,10 @@
+// Node for a kill statement
+
 public class NeighborsExpr extends Expr {
 	private String type;
 
 	public NeighborsExpr(CoordExpr coords, String type)
 	{
-		System.out.println("neighborsexpr");
 		if(coords != null)
 			this.addAST(coords);
 		this.type = type;

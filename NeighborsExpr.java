@@ -1,3 +1,5 @@
+// Node for a neighbors statement
+
 public class NeighborsExpr extends Expr {
 	private String type;
 

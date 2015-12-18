@@ -5,8 +5,8 @@ public class PropertiesStmt extends Stmt {
 
 	public PropertiesStmt(String title, String defaultType, BlockStmt properties)
 	{
-		this.title = "sim";
-		this.defaultType = "block";
+		this.title = title;
+		this.defaultType = defaultType;
 		this.addAST(properties);
 	}
 

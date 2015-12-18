@@ -1,6 +1,6 @@
 // implementation of rhsvar expression
 
-public class RandomExpr extends AST {
+public class RandomExpr extends Expr {
 
     public RandomExpr(Expr lowerBound, Expr upperBound) {
 	this.addAST(lowerBound);
