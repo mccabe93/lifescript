@@ -1,4 +1,4 @@
 
-public class AliveStmt extends Stmt {
+public class AddRowStmt extends Stmt {
 
 }

@@ -1,3 +1,4 @@
+// Node for a cell or neighbor expression
 
 public class CellCheckExpr extends Expr {
 

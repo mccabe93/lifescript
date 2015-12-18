@@ -1,7 +1,11 @@
 // interval
 
-public class SteppableStmt extends Stmt {
-	public SteppableStmt(Expr exp){
-		this.addAST(exp);
+public class BecomeStmt extends Stmt {
+	private String type;
+	public BecomeStmt(String type){
+		this.type = type;
 	}	
+	public String type() {
+		return type;
+	}
 }
