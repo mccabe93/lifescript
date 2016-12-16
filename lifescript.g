@@ -86,10 +86,9 @@ stmt	returns [Stmt ast]
 		{$ast = new IfStmt($e1.ast, ifBlock, elseBlock);}
 	
 	// The same BlockStmt logic is applied again, coupled with an expression to test in the while loop
-	|	'while' exp {BlockStmt whileBlock = new BlockStmt();}
+	|	'while' exp 'do' {BlockStmt whileBlock = new BlockStmt();}
 			(s=stmt {whileBlock.addAST($s.ast);})+  'endwhile'	
 			{$ast = new WhileStmt($exp.ast,whileBlock);}
-		'endwhile'
 	
 	// The for loop includes the BlockStmt logic, along with grabbing quite a few other values
 	|	'for' v3=ID '=' start2=exp 'to' lim=exp ('step' step=exp)? 

@@ -1,4 +1,4 @@
-// $ANTLR 3.5 lifescript.g 2016-12-15 22:33:33
+// $ANTLR 3.5 lifescript.g 2016-12-15 23:23:07
 
 import java.util.HashMap;
 import java.util.Map;
@@ -201,7 +201,7 @@ public class lifescriptParser extends Parser {
 
 
 	// $ANTLR start "stmt"
-	// lifescript.g:38:1: stmt returns [Stmt ast] : ( ID '=' exp | 'input' ( STRING ',' )? ID | 'def' f0= ID '(' ')' ':' (s= stmt )+ 'enddef' | 'def' f1= ID '(' l= formalParamList ')' ':' (s= stmt )+ 'enddef' | ID '(' ')' | ID '(' l= actualParamList ')' | 'return' exp | 'return' | 'print' (v1= value |text1= STRING ) ( ',' (v2= value |text2= STRING ) )* | 'end' | 'if' e1= exp 'then' (s= stmt )+ ( 'else' (s2= stmt )+ )? 'endif' | 'while' exp (s= stmt )+ 'endwhile' 'endwhile' | 'for' v3= ID '=' start2= exp 'to' lim= exp ( 'step' step= exp )? (s= stmt )+ 'next' v4= ID | 'type' v4= ID ':' ( 'Neighborhood' '[' neighWidth= exp ']' '=' '{' (neigh1= exp ',' )* 'VAR' ( ',' neigh2= exp )* '}' ) (s= stmt )+ 'endtype' | 'alive' | 'dead' | 'become' STRING | 'setstate' ( 'of' coordexp )? 'to' exp | 'statecolor' exp 'is' colorexp | 'create' STRING 'at' coordexp | 'kill' ( STRING )? 'at' coordexp | 'addrow' | 'addcolumn' | 'setcolor' ( 'at' coordexp )? 'to' colorexp | 'world' ':' (s= stmt )+ 'endworld' | 'Properties' ':' ( 'Title' '=' title= STRING )? ( 'Cell Size' '=' cs= coordexp )? ( 'Dimensions' '=' dims= coordexp )? ( 'Wraparound' '=' wrap= exp )? ( 'Start' '=' '{' '(' celltype= STRING ',' cellcoords= coordexp ')' ( ',' '(' celltype= STRING ',' cellcoords= coordexp ')' )* '}' )? ( 'Default Type' '=' dt= STRING )? ( 'Generations' '=' gens= exp )? ( 'Interval' '=' intervals= exp )? ( 'Pausable' '=' pause= exp )? ( 'Steppable' '=' sb= exp )? );
+	// lifescript.g:38:1: stmt returns [Stmt ast] : ( ID '=' exp | 'input' ( STRING ',' )? ID | 'def' f0= ID '(' ')' ':' (s= stmt )+ 'enddef' | 'def' f1= ID '(' l= formalParamList ')' ':' (s= stmt )+ 'enddef' | ID '(' ')' | ID '(' l= actualParamList ')' | 'return' exp | 'return' | 'print' (v1= value |text1= STRING ) ( ',' (v2= value |text2= STRING ) )* | 'end' | 'if' e1= exp 'then' (s= stmt )+ ( 'else' (s2= stmt )+ )? 'endif' | 'while' exp (s= stmt )+ 'endwhile' | 'for' v3= ID '=' start2= exp 'to' lim= exp ( 'step' step= exp )? (s= stmt )+ 'next' v4= ID | 'type' v4= ID ':' ( 'Neighborhood' '[' neighWidth= exp ']' '=' '{' (neigh1= exp ',' )* 'VAR' ( ',' neigh2= exp )* '}' ) (s= stmt )+ 'endtype' | 'alive' | 'dead' | 'become' STRING | 'setstate' ( 'of' coordexp )? 'to' exp | 'statecolor' exp 'is' colorexp | 'create' STRING 'at' coordexp | 'kill' ( STRING )? 'at' coordexp | 'addrow' | 'addcolumn' | 'setcolor' ( 'at' coordexp )? 'to' colorexp | 'world' ':' (s= stmt )+ 'endworld' | 'Properties' ':' ( 'Title' '=' title= STRING )? ( 'Cell Size' '=' cs= coordexp )? ( 'Dimensions' '=' dims= coordexp )? ( 'Wraparound' '=' wrap= exp )? ( 'Start' '=' '{' '(' celltype= STRING ',' cellcoords= coordexp ')' ( ',' '(' celltype= STRING ',' cellcoords= coordexp ')' )* '}' )? ( 'Default Type' '=' dt= STRING )? ( 'Generations' '=' gens= exp )? ( 'Interval' '=' intervals= exp )? ( 'Pausable' '=' pause= exp )? ( 'Steppable' '=' sb= exp )? );
 	public final Stmt stmt() throws RecognitionException {
 		Stmt ast = null;
 
@@ -256,7 +256,7 @@ public class lifescriptParser extends Parser {
 		ColorExpr colorexp20 =null;
 
 		try {
-			// lifescript.g:39:2: ( ID '=' exp | 'input' ( STRING ',' )? ID | 'def' f0= ID '(' ')' ':' (s= stmt )+ 'enddef' | 'def' f1= ID '(' l= formalParamList ')' ':' (s= stmt )+ 'enddef' | ID '(' ')' | ID '(' l= actualParamList ')' | 'return' exp | 'return' | 'print' (v1= value |text1= STRING ) ( ',' (v2= value |text2= STRING ) )* | 'end' | 'if' e1= exp 'then' (s= stmt )+ ( 'else' (s2= stmt )+ )? 'endif' | 'while' exp (s= stmt )+ 'endwhile' 'endwhile' | 'for' v3= ID '=' start2= exp 'to' lim= exp ( 'step' step= exp )? (s= stmt )+ 'next' v4= ID | 'type' v4= ID ':' ( 'Neighborhood' '[' neighWidth= exp ']' '=' '{' (neigh1= exp ',' )* 'VAR' ( ',' neigh2= exp )* '}' ) (s= stmt )+ 'endtype' | 'alive' | 'dead' | 'become' STRING | 'setstate' ( 'of' coordexp )? 'to' exp | 'statecolor' exp 'is' colorexp | 'create' STRING 'at' coordexp | 'kill' ( STRING )? 'at' coordexp | 'addrow' | 'addcolumn' | 'setcolor' ( 'at' coordexp )? 'to' colorexp | 'world' ':' (s= stmt )+ 'endworld' | 'Properties' ':' ( 'Title' '=' title= STRING )? ( 'Cell Size' '=' cs= coordexp )? ( 'Dimensions' '=' dims= coordexp )? ( 'Wraparound' '=' wrap= exp )? ( 'Start' '=' '{' '(' celltype= STRING ',' cellcoords= coordexp ')' ( ',' '(' celltype= STRING ',' cellcoords= coordexp ')' )* '}' )? ( 'Default Type' '=' dt= STRING )? ( 'Generations' '=' gens= exp )? ( 'Interval' '=' intervals= exp )? ( 'Pausable' '=' pause= exp )? ( 'Steppable' '=' sb= exp )? )
+			// lifescript.g:39:2: ( ID '=' exp | 'input' ( STRING ',' )? ID | 'def' f0= ID '(' ')' ':' (s= stmt )+ 'enddef' | 'def' f1= ID '(' l= formalParamList ')' ':' (s= stmt )+ 'enddef' | ID '(' ')' | ID '(' l= actualParamList ')' | 'return' exp | 'return' | 'print' (v1= value |text1= STRING ) ( ',' (v2= value |text2= STRING ) )* | 'end' | 'if' e1= exp 'then' (s= stmt )+ ( 'else' (s2= stmt )+ )? 'endif' | 'while' exp (s= stmt )+ 'endwhile' | 'for' v3= ID '=' start2= exp 'to' lim= exp ( 'step' step= exp )? (s= stmt )+ 'next' v4= ID | 'type' v4= ID ':' ( 'Neighborhood' '[' neighWidth= exp ']' '=' '{' (neigh1= exp ',' )* 'VAR' ( ',' neigh2= exp )* '}' ) (s= stmt )+ 'endtype' | 'alive' | 'dead' | 'become' STRING | 'setstate' ( 'of' coordexp )? 'to' exp | 'statecolor' exp 'is' colorexp | 'create' STRING 'at' coordexp | 'kill' ( STRING )? 'at' coordexp | 'addrow' | 'addcolumn' | 'setcolor' ( 'at' coordexp )? 'to' colorexp | 'world' ':' (s= stmt )+ 'endworld' | 'Properties' ':' ( 'Title' '=' title= STRING )? ( 'Cell Size' '=' cs= coordexp )? ( 'Dimensions' '=' dims= coordexp )? ( 'Wraparound' '=' wrap= exp )? ( 'Start' '=' '{' '(' celltype= STRING ',' cellcoords= coordexp ')' ( ',' '(' celltype= STRING ',' cellcoords= coordexp ')' )* '}' )? ( 'Default Type' '=' dt= STRING )? ( 'Generations' '=' gens= exp )? ( 'Interval' '=' intervals= exp )? ( 'Pausable' '=' pause= exp )? ( 'Steppable' '=' sb= exp )? )
 			int alt32=26;
 			switch ( input.LA(1) ) {
 			case ID:
@@ -930,7 +930,7 @@ public class lifescriptParser extends Parser {
 					}
 					break;
 				case 12 :
-					// lifescript.g:89:4: 'while' exp (s= stmt )+ 'endwhile' 'endwhile'
+					// lifescript.g:89:4: 'while' exp (s= stmt )+ 'endwhile'
 					{
 					match(input,82,FOLLOW_82_in_stmt430); 
 					pushFollow(FOLLOW_exp_in_stmt432);
@@ -970,25 +970,24 @@ public class lifescriptParser extends Parser {
 
 					match(input,59,FOLLOW_59_in_stmt449); 
 					ast = new WhileStmt(exp9,whileBlock);
-					match(input,59,FOLLOW_59_in_stmt459); 
 					}
 					break;
 				case 13 :
-					// lifescript.g:95:4: 'for' v3= ID '=' start2= exp 'to' lim= exp ( 'step' step= exp )? (s= stmt )+ 'next' v4= ID
+					// lifescript.g:94:4: 'for' v3= ID '=' start2= exp 'to' lim= exp ( 'step' step= exp )? (s= stmt )+ 'next' v4= ID
 					{
-					match(input,61,FOLLOW_61_in_stmt468); 
-					v3=(Token)match(input,ID,FOLLOW_ID_in_stmt472); 
-					match(input,25,FOLLOW_25_in_stmt474); 
-					pushFollow(FOLLOW_exp_in_stmt478);
+					match(input,61,FOLLOW_61_in_stmt464); 
+					v3=(Token)match(input,ID,FOLLOW_ID_in_stmt468); 
+					match(input,25,FOLLOW_25_in_stmt470); 
+					pushFollow(FOLLOW_exp_in_stmt474);
 					start2=exp();
 					state._fsp--;
 
-					match(input,80,FOLLOW_80_in_stmt480); 
-					pushFollow(FOLLOW_exp_in_stmt484);
+					match(input,80,FOLLOW_80_in_stmt476); 
+					pushFollow(FOLLOW_exp_in_stmt480);
 					lim=exp();
 					state._fsp--;
 
-					// lifescript.g:95:44: ( 'step' step= exp )?
+					// lifescript.g:94:44: ( 'step' step= exp )?
 					int alt12=2;
 					int LA12_0 = input.LA(1);
 					if ( (LA12_0==77) ) {
@@ -996,10 +995,10 @@ public class lifescriptParser extends Parser {
 					}
 					switch (alt12) {
 						case 1 :
-							// lifescript.g:95:45: 'step' step= exp
+							// lifescript.g:94:45: 'step' step= exp
 							{
-							match(input,77,FOLLOW_77_in_stmt487); 
-							pushFollow(FOLLOW_exp_in_stmt491);
+							match(input,77,FOLLOW_77_in_stmt483); 
+							pushFollow(FOLLOW_exp_in_stmt487);
 							step=exp();
 							state._fsp--;
 
@@ -1009,7 +1008,7 @@ public class lifescriptParser extends Parser {
 					}
 
 					BlockStmt forBlock = new BlockStmt();
-					// lifescript.g:97:8: (s= stmt )+
+					// lifescript.g:96:8: (s= stmt )+
 					int cnt13=0;
 					loop13:
 					while (true) {
@@ -1021,9 +1020,9 @@ public class lifescriptParser extends Parser {
 
 						switch (alt13) {
 						case 1 :
-							// lifescript.g:97:9: s= stmt
+							// lifescript.g:96:9: s= stmt
 							{
-							pushFollow(FOLLOW_stmt_in_stmt511);
+							pushFollow(FOLLOW_stmt_in_stmt507);
 							s=stmt();
 							state._fsp--;
 
@@ -1039,31 +1038,31 @@ public class lifescriptParser extends Parser {
 						cnt13++;
 					}
 
-					match(input,68,FOLLOW_68_in_stmt523); 
-					v4=(Token)match(input,ID,FOLLOW_ID_in_stmt527); 
+					match(input,68,FOLLOW_68_in_stmt519); 
+					v4=(Token)match(input,ID,FOLLOW_ID_in_stmt523); 
 					ast = new ForStmt((v3!=null?v3.getText():null), start2, lim, step, forBlock, (v4!=null?v4.getText():null));
 					}
 					break;
 				case 14 :
-					// lifescript.g:101:4: 'type' v4= ID ':' ( 'Neighborhood' '[' neighWidth= exp ']' '=' '{' (neigh1= exp ',' )* 'VAR' ( ',' neigh2= exp )* '}' ) (s= stmt )+ 'endtype'
+					// lifescript.g:100:4: 'type' v4= ID ':' ( 'Neighborhood' '[' neighWidth= exp ']' '=' '{' (neigh1= exp ',' )* 'VAR' ( ',' neigh2= exp )* '}' ) (s= stmt )+ 'endtype'
 					{
-					match(input,81,FOLLOW_81_in_stmt538); 
-					v4=(Token)match(input,ID,FOLLOW_ID_in_stmt542); 
-					match(input,22,FOLLOW_22_in_stmt544); 
+					match(input,81,FOLLOW_81_in_stmt534); 
+					v4=(Token)match(input,ID,FOLLOW_ID_in_stmt538); 
+					match(input,22,FOLLOW_22_in_stmt540); 
 					BlockStmt neighBlock = new BlockStmt();
-					// lifescript.g:103:4: ( 'Neighborhood' '[' neighWidth= exp ']' '=' '{' (neigh1= exp ',' )* 'VAR' ( ',' neigh2= exp )* '}' )
-					// lifescript.g:103:5: 'Neighborhood' '[' neighWidth= exp ']' '=' '{' (neigh1= exp ',' )* 'VAR' ( ',' neigh2= exp )* '}'
+					// lifescript.g:102:4: ( 'Neighborhood' '[' neighWidth= exp ']' '=' '{' (neigh1= exp ',' )* 'VAR' ( ',' neigh2= exp )* '}' )
+					// lifescript.g:102:5: 'Neighborhood' '[' neighWidth= exp ']' '=' '{' (neigh1= exp ',' )* 'VAR' ( ',' neigh2= exp )* '}'
 					{
-					match(input,34,FOLLOW_34_in_stmt555); 
-					match(input,42,FOLLOW_42_in_stmt557); 
-					pushFollow(FOLLOW_exp_in_stmt561);
+					match(input,34,FOLLOW_34_in_stmt551); 
+					match(input,42,FOLLOW_42_in_stmt553); 
+					pushFollow(FOLLOW_exp_in_stmt557);
 					neighWidth=exp();
 					state._fsp--;
 
-					match(input,43,FOLLOW_43_in_stmt563); 
-					match(input,25,FOLLOW_25_in_stmt565); 
-					match(input,84,FOLLOW_84_in_stmt570); 
-					// lifescript.g:104:8: (neigh1= exp ',' )*
+					match(input,43,FOLLOW_43_in_stmt559); 
+					match(input,25,FOLLOW_25_in_stmt561); 
+					match(input,84,FOLLOW_84_in_stmt566); 
+					// lifescript.g:103:8: (neigh1= exp ',' )*
 					loop14:
 					while (true) {
 						int alt14=2;
@@ -1074,13 +1073,13 @@ public class lifescriptParser extends Parser {
 
 						switch (alt14) {
 						case 1 :
-							// lifescript.g:104:9: neigh1= exp ','
+							// lifescript.g:103:9: neigh1= exp ','
 							{
-							pushFollow(FOLLOW_exp_in_stmt575);
+							pushFollow(FOLLOW_exp_in_stmt571);
 							neigh1=exp();
 							state._fsp--;
 
-							match(input,19,FOLLOW_19_in_stmt577); 
+							match(input,19,FOLLOW_19_in_stmt573); 
 							neighBlock.addAST(new NeighborhoodStmt(neigh1, false));
 							}
 							break;
@@ -1090,9 +1089,9 @@ public class lifescriptParser extends Parser {
 						}
 					}
 
-					match(input,40,FOLLOW_40_in_stmt587); 
+					match(input,40,FOLLOW_40_in_stmt583); 
 					neighBlock.addAST(new NeighborhoodStmt(new NumExpr(0.0), true));
-					// lifescript.g:106:4: ( ',' neigh2= exp )*
+					// lifescript.g:105:4: ( ',' neigh2= exp )*
 					loop15:
 					while (true) {
 						int alt15=2;
@@ -1103,10 +1102,10 @@ public class lifescriptParser extends Parser {
 
 						switch (alt15) {
 						case 1 :
-							// lifescript.g:106:5: ',' neigh2= exp
+							// lifescript.g:105:5: ',' neigh2= exp
 							{
-							match(input,19,FOLLOW_19_in_stmt595); 
-							pushFollow(FOLLOW_exp_in_stmt599);
+							match(input,19,FOLLOW_19_in_stmt591); 
+							pushFollow(FOLLOW_exp_in_stmt595);
 							neigh2=exp();
 							state._fsp--;
 
@@ -1119,11 +1118,11 @@ public class lifescriptParser extends Parser {
 						}
 					}
 
-					match(input,86,FOLLOW_86_in_stmt605); 
+					match(input,86,FOLLOW_86_in_stmt601); 
 					}
 
 					BlockStmt typelogic = new BlockStmt();
-					// lifescript.g:109:8: (s= stmt )+
+					// lifescript.g:108:8: (s= stmt )+
 					int cnt16=0;
 					loop16:
 					while (true) {
@@ -1135,9 +1134,9 @@ public class lifescriptParser extends Parser {
 
 						switch (alt16) {
 						case 1 :
-							// lifescript.g:109:9: s= stmt
+							// lifescript.g:108:9: s= stmt
 							{
-							pushFollow(FOLLOW_stmt_in_stmt627);
+							pushFollow(FOLLOW_stmt_in_stmt623);
 							s=stmt();
 							state._fsp--;
 
@@ -1153,37 +1152,37 @@ public class lifescriptParser extends Parser {
 						cnt16++;
 					}
 
-					match(input,58,FOLLOW_58_in_stmt635); 
+					match(input,58,FOLLOW_58_in_stmt631); 
 					ast = new TypeStmt((v4!=null?v4.getText():null), neighWidth, neighBlock, typelogic);
 					}
 					break;
 				case 15 :
-					// lifescript.g:113:4: 'alive'
+					// lifescript.g:112:4: 'alive'
 					{
-					match(input,46,FOLLOW_46_in_stmt647); 
+					match(input,46,FOLLOW_46_in_stmt643); 
 					ast = new AliveStmt();
 					}
 					break;
 				case 16 :
-					// lifescript.g:116:4: 'dead'
+					// lifescript.g:115:4: 'dead'
 					{
-					match(input,52,FOLLOW_52_in_stmt657); 
+					match(input,52,FOLLOW_52_in_stmt653); 
 					ast = new DeadStmt();
 					}
 					break;
 				case 17 :
-					// lifescript.g:119:4: 'become' STRING
+					// lifescript.g:118:4: 'become' STRING
 					{
-					match(input,49,FOLLOW_49_in_stmt667); 
-					STRING10=(Token)match(input,STRING,FOLLOW_STRING_in_stmt669); 
+					match(input,49,FOLLOW_49_in_stmt663); 
+					STRING10=(Token)match(input,STRING,FOLLOW_STRING_in_stmt665); 
 					ast = new BecomeStmt((STRING10!=null?STRING10.getText():null));
 					}
 					break;
 				case 18 :
-					// lifescript.g:122:4: 'setstate' ( 'of' coordexp )? 'to' exp
+					// lifescript.g:121:4: 'setstate' ( 'of' coordexp )? 'to' exp
 					{
-					match(input,74,FOLLOW_74_in_stmt679); 
-					// lifescript.g:122:15: ( 'of' coordexp )?
+					match(input,74,FOLLOW_74_in_stmt675); 
+					// lifescript.g:121:15: ( 'of' coordexp )?
 					int alt17=2;
 					int LA17_0 = input.LA(1);
 					if ( (LA17_0==69) ) {
@@ -1191,10 +1190,10 @@ public class lifescriptParser extends Parser {
 					}
 					switch (alt17) {
 						case 1 :
-							// lifescript.g:122:16: 'of' coordexp
+							// lifescript.g:121:16: 'of' coordexp
 							{
-							match(input,69,FOLLOW_69_in_stmt682); 
-							pushFollow(FOLLOW_coordexp_in_stmt684);
+							match(input,69,FOLLOW_69_in_stmt678); 
+							pushFollow(FOLLOW_coordexp_in_stmt680);
 							coordexp11=coordexp();
 							state._fsp--;
 
@@ -1203,8 +1202,8 @@ public class lifescriptParser extends Parser {
 
 					}
 
-					match(input,80,FOLLOW_80_in_stmt688); 
-					pushFollow(FOLLOW_exp_in_stmt690);
+					match(input,80,FOLLOW_80_in_stmt684); 
+					pushFollow(FOLLOW_exp_in_stmt686);
 					exp12=exp();
 					state._fsp--;
 
@@ -1212,15 +1211,15 @@ public class lifescriptParser extends Parser {
 					}
 					break;
 				case 19 :
-					// lifescript.g:125:4: 'statecolor' exp 'is' colorexp
+					// lifescript.g:124:4: 'statecolor' exp 'is' colorexp
 					{
-					match(input,76,FOLLOW_76_in_stmt700); 
-					pushFollow(FOLLOW_exp_in_stmt702);
+					match(input,76,FOLLOW_76_in_stmt696); 
+					pushFollow(FOLLOW_exp_in_stmt698);
 					exp13=exp();
 					state._fsp--;
 
-					match(input,64,FOLLOW_64_in_stmt704); 
-					pushFollow(FOLLOW_colorexp_in_stmt706);
+					match(input,64,FOLLOW_64_in_stmt700); 
+					pushFollow(FOLLOW_colorexp_in_stmt702);
 					colorexp14=colorexp();
 					state._fsp--;
 
@@ -1228,12 +1227,12 @@ public class lifescriptParser extends Parser {
 					}
 					break;
 				case 20 :
-					// lifescript.g:128:4: 'create' STRING 'at' coordexp
+					// lifescript.g:127:4: 'create' STRING 'at' coordexp
 					{
-					match(input,51,FOLLOW_51_in_stmt716); 
-					STRING15=(Token)match(input,STRING,FOLLOW_STRING_in_stmt718); 
-					match(input,48,FOLLOW_48_in_stmt720); 
-					pushFollow(FOLLOW_coordexp_in_stmt722);
+					match(input,51,FOLLOW_51_in_stmt712); 
+					STRING15=(Token)match(input,STRING,FOLLOW_STRING_in_stmt714); 
+					match(input,48,FOLLOW_48_in_stmt716); 
+					pushFollow(FOLLOW_coordexp_in_stmt718);
 					coordexp16=coordexp();
 					state._fsp--;
 
@@ -1241,10 +1240,10 @@ public class lifescriptParser extends Parser {
 					}
 					break;
 				case 21 :
-					// lifescript.g:131:4: 'kill' ( STRING )? 'at' coordexp
+					// lifescript.g:130:4: 'kill' ( STRING )? 'at' coordexp
 					{
-					match(input,65,FOLLOW_65_in_stmt732); 
-					// lifescript.g:131:11: ( STRING )?
+					match(input,65,FOLLOW_65_in_stmt728); 
+					// lifescript.g:130:11: ( STRING )?
 					int alt18=2;
 					int LA18_0 = input.LA(1);
 					if ( (LA18_0==STRING) ) {
@@ -1252,16 +1251,16 @@ public class lifescriptParser extends Parser {
 					}
 					switch (alt18) {
 						case 1 :
-							// lifescript.g:131:12: STRING
+							// lifescript.g:130:12: STRING
 							{
-							STRING17=(Token)match(input,STRING,FOLLOW_STRING_in_stmt735); 
+							STRING17=(Token)match(input,STRING,FOLLOW_STRING_in_stmt731); 
 							}
 							break;
 
 					}
 
-					match(input,48,FOLLOW_48_in_stmt739); 
-					pushFollow(FOLLOW_coordexp_in_stmt741);
+					match(input,48,FOLLOW_48_in_stmt735); 
+					pushFollow(FOLLOW_coordexp_in_stmt737);
 					coordexp18=coordexp();
 					state._fsp--;
 
@@ -1269,24 +1268,24 @@ public class lifescriptParser extends Parser {
 					}
 					break;
 				case 22 :
-					// lifescript.g:134:4: 'addrow'
+					// lifescript.g:133:4: 'addrow'
 					{
-					match(input,45,FOLLOW_45_in_stmt751); 
+					match(input,45,FOLLOW_45_in_stmt747); 
 					ast = new AddRowStmt();
 					}
 					break;
 				case 23 :
-					// lifescript.g:137:4: 'addcolumn'
+					// lifescript.g:136:4: 'addcolumn'
 					{
-					match(input,44,FOLLOW_44_in_stmt761); 
+					match(input,44,FOLLOW_44_in_stmt757); 
 					ast = new AddColumnStmt();
 					}
 					break;
 				case 24 :
-					// lifescript.g:140:4: 'setcolor' ( 'at' coordexp )? 'to' colorexp
+					// lifescript.g:139:4: 'setcolor' ( 'at' coordexp )? 'to' colorexp
 					{
-					match(input,73,FOLLOW_73_in_stmt772); 
-					// lifescript.g:140:15: ( 'at' coordexp )?
+					match(input,73,FOLLOW_73_in_stmt768); 
+					// lifescript.g:139:15: ( 'at' coordexp )?
 					int alt19=2;
 					int LA19_0 = input.LA(1);
 					if ( (LA19_0==48) ) {
@@ -1294,10 +1293,10 @@ public class lifescriptParser extends Parser {
 					}
 					switch (alt19) {
 						case 1 :
-							// lifescript.g:140:16: 'at' coordexp
+							// lifescript.g:139:16: 'at' coordexp
 							{
-							match(input,48,FOLLOW_48_in_stmt775); 
-							pushFollow(FOLLOW_coordexp_in_stmt777);
+							match(input,48,FOLLOW_48_in_stmt771); 
+							pushFollow(FOLLOW_coordexp_in_stmt773);
 							coordexp19=coordexp();
 							state._fsp--;
 
@@ -1306,8 +1305,8 @@ public class lifescriptParser extends Parser {
 
 					}
 
-					match(input,80,FOLLOW_80_in_stmt781); 
-					pushFollow(FOLLOW_colorexp_in_stmt783);
+					match(input,80,FOLLOW_80_in_stmt777); 
+					pushFollow(FOLLOW_colorexp_in_stmt779);
 					colorexp20=colorexp();
 					state._fsp--;
 
@@ -1315,12 +1314,12 @@ public class lifescriptParser extends Parser {
 					}
 					break;
 				case 25 :
-					// lifescript.g:143:4: 'world' ':' (s= stmt )+ 'endworld'
+					// lifescript.g:142:4: 'world' ':' (s= stmt )+ 'endworld'
 					{
-					match(input,83,FOLLOW_83_in_stmt793); 
-					match(input,22,FOLLOW_22_in_stmt795); 
+					match(input,83,FOLLOW_83_in_stmt789); 
+					match(input,22,FOLLOW_22_in_stmt791); 
 					BlockStmt worldBlock = new BlockStmt();
-					// lifescript.g:144:4: (s= stmt )+
+					// lifescript.g:143:4: (s= stmt )+
 					int cnt20=0;
 					loop20:
 					while (true) {
@@ -1332,9 +1331,9 @@ public class lifescriptParser extends Parser {
 
 						switch (alt20) {
 						case 1 :
-							// lifescript.g:144:5: s= stmt
+							// lifescript.g:143:5: s= stmt
 							{
-							pushFollow(FOLLOW_stmt_in_stmt805);
+							pushFollow(FOLLOW_stmt_in_stmt801);
 							s=stmt();
 							state._fsp--;
 
@@ -1350,17 +1349,17 @@ public class lifescriptParser extends Parser {
 						cnt20++;
 					}
 
-					match(input,60,FOLLOW_60_in_stmt813); 
+					match(input,60,FOLLOW_60_in_stmt809); 
 					ast = new WorldStmt(worldBlock);
 					}
 					break;
 				case 26 :
-					// lifescript.g:147:4: 'Properties' ':' ( 'Title' '=' title= STRING )? ( 'Cell Size' '=' cs= coordexp )? ( 'Dimensions' '=' dims= coordexp )? ( 'Wraparound' '=' wrap= exp )? ( 'Start' '=' '{' '(' celltype= STRING ',' cellcoords= coordexp ')' ( ',' '(' celltype= STRING ',' cellcoords= coordexp ')' )* '}' )? ( 'Default Type' '=' dt= STRING )? ( 'Generations' '=' gens= exp )? ( 'Interval' '=' intervals= exp )? ( 'Pausable' '=' pause= exp )? ( 'Steppable' '=' sb= exp )?
+					// lifescript.g:146:4: 'Properties' ':' ( 'Title' '=' title= STRING )? ( 'Cell Size' '=' cs= coordexp )? ( 'Dimensions' '=' dims= coordexp )? ( 'Wraparound' '=' wrap= exp )? ( 'Start' '=' '{' '(' celltype= STRING ',' cellcoords= coordexp ')' ( ',' '(' celltype= STRING ',' cellcoords= coordexp ')' )* '}' )? ( 'Default Type' '=' dt= STRING )? ( 'Generations' '=' gens= exp )? ( 'Interval' '=' intervals= exp )? ( 'Pausable' '=' pause= exp )? ( 'Steppable' '=' sb= exp )?
 					{
-					match(input,36,FOLLOW_36_in_stmt821); 
-					match(input,22,FOLLOW_22_in_stmt823); 
+					match(input,36,FOLLOW_36_in_stmt817); 
+					match(input,22,FOLLOW_22_in_stmt819); 
 					BlockStmt properties = new BlockStmt();
-					// lifescript.g:149:4: ( 'Title' '=' title= STRING )?
+					// lifescript.g:148:4: ( 'Title' '=' title= STRING )?
 					int alt21=2;
 					int LA21_0 = input.LA(1);
 					if ( (LA21_0==39) ) {
@@ -1368,17 +1367,17 @@ public class lifescriptParser extends Parser {
 					}
 					switch (alt21) {
 						case 1 :
-							// lifescript.g:149:5: 'Title' '=' title= STRING
+							// lifescript.g:148:5: 'Title' '=' title= STRING
 							{
-							match(input,39,FOLLOW_39_in_stmt834); 
-							match(input,25,FOLLOW_25_in_stmt836); 
-							title=(Token)match(input,STRING,FOLLOW_STRING_in_stmt840); 
+							match(input,39,FOLLOW_39_in_stmt830); 
+							match(input,25,FOLLOW_25_in_stmt832); 
+							title=(Token)match(input,STRING,FOLLOW_STRING_in_stmt836); 
 							}
 							break;
 
 					}
 
-					// lifescript.g:150:4: ( 'Cell Size' '=' cs= coordexp )?
+					// lifescript.g:149:4: ( 'Cell Size' '=' cs= coordexp )?
 					int alt22=2;
 					int LA22_0 = input.LA(1);
 					if ( (LA22_0==29) ) {
@@ -1386,11 +1385,11 @@ public class lifescriptParser extends Parser {
 					}
 					switch (alt22) {
 						case 1 :
-							// lifescript.g:150:5: 'Cell Size' '=' cs= coordexp
+							// lifescript.g:149:5: 'Cell Size' '=' cs= coordexp
 							{
-							match(input,29,FOLLOW_29_in_stmt849); 
-							match(input,25,FOLLOW_25_in_stmt851); 
-							pushFollow(FOLLOW_coordexp_in_stmt855);
+							match(input,29,FOLLOW_29_in_stmt845); 
+							match(input,25,FOLLOW_25_in_stmt847); 
+							pushFollow(FOLLOW_coordexp_in_stmt851);
 							cs=coordexp();
 							state._fsp--;
 
@@ -1400,7 +1399,7 @@ public class lifescriptParser extends Parser {
 
 					}
 
-					// lifescript.g:151:4: ( 'Dimensions' '=' dims= coordexp )?
+					// lifescript.g:150:4: ( 'Dimensions' '=' dims= coordexp )?
 					int alt23=2;
 					int LA23_0 = input.LA(1);
 					if ( (LA23_0==31) ) {
@@ -1408,11 +1407,11 @@ public class lifescriptParser extends Parser {
 					}
 					switch (alt23) {
 						case 1 :
-							// lifescript.g:151:5: 'Dimensions' '=' dims= coordexp
+							// lifescript.g:150:5: 'Dimensions' '=' dims= coordexp
 							{
-							match(input,31,FOLLOW_31_in_stmt866); 
-							match(input,25,FOLLOW_25_in_stmt868); 
-							pushFollow(FOLLOW_coordexp_in_stmt872);
+							match(input,31,FOLLOW_31_in_stmt862); 
+							match(input,25,FOLLOW_25_in_stmt864); 
+							pushFollow(FOLLOW_coordexp_in_stmt868);
 							dims=coordexp();
 							state._fsp--;
 
@@ -1422,7 +1421,7 @@ public class lifescriptParser extends Parser {
 
 					}
 
-					// lifescript.g:152:4: ( 'Wraparound' '=' wrap= exp )?
+					// lifescript.g:151:4: ( 'Wraparound' '=' wrap= exp )?
 					int alt24=2;
 					int LA24_0 = input.LA(1);
 					if ( (LA24_0==41) ) {
@@ -1430,11 +1429,11 @@ public class lifescriptParser extends Parser {
 					}
 					switch (alt24) {
 						case 1 :
-							// lifescript.g:152:5: 'Wraparound' '=' wrap= exp
+							// lifescript.g:151:5: 'Wraparound' '=' wrap= exp
 							{
-							match(input,41,FOLLOW_41_in_stmt883); 
-							match(input,25,FOLLOW_25_in_stmt885); 
-							pushFollow(FOLLOW_exp_in_stmt889);
+							match(input,41,FOLLOW_41_in_stmt879); 
+							match(input,25,FOLLOW_25_in_stmt881); 
+							pushFollow(FOLLOW_exp_in_stmt885);
 							wrap=exp();
 							state._fsp--;
 
@@ -1444,7 +1443,7 @@ public class lifescriptParser extends Parser {
 
 					}
 
-					// lifescript.g:153:4: ( 'Start' '=' '{' '(' celltype= STRING ',' cellcoords= coordexp ')' ( ',' '(' celltype= STRING ',' cellcoords= coordexp ')' )* '}' )?
+					// lifescript.g:152:4: ( 'Start' '=' '{' '(' celltype= STRING ',' cellcoords= coordexp ')' ( ',' '(' celltype= STRING ',' cellcoords= coordexp ')' )* '}' )?
 					int alt26=2;
 					int LA26_0 = input.LA(1);
 					if ( (LA26_0==37) ) {
@@ -1452,22 +1451,22 @@ public class lifescriptParser extends Parser {
 					}
 					switch (alt26) {
 						case 1 :
-							// lifescript.g:153:5: 'Start' '=' '{' '(' celltype= STRING ',' cellcoords= coordexp ')' ( ',' '(' celltype= STRING ',' cellcoords= coordexp ')' )* '}'
+							// lifescript.g:152:5: 'Start' '=' '{' '(' celltype= STRING ',' cellcoords= coordexp ')' ( ',' '(' celltype= STRING ',' cellcoords= coordexp ')' )* '}'
 							{
-							match(input,37,FOLLOW_37_in_stmt900); 
-							match(input,25,FOLLOW_25_in_stmt902); 
-							match(input,84,FOLLOW_84_in_stmt904); 
+							match(input,37,FOLLOW_37_in_stmt896); 
+							match(input,25,FOLLOW_25_in_stmt898); 
+							match(input,84,FOLLOW_84_in_stmt900); 
 							BlockStmt startConditions = new BlockStmt();
-							match(input,15,FOLLOW_15_in_stmt912); 
-							celltype=(Token)match(input,STRING,FOLLOW_STRING_in_stmt916); 
-							match(input,19,FOLLOW_19_in_stmt918); 
-							pushFollow(FOLLOW_coordexp_in_stmt922);
+							match(input,15,FOLLOW_15_in_stmt908); 
+							celltype=(Token)match(input,STRING,FOLLOW_STRING_in_stmt912); 
+							match(input,19,FOLLOW_19_in_stmt914); 
+							pushFollow(FOLLOW_coordexp_in_stmt918);
 							cellcoords=coordexp();
 							state._fsp--;
 
 							startConditions.addAST(new CellStmt((celltype!=null?celltype.getText():null), cellcoords));
-							match(input,16,FOLLOW_16_in_stmt935); 
-							// lifescript.g:157:5: ( ',' '(' celltype= STRING ',' cellcoords= coordexp ')' )*
+							match(input,16,FOLLOW_16_in_stmt931); 
+							// lifescript.g:156:5: ( ',' '(' celltype= STRING ',' cellcoords= coordexp ')' )*
 							loop25:
 							while (true) {
 								int alt25=2;
@@ -1478,18 +1477,18 @@ public class lifescriptParser extends Parser {
 
 								switch (alt25) {
 								case 1 :
-									// lifescript.g:157:6: ',' '(' celltype= STRING ',' cellcoords= coordexp ')'
+									// lifescript.g:156:6: ',' '(' celltype= STRING ',' cellcoords= coordexp ')'
 									{
-									match(input,19,FOLLOW_19_in_stmt942); 
-									match(input,15,FOLLOW_15_in_stmt944); 
-									celltype=(Token)match(input,STRING,FOLLOW_STRING_in_stmt948); 
-									match(input,19,FOLLOW_19_in_stmt950); 
-									pushFollow(FOLLOW_coordexp_in_stmt954);
+									match(input,19,FOLLOW_19_in_stmt938); 
+									match(input,15,FOLLOW_15_in_stmt940); 
+									celltype=(Token)match(input,STRING,FOLLOW_STRING_in_stmt944); 
+									match(input,19,FOLLOW_19_in_stmt946); 
+									pushFollow(FOLLOW_coordexp_in_stmt950);
 									cellcoords=coordexp();
 									state._fsp--;
 
 									startConditions.addAST(new CellStmt((celltype!=null?celltype.getText():null), cellcoords));
-									match(input,16,FOLLOW_16_in_stmt967); 
+									match(input,16,FOLLOW_16_in_stmt963); 
 									}
 									break;
 
@@ -1498,14 +1497,14 @@ public class lifescriptParser extends Parser {
 								}
 							}
 
-							match(input,86,FOLLOW_86_in_stmt971); 
+							match(input,86,FOLLOW_86_in_stmt967); 
 							properties.addAST(startConditions);
 							}
 							break;
 
 					}
 
-					// lifescript.g:161:4: ( 'Default Type' '=' dt= STRING )?
+					// lifescript.g:160:4: ( 'Default Type' '=' dt= STRING )?
 					int alt27=2;
 					int LA27_0 = input.LA(1);
 					if ( (LA27_0==30) ) {
@@ -1513,17 +1512,17 @@ public class lifescriptParser extends Parser {
 					}
 					switch (alt27) {
 						case 1 :
-							// lifescript.g:161:5: 'Default Type' '=' dt= STRING
+							// lifescript.g:160:5: 'Default Type' '=' dt= STRING
 							{
-							match(input,30,FOLLOW_30_in_stmt986); 
-							match(input,25,FOLLOW_25_in_stmt988); 
-							dt=(Token)match(input,STRING,FOLLOW_STRING_in_stmt992); 
+							match(input,30,FOLLOW_30_in_stmt982); 
+							match(input,25,FOLLOW_25_in_stmt984); 
+							dt=(Token)match(input,STRING,FOLLOW_STRING_in_stmt988); 
 							}
 							break;
 
 					}
 
-					// lifescript.g:162:4: ( 'Generations' '=' gens= exp )?
+					// lifescript.g:161:4: ( 'Generations' '=' gens= exp )?
 					int alt28=2;
 					int LA28_0 = input.LA(1);
 					if ( (LA28_0==32) ) {
@@ -1531,11 +1530,11 @@ public class lifescriptParser extends Parser {
 					}
 					switch (alt28) {
 						case 1 :
-							// lifescript.g:162:5: 'Generations' '=' gens= exp
+							// lifescript.g:161:5: 'Generations' '=' gens= exp
 							{
-							match(input,32,FOLLOW_32_in_stmt1000); 
-							match(input,25,FOLLOW_25_in_stmt1002); 
-							pushFollow(FOLLOW_exp_in_stmt1006);
+							match(input,32,FOLLOW_32_in_stmt996); 
+							match(input,25,FOLLOW_25_in_stmt998); 
+							pushFollow(FOLLOW_exp_in_stmt1002);
 							gens=exp();
 							state._fsp--;
 
@@ -1545,7 +1544,7 @@ public class lifescriptParser extends Parser {
 
 					}
 
-					// lifescript.g:163:4: ( 'Interval' '=' intervals= exp )?
+					// lifescript.g:162:4: ( 'Interval' '=' intervals= exp )?
 					int alt29=2;
 					int LA29_0 = input.LA(1);
 					if ( (LA29_0==33) ) {
@@ -1553,11 +1552,11 @@ public class lifescriptParser extends Parser {
 					}
 					switch (alt29) {
 						case 1 :
-							// lifescript.g:163:5: 'Interval' '=' intervals= exp
+							// lifescript.g:162:5: 'Interval' '=' intervals= exp
 							{
-							match(input,33,FOLLOW_33_in_stmt1017); 
-							match(input,25,FOLLOW_25_in_stmt1019); 
-							pushFollow(FOLLOW_exp_in_stmt1023);
+							match(input,33,FOLLOW_33_in_stmt1013); 
+							match(input,25,FOLLOW_25_in_stmt1015); 
+							pushFollow(FOLLOW_exp_in_stmt1019);
 							intervals=exp();
 							state._fsp--;
 
@@ -1567,7 +1566,7 @@ public class lifescriptParser extends Parser {
 
 					}
 
-					// lifescript.g:164:4: ( 'Pausable' '=' pause= exp )?
+					// lifescript.g:163:4: ( 'Pausable' '=' pause= exp )?
 					int alt30=2;
 					int LA30_0 = input.LA(1);
 					if ( (LA30_0==35) ) {
@@ -1575,11 +1574,11 @@ public class lifescriptParser extends Parser {
 					}
 					switch (alt30) {
 						case 1 :
-							// lifescript.g:164:5: 'Pausable' '=' pause= exp
+							// lifescript.g:163:5: 'Pausable' '=' pause= exp
 							{
-							match(input,35,FOLLOW_35_in_stmt1034); 
-							match(input,25,FOLLOW_25_in_stmt1036); 
-							pushFollow(FOLLOW_exp_in_stmt1040);
+							match(input,35,FOLLOW_35_in_stmt1030); 
+							match(input,25,FOLLOW_25_in_stmt1032); 
+							pushFollow(FOLLOW_exp_in_stmt1036);
 							pause=exp();
 							state._fsp--;
 
@@ -1589,7 +1588,7 @@ public class lifescriptParser extends Parser {
 
 					}
 
-					// lifescript.g:165:4: ( 'Steppable' '=' sb= exp )?
+					// lifescript.g:164:4: ( 'Steppable' '=' sb= exp )?
 					int alt31=2;
 					int LA31_0 = input.LA(1);
 					if ( (LA31_0==38) ) {
@@ -1597,11 +1596,11 @@ public class lifescriptParser extends Parser {
 					}
 					switch (alt31) {
 						case 1 :
-							// lifescript.g:165:5: 'Steppable' '=' sb= exp
+							// lifescript.g:164:5: 'Steppable' '=' sb= exp
 							{
-							match(input,38,FOLLOW_38_in_stmt1051); 
-							match(input,25,FOLLOW_25_in_stmt1053); 
-							pushFollow(FOLLOW_exp_in_stmt1057);
+							match(input,38,FOLLOW_38_in_stmt1047); 
+							match(input,25,FOLLOW_25_in_stmt1049); 
+							pushFollow(FOLLOW_exp_in_stmt1053);
 							sb=exp();
 							state._fsp--;
 
@@ -1631,7 +1630,7 @@ public class lifescriptParser extends Parser {
 
 
 	// $ANTLR start "coordexp"
-	// lifescript.g:169:1: coordexp returns [CoordExpr ast] : '(' e1= exp ',' e2= exp ')' ;
+	// lifescript.g:168:1: coordexp returns [CoordExpr ast] : '(' e1= exp ',' e2= exp ')' ;
 	public final CoordExpr coordexp() throws RecognitionException {
 		CoordExpr ast = null;
 
@@ -1640,20 +1639,20 @@ public class lifescriptParser extends Parser {
 		Expr e2 =null;
 
 		try {
-			// lifescript.g:170:2: ( '(' e1= exp ',' e2= exp ')' )
-			// lifescript.g:170:4: '(' e1= exp ',' e2= exp ')'
+			// lifescript.g:169:2: ( '(' e1= exp ',' e2= exp ')' )
+			// lifescript.g:169:4: '(' e1= exp ',' e2= exp ')'
 			{
-			match(input,15,FOLLOW_15_in_coordexp1082); 
-			pushFollow(FOLLOW_exp_in_coordexp1086);
+			match(input,15,FOLLOW_15_in_coordexp1078); 
+			pushFollow(FOLLOW_exp_in_coordexp1082);
 			e1=exp();
 			state._fsp--;
 
-			match(input,19,FOLLOW_19_in_coordexp1088); 
-			pushFollow(FOLLOW_exp_in_coordexp1092);
+			match(input,19,FOLLOW_19_in_coordexp1084); 
+			pushFollow(FOLLOW_exp_in_coordexp1088);
 			e2=exp();
 			state._fsp--;
 
-			match(input,16,FOLLOW_16_in_coordexp1094); 
+			match(input,16,FOLLOW_16_in_coordexp1090); 
 			ast = new CoordExpr(e1, e2);
 			}
 
@@ -1672,7 +1671,7 @@ public class lifescriptParser extends Parser {
 
 
 	// $ANTLR start "colorexp"
-	// lifescript.g:173:1: colorexp returns [ColorExpr ast] : ( '(' e1= exp ',' e2= exp ',' e3= exp ')' | '(' STRING ')' );
+	// lifescript.g:172:1: colorexp returns [ColorExpr ast] : ( '(' e1= exp ',' e2= exp ',' e3= exp ')' | '(' STRING ')' );
 	public final ColorExpr colorexp() throws RecognitionException {
 		ColorExpr ast = null;
 
@@ -1683,7 +1682,7 @@ public class lifescriptParser extends Parser {
 		Expr e3 =null;
 
 		try {
-			// lifescript.g:174:2: ( '(' e1= exp ',' e2= exp ',' e3= exp ')' | '(' STRING ')' )
+			// lifescript.g:173:2: ( '(' e1= exp ',' e2= exp ',' e3= exp ')' | '(' STRING ')' )
 			int alt33=2;
 			int LA33_0 = input.LA(1);
 			if ( (LA33_0==15) ) {
@@ -1717,33 +1716,33 @@ public class lifescriptParser extends Parser {
 
 			switch (alt33) {
 				case 1 :
-					// lifescript.g:174:4: '(' e1= exp ',' e2= exp ',' e3= exp ')'
+					// lifescript.g:173:4: '(' e1= exp ',' e2= exp ',' e3= exp ')'
 					{
-					match(input,15,FOLLOW_15_in_colorexp1112); 
-					pushFollow(FOLLOW_exp_in_colorexp1116);
+					match(input,15,FOLLOW_15_in_colorexp1108); 
+					pushFollow(FOLLOW_exp_in_colorexp1112);
 					e1=exp();
 					state._fsp--;
 
-					match(input,19,FOLLOW_19_in_colorexp1118); 
-					pushFollow(FOLLOW_exp_in_colorexp1122);
+					match(input,19,FOLLOW_19_in_colorexp1114); 
+					pushFollow(FOLLOW_exp_in_colorexp1118);
 					e2=exp();
 					state._fsp--;
 
-					match(input,19,FOLLOW_19_in_colorexp1124); 
-					pushFollow(FOLLOW_exp_in_colorexp1128);
+					match(input,19,FOLLOW_19_in_colorexp1120); 
+					pushFollow(FOLLOW_exp_in_colorexp1124);
 					e3=exp();
 					state._fsp--;
 
-					match(input,16,FOLLOW_16_in_colorexp1130); 
+					match(input,16,FOLLOW_16_in_colorexp1126); 
 					ast = new ColorExpr(e1, e2, e3);
 					}
 					break;
 				case 2 :
-					// lifescript.g:175:4: '(' STRING ')'
+					// lifescript.g:174:4: '(' STRING ')'
 					{
-					match(input,15,FOLLOW_15_in_colorexp1137); 
-					STRING21=(Token)match(input,STRING,FOLLOW_STRING_in_colorexp1139); 
-					match(input,16,FOLLOW_16_in_colorexp1141); 
+					match(input,15,FOLLOW_15_in_colorexp1133); 
+					STRING21=(Token)match(input,STRING,FOLLOW_STRING_in_colorexp1135); 
+					match(input,16,FOLLOW_16_in_colorexp1137); 
 					ast = new ColorExpr((STRING21!=null?STRING21.getText():null));
 					}
 					break;
@@ -1764,7 +1763,7 @@ public class lifescriptParser extends Parser {
 
 
 	// $ANTLR start "formalParamList"
-	// lifescript.g:178:1: formalParamList returns [ArgList ast] : v1= ID ( ',' v2= ID )* ;
+	// lifescript.g:177:1: formalParamList returns [ArgList ast] : v1= ID ( ',' v2= ID )* ;
 	public final ArgList formalParamList() throws RecognitionException {
 		ArgList ast = null;
 
@@ -1773,12 +1772,12 @@ public class lifescriptParser extends Parser {
 		Token v2=null;
 
 		try {
-			// lifescript.g:179:6: (v1= ID ( ',' v2= ID )* )
-			// lifescript.g:179:12: v1= ID ( ',' v2= ID )*
+			// lifescript.g:178:6: (v1= ID ( ',' v2= ID )* )
+			// lifescript.g:178:12: v1= ID ( ',' v2= ID )*
 			{
-			v1=(Token)match(input,ID,FOLLOW_ID_in_formalParamList1176); 
+			v1=(Token)match(input,ID,FOLLOW_ID_in_formalParamList1172); 
 			ast = new ArgList(new VarExpr((v1!=null?v1.getText():null)));
-			// lifescript.g:179:64: ( ',' v2= ID )*
+			// lifescript.g:178:64: ( ',' v2= ID )*
 			loop34:
 			while (true) {
 				int alt34=2;
@@ -1789,10 +1788,10 @@ public class lifescriptParser extends Parser {
 
 				switch (alt34) {
 				case 1 :
-					// lifescript.g:179:65: ',' v2= ID
+					// lifescript.g:178:65: ',' v2= ID
 					{
-					match(input,19,FOLLOW_19_in_formalParamList1180); 
-					v2=(Token)match(input,ID,FOLLOW_ID_in_formalParamList1184); 
+					match(input,19,FOLLOW_19_in_formalParamList1176); 
+					v2=(Token)match(input,ID,FOLLOW_ID_in_formalParamList1180); 
 					ast.addAST(new VarExpr((v2!=null?v2.getText():null)));
 					}
 					break;
@@ -1819,7 +1818,7 @@ public class lifescriptParser extends Parser {
 
 
 	// $ANTLR start "actualParamList"
-	// lifescript.g:181:1: actualParamList returns [ArgList ast] : e1= exp ( ',' e2= exp )* ;
+	// lifescript.g:180:1: actualParamList returns [ArgList ast] : e1= exp ( ',' e2= exp )* ;
 	public final ArgList actualParamList() throws RecognitionException {
 		ArgList ast = null;
 
@@ -1828,15 +1827,15 @@ public class lifescriptParser extends Parser {
 		Expr e2 =null;
 
 		try {
-			// lifescript.g:182:6: (e1= exp ( ',' e2= exp )* )
-			// lifescript.g:182:12: e1= exp ( ',' e2= exp )*
+			// lifescript.g:181:6: (e1= exp ( ',' e2= exp )* )
+			// lifescript.g:181:12: e1= exp ( ',' e2= exp )*
 			{
-			pushFollow(FOLLOW_exp_in_actualParamList1222);
+			pushFollow(FOLLOW_exp_in_actualParamList1218);
 			e1=exp();
 			state._fsp--;
 
 			ast = new ArgList(e1);
-			// lifescript.g:182:52: ( ',' e2= exp )*
+			// lifescript.g:181:52: ( ',' e2= exp )*
 			loop35:
 			while (true) {
 				int alt35=2;
@@ -1847,10 +1846,10 @@ public class lifescriptParser extends Parser {
 
 				switch (alt35) {
 				case 1 :
-					// lifescript.g:182:53: ',' e2= exp
+					// lifescript.g:181:53: ',' e2= exp
 					{
-					match(input,19,FOLLOW_19_in_actualParamList1227); 
-					pushFollow(FOLLOW_exp_in_actualParamList1231);
+					match(input,19,FOLLOW_19_in_actualParamList1223); 
+					pushFollow(FOLLOW_exp_in_actualParamList1227);
 					e2=exp();
 					state._fsp--;
 
@@ -1880,7 +1879,7 @@ public class lifescriptParser extends Parser {
 
 
 	// $ANTLR start "exp"
-	// lifescript.g:187:1: exp returns [Expr ast] : logexp ;
+	// lifescript.g:186:1: exp returns [Expr ast] : logexp ;
 	public final Expr exp() throws RecognitionException {
 		Expr ast = null;
 
@@ -1888,10 +1887,10 @@ public class lifescriptParser extends Parser {
 		Expr logexp22 =null;
 
 		try {
-			// lifescript.g:188:2: ( logexp )
-			// lifescript.g:188:4: logexp
+			// lifescript.g:187:2: ( logexp )
+			// lifescript.g:187:4: logexp
 			{
-			pushFollow(FOLLOW_logexp_in_exp1259);
+			pushFollow(FOLLOW_logexp_in_exp1255);
 			logexp22=logexp();
 			state._fsp--;
 
@@ -1913,7 +1912,7 @@ public class lifescriptParser extends Parser {
 
 
 	// $ANTLR start "logexp"
-	// lifescript.g:192:1: logexp returns [Expr ast] : e1= relexp ( ( '&' e2= relexp ) | ( '|' e3= relexp ) )* ;
+	// lifescript.g:191:1: logexp returns [Expr ast] : e1= relexp ( ( '&' e2= relexp ) | ( '|' e3= relexp ) )* ;
 	public final Expr logexp() throws RecognitionException {
 		Expr ast = null;
 
@@ -1923,15 +1922,15 @@ public class lifescriptParser extends Parser {
 		Expr e3 =null;
 
 		try {
-			// lifescript.g:193:2: (e1= relexp ( ( '&' e2= relexp ) | ( '|' e3= relexp ) )* )
-			// lifescript.g:193:4: e1= relexp ( ( '&' e2= relexp ) | ( '|' e3= relexp ) )*
+			// lifescript.g:192:2: (e1= relexp ( ( '&' e2= relexp ) | ( '|' e3= relexp ) )* )
+			// lifescript.g:192:4: e1= relexp ( ( '&' e2= relexp ) | ( '|' e3= relexp ) )*
 			{
-			pushFollow(FOLLOW_relexp_in_logexp1279);
+			pushFollow(FOLLOW_relexp_in_logexp1275);
 			e1=relexp();
 			state._fsp--;
 
 			 ast = e1; 
-			// lifescript.g:194:3: ( ( '&' e2= relexp ) | ( '|' e3= relexp ) )*
+			// lifescript.g:193:3: ( ( '&' e2= relexp ) | ( '|' e3= relexp ) )*
 			loop36:
 			while (true) {
 				int alt36=3;
@@ -1945,13 +1944,13 @@ public class lifescriptParser extends Parser {
 
 				switch (alt36) {
 				case 1 :
-					// lifescript.g:195:4: ( '&' e2= relexp )
+					// lifescript.g:194:4: ( '&' e2= relexp )
 					{
-					// lifescript.g:195:4: ( '&' e2= relexp )
-					// lifescript.g:195:5: '&' e2= relexp
+					// lifescript.g:194:4: ( '&' e2= relexp )
+					// lifescript.g:194:5: '&' e2= relexp
 					{
-					match(input,14,FOLLOW_14_in_logexp1291); 
-					pushFollow(FOLLOW_relexp_in_logexp1295);
+					match(input,14,FOLLOW_14_in_logexp1287); 
+					pushFollow(FOLLOW_relexp_in_logexp1291);
 					e2=relexp();
 					state._fsp--;
 
@@ -1961,13 +1960,13 @@ public class lifescriptParser extends Parser {
 					}
 					break;
 				case 2 :
-					// lifescript.g:196:4: ( '|' e3= relexp )
+					// lifescript.g:195:4: ( '|' e3= relexp )
 					{
-					// lifescript.g:196:4: ( '|' e3= relexp )
-					// lifescript.g:196:5: '|' e3= relexp
+					// lifescript.g:195:4: ( '|' e3= relexp )
+					// lifescript.g:195:5: '|' e3= relexp
 					{
-					match(input,85,FOLLOW_85_in_logexp1307); 
-					pushFollow(FOLLOW_relexp_in_logexp1311);
+					match(input,85,FOLLOW_85_in_logexp1303); 
+					pushFollow(FOLLOW_relexp_in_logexp1307);
 					e3=relexp();
 					state._fsp--;
 
@@ -1999,7 +1998,7 @@ public class lifescriptParser extends Parser {
 
 
 	// $ANTLR start "relexp"
-	// lifescript.g:200:1: relexp returns [Expr ast] : e1= addexp ( ( '==' e2= addexp ) | ( '<=' e3= addexp ) | ( '>=' e4= addexp ) | ( '<' e5= addexp ) | ( '>' e6= addexp ) | ( '!=' e7= addexp ) )* ;
+	// lifescript.g:199:1: relexp returns [Expr ast] : e1= addexp ( ( '==' e2= addexp ) | ( '<=' e3= addexp ) | ( '>=' e4= addexp ) | ( '<' e5= addexp ) | ( '>' e6= addexp ) | ( '!=' e7= addexp ) )* ;
 	public final Expr relexp() throws RecognitionException {
 		Expr ast = null;
 
@@ -2013,15 +2012,15 @@ public class lifescriptParser extends Parser {
 		Expr e7 =null;
 
 		try {
-			// lifescript.g:201:2: (e1= addexp ( ( '==' e2= addexp ) | ( '<=' e3= addexp ) | ( '>=' e4= addexp ) | ( '<' e5= addexp ) | ( '>' e6= addexp ) | ( '!=' e7= addexp ) )* )
-			// lifescript.g:201:4: e1= addexp ( ( '==' e2= addexp ) | ( '<=' e3= addexp ) | ( '>=' e4= addexp ) | ( '<' e5= addexp ) | ( '>' e6= addexp ) | ( '!=' e7= addexp ) )*
+			// lifescript.g:200:2: (e1= addexp ( ( '==' e2= addexp ) | ( '<=' e3= addexp ) | ( '>=' e4= addexp ) | ( '<' e5= addexp ) | ( '>' e6= addexp ) | ( '!=' e7= addexp ) )* )
+			// lifescript.g:200:4: e1= addexp ( ( '==' e2= addexp ) | ( '<=' e3= addexp ) | ( '>=' e4= addexp ) | ( '<' e5= addexp ) | ( '>' e6= addexp ) | ( '!=' e7= addexp ) )*
 			{
-			pushFollow(FOLLOW_addexp_in_relexp1337);
+			pushFollow(FOLLOW_addexp_in_relexp1333);
 			e1=addexp();
 			state._fsp--;
 
 			 ast = e1; 
-			// lifescript.g:202:3: ( ( '==' e2= addexp ) | ( '<=' e3= addexp ) | ( '>=' e4= addexp ) | ( '<' e5= addexp ) | ( '>' e6= addexp ) | ( '!=' e7= addexp ) )*
+			// lifescript.g:201:3: ( ( '==' e2= addexp ) | ( '<=' e3= addexp ) | ( '>=' e4= addexp ) | ( '<' e5= addexp ) | ( '>' e6= addexp ) | ( '!=' e7= addexp ) )*
 			loop37:
 			while (true) {
 				int alt37=7;
@@ -2059,13 +2058,13 @@ public class lifescriptParser extends Parser {
 				}
 				switch (alt37) {
 				case 1 :
-					// lifescript.g:203:4: ( '==' e2= addexp )
+					// lifescript.g:202:4: ( '==' e2= addexp )
 					{
-					// lifescript.g:203:4: ( '==' e2= addexp )
-					// lifescript.g:203:5: '==' e2= addexp
+					// lifescript.g:202:4: ( '==' e2= addexp )
+					// lifescript.g:202:5: '==' e2= addexp
 					{
-					match(input,26,FOLLOW_26_in_relexp1350); 
-					pushFollow(FOLLOW_addexp_in_relexp1354);
+					match(input,26,FOLLOW_26_in_relexp1346); 
+					pushFollow(FOLLOW_addexp_in_relexp1350);
 					e2=addexp();
 					state._fsp--;
 
@@ -2075,13 +2074,13 @@ public class lifescriptParser extends Parser {
 					}
 					break;
 				case 2 :
-					// lifescript.g:204:4: ( '<=' e3= addexp )
+					// lifescript.g:203:4: ( '<=' e3= addexp )
 					{
-					// lifescript.g:204:4: ( '<=' e3= addexp )
-					// lifescript.g:204:5: '<=' e3= addexp
+					// lifescript.g:203:4: ( '<=' e3= addexp )
+					// lifescript.g:203:5: '<=' e3= addexp
 					{
-					match(input,24,FOLLOW_24_in_relexp1364); 
-					pushFollow(FOLLOW_addexp_in_relexp1368);
+					match(input,24,FOLLOW_24_in_relexp1360); 
+					pushFollow(FOLLOW_addexp_in_relexp1364);
 					e3=addexp();
 					state._fsp--;
 
@@ -2091,13 +2090,13 @@ public class lifescriptParser extends Parser {
 					}
 					break;
 				case 3 :
-					// lifescript.g:205:4: ( '>=' e4= addexp )
+					// lifescript.g:204:4: ( '>=' e4= addexp )
 					{
-					// lifescript.g:205:4: ( '>=' e4= addexp )
-					// lifescript.g:205:5: '>=' e4= addexp
+					// lifescript.g:204:4: ( '>=' e4= addexp )
+					// lifescript.g:204:5: '>=' e4= addexp
 					{
-					match(input,28,FOLLOW_28_in_relexp1378); 
-					pushFollow(FOLLOW_addexp_in_relexp1382);
+					match(input,28,FOLLOW_28_in_relexp1374); 
+					pushFollow(FOLLOW_addexp_in_relexp1378);
 					e4=addexp();
 					state._fsp--;
 
@@ -2107,13 +2106,13 @@ public class lifescriptParser extends Parser {
 					}
 					break;
 				case 4 :
-					// lifescript.g:206:4: ( '<' e5= addexp )
+					// lifescript.g:205:4: ( '<' e5= addexp )
 					{
-					// lifescript.g:206:4: ( '<' e5= addexp )
-					// lifescript.g:206:5: '<' e5= addexp
+					// lifescript.g:205:4: ( '<' e5= addexp )
+					// lifescript.g:205:5: '<' e5= addexp
 					{
-					match(input,23,FOLLOW_23_in_relexp1392); 
-					pushFollow(FOLLOW_addexp_in_relexp1396);
+					match(input,23,FOLLOW_23_in_relexp1388); 
+					pushFollow(FOLLOW_addexp_in_relexp1392);
 					e5=addexp();
 					state._fsp--;
 
@@ -2123,13 +2122,13 @@ public class lifescriptParser extends Parser {
 					}
 					break;
 				case 5 :
-					// lifescript.g:207:4: ( '>' e6= addexp )
+					// lifescript.g:206:4: ( '>' e6= addexp )
 					{
-					// lifescript.g:207:4: ( '>' e6= addexp )
-					// lifescript.g:207:5: '>' e6= addexp
+					// lifescript.g:206:4: ( '>' e6= addexp )
+					// lifescript.g:206:5: '>' e6= addexp
 					{
-					match(input,27,FOLLOW_27_in_relexp1406); 
-					pushFollow(FOLLOW_addexp_in_relexp1410);
+					match(input,27,FOLLOW_27_in_relexp1402); 
+					pushFollow(FOLLOW_addexp_in_relexp1406);
 					e6=addexp();
 					state._fsp--;
 
@@ -2139,13 +2138,13 @@ public class lifescriptParser extends Parser {
 					}
 					break;
 				case 6 :
-					// lifescript.g:208:4: ( '!=' e7= addexp )
+					// lifescript.g:207:4: ( '!=' e7= addexp )
 					{
-					// lifescript.g:208:4: ( '!=' e7= addexp )
-					// lifescript.g:208:5: '!=' e7= addexp
+					// lifescript.g:207:4: ( '!=' e7= addexp )
+					// lifescript.g:207:5: '!=' e7= addexp
 					{
-					match(input,13,FOLLOW_13_in_relexp1420); 
-					pushFollow(FOLLOW_addexp_in_relexp1424);
+					match(input,13,FOLLOW_13_in_relexp1416); 
+					pushFollow(FOLLOW_addexp_in_relexp1420);
 					e7=addexp();
 					state._fsp--;
 
@@ -2177,7 +2176,7 @@ public class lifescriptParser extends Parser {
 
 
 	// $ANTLR start "addexp"
-	// lifescript.g:212:1: addexp returns [Expr ast] : e1= mulexp ( ( '+' e2= mulexp ) | ( '-' e3= mulexp ) )* ;
+	// lifescript.g:211:1: addexp returns [Expr ast] : e1= mulexp ( ( '+' e2= mulexp ) | ( '-' e3= mulexp ) )* ;
 	public final Expr addexp() throws RecognitionException {
 		Expr ast = null;
 
@@ -2187,15 +2186,15 @@ public class lifescriptParser extends Parser {
 		Expr e3 =null;
 
 		try {
-			// lifescript.g:213:2: (e1= mulexp ( ( '+' e2= mulexp ) | ( '-' e3= mulexp ) )* )
-			// lifescript.g:213:4: e1= mulexp ( ( '+' e2= mulexp ) | ( '-' e3= mulexp ) )*
+			// lifescript.g:212:2: (e1= mulexp ( ( '+' e2= mulexp ) | ( '-' e3= mulexp ) )* )
+			// lifescript.g:212:4: e1= mulexp ( ( '+' e2= mulexp ) | ( '-' e3= mulexp ) )*
 			{
-			pushFollow(FOLLOW_mulexp_in_addexp1449);
+			pushFollow(FOLLOW_mulexp_in_addexp1445);
 			e1=mulexp();
 			state._fsp--;
 
 			 ast = e1; 
-			// lifescript.g:214:3: ( ( '+' e2= mulexp ) | ( '-' e3= mulexp ) )*
+			// lifescript.g:213:3: ( ( '+' e2= mulexp ) | ( '-' e3= mulexp ) )*
 			loop38:
 			while (true) {
 				int alt38=3;
@@ -2209,13 +2208,13 @@ public class lifescriptParser extends Parser {
 
 				switch (alt38) {
 				case 1 :
-					// lifescript.g:215:4: ( '+' e2= mulexp )
+					// lifescript.g:214:4: ( '+' e2= mulexp )
 					{
-					// lifescript.g:215:4: ( '+' e2= mulexp )
-					// lifescript.g:215:5: '+' e2= mulexp
+					// lifescript.g:214:4: ( '+' e2= mulexp )
+					// lifescript.g:214:5: '+' e2= mulexp
 					{
-					match(input,18,FOLLOW_18_in_addexp1461); 
-					pushFollow(FOLLOW_mulexp_in_addexp1465);
+					match(input,18,FOLLOW_18_in_addexp1457); 
+					pushFollow(FOLLOW_mulexp_in_addexp1461);
 					e2=mulexp();
 					state._fsp--;
 
@@ -2225,13 +2224,13 @@ public class lifescriptParser extends Parser {
 					}
 					break;
 				case 2 :
-					// lifescript.g:216:4: ( '-' e3= mulexp )
+					// lifescript.g:215:4: ( '-' e3= mulexp )
 					{
-					// lifescript.g:216:4: ( '-' e3= mulexp )
-					// lifescript.g:216:5: '-' e3= mulexp
+					// lifescript.g:215:4: ( '-' e3= mulexp )
+					// lifescript.g:215:5: '-' e3= mulexp
 					{
-					match(input,20,FOLLOW_20_in_addexp1475); 
-					pushFollow(FOLLOW_mulexp_in_addexp1479);
+					match(input,20,FOLLOW_20_in_addexp1471); 
+					pushFollow(FOLLOW_mulexp_in_addexp1475);
 					e3=mulexp();
 					state._fsp--;
 
@@ -2263,7 +2262,7 @@ public class lifescriptParser extends Parser {
 
 
 	// $ANTLR start "mulexp"
-	// lifescript.g:220:1: mulexp returns [Expr ast] : e1= atom ( ( '*' e2= atom ) | ( '/' e3= atom ) )* ;
+	// lifescript.g:219:1: mulexp returns [Expr ast] : e1= atom ( ( '*' e2= atom ) | ( '/' e3= atom ) )* ;
 	public final Expr mulexp() throws RecognitionException {
 		Expr ast = null;
 
@@ -2273,15 +2272,15 @@ public class lifescriptParser extends Parser {
 		Expr e3 =null;
 
 		try {
-			// lifescript.g:221:2: (e1= atom ( ( '*' e2= atom ) | ( '/' e3= atom ) )* )
-			// lifescript.g:221:4: e1= atom ( ( '*' e2= atom ) | ( '/' e3= atom ) )*
+			// lifescript.g:220:2: (e1= atom ( ( '*' e2= atom ) | ( '/' e3= atom ) )* )
+			// lifescript.g:220:4: e1= atom ( ( '*' e2= atom ) | ( '/' e3= atom ) )*
 			{
-			pushFollow(FOLLOW_atom_in_mulexp1505);
+			pushFollow(FOLLOW_atom_in_mulexp1501);
 			e1=atom();
 			state._fsp--;
 
 			 ast = e1; 
-			// lifescript.g:222:3: ( ( '*' e2= atom ) | ( '/' e3= atom ) )*
+			// lifescript.g:221:3: ( ( '*' e2= atom ) | ( '/' e3= atom ) )*
 			loop39:
 			while (true) {
 				int alt39=3;
@@ -2295,13 +2294,13 @@ public class lifescriptParser extends Parser {
 
 				switch (alt39) {
 				case 1 :
-					// lifescript.g:223:4: ( '*' e2= atom )
+					// lifescript.g:222:4: ( '*' e2= atom )
 					{
-					// lifescript.g:223:4: ( '*' e2= atom )
-					// lifescript.g:223:5: '*' e2= atom
+					// lifescript.g:222:4: ( '*' e2= atom )
+					// lifescript.g:222:5: '*' e2= atom
 					{
-					match(input,17,FOLLOW_17_in_mulexp1517); 
-					pushFollow(FOLLOW_atom_in_mulexp1521);
+					match(input,17,FOLLOW_17_in_mulexp1513); 
+					pushFollow(FOLLOW_atom_in_mulexp1517);
 					e2=atom();
 					state._fsp--;
 
@@ -2311,13 +2310,13 @@ public class lifescriptParser extends Parser {
 					}
 					break;
 				case 2 :
-					// lifescript.g:224:4: ( '/' e3= atom )
+					// lifescript.g:223:4: ( '/' e3= atom )
 					{
-					// lifescript.g:224:4: ( '/' e3= atom )
-					// lifescript.g:224:5: '/' e3= atom
+					// lifescript.g:223:4: ( '/' e3= atom )
+					// lifescript.g:223:5: '/' e3= atom
 					{
-					match(input,21,FOLLOW_21_in_mulexp1531); 
-					pushFollow(FOLLOW_atom_in_mulexp1535);
+					match(input,21,FOLLOW_21_in_mulexp1527); 
+					pushFollow(FOLLOW_atom_in_mulexp1531);
 					e3=atom();
 					state._fsp--;
 
@@ -2349,7 +2348,7 @@ public class lifescriptParser extends Parser {
 
 
 	// $ANTLR start "atom"
-	// lifescript.g:228:1: atom returns [Expr ast] : ( '(' exp ')' | '!' exp | ID | num | '-' num | BOOLEAN | 'neighbors' ( 'of' coordexp )? ( 'that' 'are' STRING )? | 'cell' 'at' coordexp ( 'is' STRING )? | 'neighbor' 'at' coordexp ( 'is' STRING )? | 'alive' | 'state' ( 'of' coordexp )? | 'random' '(' lb= exp ',' ub= exp ')' );
+	// lifescript.g:227:1: atom returns [Expr ast] : ( '(' exp ')' | '!' exp | ID | num | '-' num | BOOLEAN | 'neighbors' ( 'of' coordexp )? ( 'that' 'are' STRING )? | 'cell' 'at' coordexp ( 'is' STRING )? | 'neighbor' 'at' coordexp ( 'is' STRING )? | 'alive' | 'state' ( 'of' coordexp )? | 'random' '(' lb= exp ',' ub= exp ')' );
 	public final Expr atom() throws RecognitionException {
 		Expr ast = null;
 
@@ -2371,7 +2370,7 @@ public class lifescriptParser extends Parser {
 		CoordExpr coordexp35 =null;
 
 		try {
-			// lifescript.g:229:2: ( '(' exp ')' | '!' exp | ID | num | '-' num | BOOLEAN | 'neighbors' ( 'of' coordexp )? ( 'that' 'are' STRING )? | 'cell' 'at' coordexp ( 'is' STRING )? | 'neighbor' 'at' coordexp ( 'is' STRING )? | 'alive' | 'state' ( 'of' coordexp )? | 'random' '(' lb= exp ',' ub= exp ')' )
+			// lifescript.g:228:2: ( '(' exp ')' | '!' exp | ID | num | '-' num | BOOLEAN | 'neighbors' ( 'of' coordexp )? ( 'that' 'are' STRING )? | 'cell' 'at' coordexp ( 'is' STRING )? | 'neighbor' 'at' coordexp ( 'is' STRING )? | 'alive' | 'state' ( 'of' coordexp )? | 'random' '(' lb= exp ',' ub= exp ')' )
 			int alt45=12;
 			switch ( input.LA(1) ) {
 			case 15:
@@ -2442,22 +2441,22 @@ public class lifescriptParser extends Parser {
 			}
 			switch (alt45) {
 				case 1 :
-					// lifescript.g:229:4: '(' exp ')'
+					// lifescript.g:228:4: '(' exp ')'
 					{
-					match(input,15,FOLLOW_15_in_atom1560); 
-					pushFollow(FOLLOW_exp_in_atom1562);
+					match(input,15,FOLLOW_15_in_atom1556); 
+					pushFollow(FOLLOW_exp_in_atom1558);
 					exp23=exp();
 					state._fsp--;
 
-					match(input,16,FOLLOW_16_in_atom1564); 
+					match(input,16,FOLLOW_16_in_atom1560); 
 					 ast = new ParenExpr(exp23); 
 					}
 					break;
 				case 2 :
-					// lifescript.g:230:4: '!' exp
+					// lifescript.g:229:4: '!' exp
 					{
-					match(input,12,FOLLOW_12_in_atom1574); 
-					pushFollow(FOLLOW_exp_in_atom1576);
+					match(input,12,FOLLOW_12_in_atom1570); 
+					pushFollow(FOLLOW_exp_in_atom1572);
 					exp24=exp();
 					state._fsp--;
 
@@ -2465,16 +2464,16 @@ public class lifescriptParser extends Parser {
 					}
 					break;
 				case 3 :
-					// lifescript.g:231:4: ID
+					// lifescript.g:230:4: ID
 					{
-					ID25=(Token)match(input,ID,FOLLOW_ID_in_atom1585); 
+					ID25=(Token)match(input,ID,FOLLOW_ID_in_atom1581); 
 					 ast = new VarExpr((ID25!=null?ID25.getText():null)); usageMap.put((ID25!=null?ID25.getText():null),new Boolean(true)); 
 					}
 					break;
 				case 4 :
-					// lifescript.g:232:4: num
+					// lifescript.g:231:4: num
 					{
-					pushFollow(FOLLOW_num_in_atom1593);
+					pushFollow(FOLLOW_num_in_atom1589);
 					num26=num();
 					state._fsp--;
 
@@ -2482,10 +2481,10 @@ public class lifescriptParser extends Parser {
 					}
 					break;
 				case 5 :
-					// lifescript.g:233:4: '-' num
+					// lifescript.g:232:4: '-' num
 					{
-					match(input,20,FOLLOW_20_in_atom1601); 
-					pushFollow(FOLLOW_num_in_atom1603);
+					match(input,20,FOLLOW_20_in_atom1597); 
+					pushFollow(FOLLOW_num_in_atom1599);
 					num27=num();
 					state._fsp--;
 
@@ -2493,17 +2492,17 @@ public class lifescriptParser extends Parser {
 					}
 					break;
 				case 6 :
-					// lifescript.g:234:4: BOOLEAN
+					// lifescript.g:233:4: BOOLEAN
 					{
-					BOOLEAN28=(Token)match(input,BOOLEAN,FOLLOW_BOOLEAN_in_atom1611); 
+					BOOLEAN28=(Token)match(input,BOOLEAN,FOLLOW_BOOLEAN_in_atom1607); 
 					 ast = new BooleanExpr((BOOLEAN28!=null?BOOLEAN28.getText():null)); 
 					}
 					break;
 				case 7 :
-					// lifescript.g:235:4: 'neighbors' ( 'of' coordexp )? ( 'that' 'are' STRING )?
+					// lifescript.g:234:4: 'neighbors' ( 'of' coordexp )? ( 'that' 'are' STRING )?
 					{
-					match(input,67,FOLLOW_67_in_atom1620); 
-					// lifescript.g:235:16: ( 'of' coordexp )?
+					match(input,67,FOLLOW_67_in_atom1616); 
+					// lifescript.g:234:16: ( 'of' coordexp )?
 					int alt40=2;
 					int LA40_0 = input.LA(1);
 					if ( (LA40_0==69) ) {
@@ -2511,10 +2510,10 @@ public class lifescriptParser extends Parser {
 					}
 					switch (alt40) {
 						case 1 :
-							// lifescript.g:235:17: 'of' coordexp
+							// lifescript.g:234:17: 'of' coordexp
 							{
-							match(input,69,FOLLOW_69_in_atom1623); 
-							pushFollow(FOLLOW_coordexp_in_atom1625);
+							match(input,69,FOLLOW_69_in_atom1619); 
+							pushFollow(FOLLOW_coordexp_in_atom1621);
 							coordexp29=coordexp();
 							state._fsp--;
 
@@ -2523,7 +2522,7 @@ public class lifescriptParser extends Parser {
 
 					}
 
-					// lifescript.g:235:33: ( 'that' 'are' STRING )?
+					// lifescript.g:234:33: ( 'that' 'are' STRING )?
 					int alt41=2;
 					int LA41_0 = input.LA(1);
 					if ( (LA41_0==78) ) {
@@ -2531,11 +2530,11 @@ public class lifescriptParser extends Parser {
 					}
 					switch (alt41) {
 						case 1 :
-							// lifescript.g:235:34: 'that' 'are' STRING
+							// lifescript.g:234:34: 'that' 'are' STRING
 							{
-							match(input,78,FOLLOW_78_in_atom1630); 
-							match(input,47,FOLLOW_47_in_atom1632); 
-							STRING30=(Token)match(input,STRING,FOLLOW_STRING_in_atom1634); 
+							match(input,78,FOLLOW_78_in_atom1626); 
+							match(input,47,FOLLOW_47_in_atom1628); 
+							STRING30=(Token)match(input,STRING,FOLLOW_STRING_in_atom1630); 
 							}
 							break;
 
@@ -2545,15 +2544,15 @@ public class lifescriptParser extends Parser {
 					}
 					break;
 				case 8 :
-					// lifescript.g:237:4: 'cell' 'at' coordexp ( 'is' STRING )?
+					// lifescript.g:236:4: 'cell' 'at' coordexp ( 'is' STRING )?
 					{
-					match(input,50,FOLLOW_50_in_atom1645); 
-					match(input,48,FOLLOW_48_in_atom1647); 
-					pushFollow(FOLLOW_coordexp_in_atom1649);
+					match(input,50,FOLLOW_50_in_atom1641); 
+					match(input,48,FOLLOW_48_in_atom1643); 
+					pushFollow(FOLLOW_coordexp_in_atom1645);
 					coordexp32=coordexp();
 					state._fsp--;
 
-					// lifescript.g:237:25: ( 'is' STRING )?
+					// lifescript.g:236:25: ( 'is' STRING )?
 					int alt42=2;
 					int LA42_0 = input.LA(1);
 					if ( (LA42_0==64) ) {
@@ -2564,10 +2563,10 @@ public class lifescriptParser extends Parser {
 					}
 					switch (alt42) {
 						case 1 :
-							// lifescript.g:237:26: 'is' STRING
+							// lifescript.g:236:26: 'is' STRING
 							{
-							match(input,64,FOLLOW_64_in_atom1652); 
-							STRING31=(Token)match(input,STRING,FOLLOW_STRING_in_atom1654); 
+							match(input,64,FOLLOW_64_in_atom1648); 
+							STRING31=(Token)match(input,STRING,FOLLOW_STRING_in_atom1650); 
 							}
 							break;
 
@@ -2577,15 +2576,15 @@ public class lifescriptParser extends Parser {
 					}
 					break;
 				case 9 :
-					// lifescript.g:239:4: 'neighbor' 'at' coordexp ( 'is' STRING )?
+					// lifescript.g:238:4: 'neighbor' 'at' coordexp ( 'is' STRING )?
 					{
-					match(input,66,FOLLOW_66_in_atom1666); 
-					match(input,48,FOLLOW_48_in_atom1668); 
-					pushFollow(FOLLOW_coordexp_in_atom1670);
+					match(input,66,FOLLOW_66_in_atom1662); 
+					match(input,48,FOLLOW_48_in_atom1664); 
+					pushFollow(FOLLOW_coordexp_in_atom1666);
 					coordexp34=coordexp();
 					state._fsp--;
 
-					// lifescript.g:239:29: ( 'is' STRING )?
+					// lifescript.g:238:29: ( 'is' STRING )?
 					int alt43=2;
 					int LA43_0 = input.LA(1);
 					if ( (LA43_0==64) ) {
@@ -2596,10 +2595,10 @@ public class lifescriptParser extends Parser {
 					}
 					switch (alt43) {
 						case 1 :
-							// lifescript.g:239:30: 'is' STRING
+							// lifescript.g:238:30: 'is' STRING
 							{
-							match(input,64,FOLLOW_64_in_atom1673); 
-							STRING33=(Token)match(input,STRING,FOLLOW_STRING_in_atom1675); 
+							match(input,64,FOLLOW_64_in_atom1669); 
+							STRING33=(Token)match(input,STRING,FOLLOW_STRING_in_atom1671); 
 							}
 							break;
 
@@ -2609,17 +2608,17 @@ public class lifescriptParser extends Parser {
 					}
 					break;
 				case 10 :
-					// lifescript.g:241:4: 'alive'
+					// lifescript.g:240:4: 'alive'
 					{
-					match(input,46,FOLLOW_46_in_atom1687); 
+					match(input,46,FOLLOW_46_in_atom1683); 
 					ast = new AliveExpr();
 					}
 					break;
 				case 11 :
-					// lifescript.g:242:4: 'state' ( 'of' coordexp )?
+					// lifescript.g:241:4: 'state' ( 'of' coordexp )?
 					{
-					match(input,75,FOLLOW_75_in_atom1694); 
-					// lifescript.g:242:12: ( 'of' coordexp )?
+					match(input,75,FOLLOW_75_in_atom1690); 
+					// lifescript.g:241:12: ( 'of' coordexp )?
 					int alt44=2;
 					int LA44_0 = input.LA(1);
 					if ( (LA44_0==69) ) {
@@ -2627,10 +2626,10 @@ public class lifescriptParser extends Parser {
 					}
 					switch (alt44) {
 						case 1 :
-							// lifescript.g:242:13: 'of' coordexp
+							// lifescript.g:241:13: 'of' coordexp
 							{
-							match(input,69,FOLLOW_69_in_atom1697); 
-							pushFollow(FOLLOW_coordexp_in_atom1699);
+							match(input,69,FOLLOW_69_in_atom1693); 
+							pushFollow(FOLLOW_coordexp_in_atom1695);
 							coordexp35=coordexp();
 							state._fsp--;
 
@@ -2643,20 +2642,20 @@ public class lifescriptParser extends Parser {
 					}
 					break;
 				case 12 :
-					// lifescript.g:243:4: 'random' '(' lb= exp ',' ub= exp ')'
+					// lifescript.g:242:4: 'random' '(' lb= exp ',' ub= exp ')'
 					{
-					match(input,71,FOLLOW_71_in_atom1708); 
-					match(input,15,FOLLOW_15_in_atom1710); 
-					pushFollow(FOLLOW_exp_in_atom1714);
+					match(input,71,FOLLOW_71_in_atom1704); 
+					match(input,15,FOLLOW_15_in_atom1706); 
+					pushFollow(FOLLOW_exp_in_atom1710);
 					lb=exp();
 					state._fsp--;
 
-					match(input,19,FOLLOW_19_in_atom1716); 
-					pushFollow(FOLLOW_exp_in_atom1720);
+					match(input,19,FOLLOW_19_in_atom1712); 
+					pushFollow(FOLLOW_exp_in_atom1716);
 					ub=exp();
 					state._fsp--;
 
-					match(input,16,FOLLOW_16_in_atom1722); 
+					match(input,16,FOLLOW_16_in_atom1718); 
 					ast = new RandomExpr(lb, ub);
 					}
 					break;
@@ -2677,7 +2676,7 @@ public class lifescriptParser extends Parser {
 
 
 	// $ANTLR start "value"
-	// lifescript.g:246:1: value returns [Expr ast] : ( ID | num | '-' num );
+	// lifescript.g:245:1: value returns [Expr ast] : ( ID | num | '-' num );
 	public final Expr value() throws RecognitionException {
 		Expr ast = null;
 
@@ -2687,7 +2686,7 @@ public class lifescriptParser extends Parser {
 		ParserRuleReturnScope num38 =null;
 
 		try {
-			// lifescript.g:247:2: ( ID | num | '-' num )
+			// lifescript.g:246:2: ( ID | num | '-' num )
 			int alt46=3;
 			switch ( input.LA(1) ) {
 			case ID:
@@ -2713,16 +2712,16 @@ public class lifescriptParser extends Parser {
 			}
 			switch (alt46) {
 				case 1 :
-					// lifescript.g:247:4: ID
+					// lifescript.g:246:4: ID
 					{
-					ID36=(Token)match(input,ID,FOLLOW_ID_in_value1741); 
+					ID36=(Token)match(input,ID,FOLLOW_ID_in_value1737); 
 					 ast = new VarExpr((ID36!=null?ID36.getText():null)); usageMap.put((ID36!=null?ID36.getText():null),new Boolean(true)); 
 					}
 					break;
 				case 2 :
-					// lifescript.g:248:4: num
+					// lifescript.g:247:4: num
 					{
-					pushFollow(FOLLOW_num_in_value1749);
+					pushFollow(FOLLOW_num_in_value1745);
 					num37=num();
 					state._fsp--;
 
@@ -2730,10 +2729,10 @@ public class lifescriptParser extends Parser {
 					}
 					break;
 				case 3 :
-					// lifescript.g:249:4: '-' num
+					// lifescript.g:248:4: '-' num
 					{
-					match(input,20,FOLLOW_20_in_value1757); 
-					pushFollow(FOLLOW_num_in_value1759);
+					match(input,20,FOLLOW_20_in_value1753); 
+					pushFollow(FOLLOW_num_in_value1755);
 					num38=num();
 					state._fsp--;
 
@@ -2760,13 +2759,13 @@ public class lifescriptParser extends Parser {
 
 
 	// $ANTLR start "num"
-	// lifescript.g:252:1: num : ( INT | FLOAT );
+	// lifescript.g:251:1: num : ( INT | FLOAT );
 	public final lifescriptParser.num_return num() throws RecognitionException {
 		lifescriptParser.num_return retval = new lifescriptParser.num_return();
 		retval.start = input.LT(1);
 
 		try {
-			// lifescript.g:252:5: ( INT | FLOAT )
+			// lifescript.g:251:5: ( INT | FLOAT )
 			// lifescript.g:
 			{
 			if ( input.LA(1)==FLOAT||input.LA(1)==INT ) {
@@ -2847,200 +2846,199 @@ public class lifescriptParser extends Parser {
 	public static final BitSet FOLLOW_82_in_stmt430 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
 	public static final BitSet FOLLOW_exp_in_stmt432 = new BitSet(new long[]{0xE0BA701000000100L,0x00000000000E1742L});
 	public static final BitSet FOLLOW_stmt_in_stmt442 = new BitSet(new long[]{0xE8BA701000000100L,0x00000000000E1742L});
-	public static final BitSet FOLLOW_59_in_stmt449 = new BitSet(new long[]{0x0800000000000000L});
-	public static final BitSet FOLLOW_59_in_stmt459 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_61_in_stmt468 = new BitSet(new long[]{0x0000000000000100L});
-	public static final BitSet FOLLOW_ID_in_stmt472 = new BitSet(new long[]{0x0000000002000000L});
-	public static final BitSet FOLLOW_25_in_stmt474 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
-	public static final BitSet FOLLOW_exp_in_stmt478 = new BitSet(new long[]{0x0000000000000000L,0x0000000000010000L});
-	public static final BitSet FOLLOW_80_in_stmt480 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
-	public static final BitSet FOLLOW_exp_in_stmt484 = new BitSet(new long[]{0xE0BA701000000100L,0x00000000000E3742L});
-	public static final BitSet FOLLOW_77_in_stmt487 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
-	public static final BitSet FOLLOW_exp_in_stmt491 = new BitSet(new long[]{0xE0BA701000000100L,0x00000000000E1742L});
-	public static final BitSet FOLLOW_stmt_in_stmt511 = new BitSet(new long[]{0xE0BA701000000100L,0x00000000000E1752L});
-	public static final BitSet FOLLOW_68_in_stmt523 = new BitSet(new long[]{0x0000000000000100L});
-	public static final BitSet FOLLOW_ID_in_stmt527 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_81_in_stmt538 = new BitSet(new long[]{0x0000000000000100L});
-	public static final BitSet FOLLOW_ID_in_stmt542 = new BitSet(new long[]{0x0000000000400000L});
-	public static final BitSet FOLLOW_22_in_stmt544 = new BitSet(new long[]{0x0000000400000000L});
-	public static final BitSet FOLLOW_34_in_stmt555 = new BitSet(new long[]{0x0000040000000000L});
-	public static final BitSet FOLLOW_42_in_stmt557 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
-	public static final BitSet FOLLOW_exp_in_stmt561 = new BitSet(new long[]{0x0000080000000000L});
-	public static final BitSet FOLLOW_43_in_stmt563 = new BitSet(new long[]{0x0000000002000000L});
-	public static final BitSet FOLLOW_25_in_stmt565 = new BitSet(new long[]{0x0000000000000000L,0x0000000000100000L});
-	public static final BitSet FOLLOW_84_in_stmt570 = new BitSet(new long[]{0x0004410000109390L,0x000000000000088CL});
-	public static final BitSet FOLLOW_exp_in_stmt575 = new BitSet(new long[]{0x0000000000080000L});
-	public static final BitSet FOLLOW_19_in_stmt577 = new BitSet(new long[]{0x0004410000109390L,0x000000000000088CL});
-	public static final BitSet FOLLOW_40_in_stmt587 = new BitSet(new long[]{0x0000000000080000L,0x0000000000400000L});
-	public static final BitSet FOLLOW_19_in_stmt595 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
-	public static final BitSet FOLLOW_exp_in_stmt599 = new BitSet(new long[]{0x0000000000080000L,0x0000000000400000L});
-	public static final BitSet FOLLOW_86_in_stmt605 = new BitSet(new long[]{0xE0BA701000000100L,0x00000000000E1742L});
-	public static final BitSet FOLLOW_stmt_in_stmt627 = new BitSet(new long[]{0xE4BA701000000100L,0x00000000000E1742L});
-	public static final BitSet FOLLOW_58_in_stmt635 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_46_in_stmt647 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_52_in_stmt657 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_49_in_stmt667 = new BitSet(new long[]{0x0000000000000400L});
-	public static final BitSet FOLLOW_STRING_in_stmt669 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_74_in_stmt679 = new BitSet(new long[]{0x0000000000000000L,0x0000000000010020L});
-	public static final BitSet FOLLOW_69_in_stmt682 = new BitSet(new long[]{0x0000000000008000L});
-	public static final BitSet FOLLOW_coordexp_in_stmt684 = new BitSet(new long[]{0x0000000000000000L,0x0000000000010000L});
-	public static final BitSet FOLLOW_80_in_stmt688 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
-	public static final BitSet FOLLOW_exp_in_stmt690 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_76_in_stmt700 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
-	public static final BitSet FOLLOW_exp_in_stmt702 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000001L});
-	public static final BitSet FOLLOW_64_in_stmt704 = new BitSet(new long[]{0x0000000000008000L});
-	public static final BitSet FOLLOW_colorexp_in_stmt706 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_51_in_stmt716 = new BitSet(new long[]{0x0000000000000400L});
-	public static final BitSet FOLLOW_STRING_in_stmt718 = new BitSet(new long[]{0x0001000000000000L});
-	public static final BitSet FOLLOW_48_in_stmt720 = new BitSet(new long[]{0x0000000000008000L});
-	public static final BitSet FOLLOW_coordexp_in_stmt722 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_65_in_stmt732 = new BitSet(new long[]{0x0001000000000400L});
-	public static final BitSet FOLLOW_STRING_in_stmt735 = new BitSet(new long[]{0x0001000000000000L});
-	public static final BitSet FOLLOW_48_in_stmt739 = new BitSet(new long[]{0x0000000000008000L});
-	public static final BitSet FOLLOW_coordexp_in_stmt741 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_45_in_stmt751 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_44_in_stmt761 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_73_in_stmt772 = new BitSet(new long[]{0x0001000000000000L,0x0000000000010000L});
-	public static final BitSet FOLLOW_48_in_stmt775 = new BitSet(new long[]{0x0000000000008000L});
-	public static final BitSet FOLLOW_coordexp_in_stmt777 = new BitSet(new long[]{0x0000000000000000L,0x0000000000010000L});
-	public static final BitSet FOLLOW_80_in_stmt781 = new BitSet(new long[]{0x0000000000008000L});
-	public static final BitSet FOLLOW_colorexp_in_stmt783 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_83_in_stmt793 = new BitSet(new long[]{0x0000000000400000L});
-	public static final BitSet FOLLOW_22_in_stmt795 = new BitSet(new long[]{0xE0BA701000000100L,0x00000000000E1742L});
-	public static final BitSet FOLLOW_stmt_in_stmt805 = new BitSet(new long[]{0xF0BA701000000100L,0x00000000000E1742L});
-	public static final BitSet FOLLOW_60_in_stmt813 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_36_in_stmt821 = new BitSet(new long[]{0x0000000000400000L});
-	public static final BitSet FOLLOW_22_in_stmt823 = new BitSet(new long[]{0x000002EBE0000002L});
-	public static final BitSet FOLLOW_39_in_stmt834 = new BitSet(new long[]{0x0000000002000000L});
-	public static final BitSet FOLLOW_25_in_stmt836 = new BitSet(new long[]{0x0000000000000400L});
-	public static final BitSet FOLLOW_STRING_in_stmt840 = new BitSet(new long[]{0x0000026BE0000002L});
-	public static final BitSet FOLLOW_29_in_stmt849 = new BitSet(new long[]{0x0000000002000000L});
-	public static final BitSet FOLLOW_25_in_stmt851 = new BitSet(new long[]{0x0000000000008000L});
-	public static final BitSet FOLLOW_coordexp_in_stmt855 = new BitSet(new long[]{0x0000026BC0000002L});
-	public static final BitSet FOLLOW_31_in_stmt866 = new BitSet(new long[]{0x0000000002000000L});
-	public static final BitSet FOLLOW_25_in_stmt868 = new BitSet(new long[]{0x0000000000008000L});
-	public static final BitSet FOLLOW_coordexp_in_stmt872 = new BitSet(new long[]{0x0000026B40000002L});
-	public static final BitSet FOLLOW_41_in_stmt883 = new BitSet(new long[]{0x0000000002000000L});
-	public static final BitSet FOLLOW_25_in_stmt885 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
-	public static final BitSet FOLLOW_exp_in_stmt889 = new BitSet(new long[]{0x0000006B40000002L});
-	public static final BitSet FOLLOW_37_in_stmt900 = new BitSet(new long[]{0x0000000002000000L});
-	public static final BitSet FOLLOW_25_in_stmt902 = new BitSet(new long[]{0x0000000000000000L,0x0000000000100000L});
-	public static final BitSet FOLLOW_84_in_stmt904 = new BitSet(new long[]{0x0000000000008000L});
-	public static final BitSet FOLLOW_15_in_stmt912 = new BitSet(new long[]{0x0000000000000400L});
-	public static final BitSet FOLLOW_STRING_in_stmt916 = new BitSet(new long[]{0x0000000000080000L});
-	public static final BitSet FOLLOW_19_in_stmt918 = new BitSet(new long[]{0x0000000000008000L});
-	public static final BitSet FOLLOW_coordexp_in_stmt922 = new BitSet(new long[]{0x0000000000010000L});
-	public static final BitSet FOLLOW_16_in_stmt935 = new BitSet(new long[]{0x0000000000080000L,0x0000000000400000L});
-	public static final BitSet FOLLOW_19_in_stmt942 = new BitSet(new long[]{0x0000000000008000L});
-	public static final BitSet FOLLOW_15_in_stmt944 = new BitSet(new long[]{0x0000000000000400L});
-	public static final BitSet FOLLOW_STRING_in_stmt948 = new BitSet(new long[]{0x0000000000080000L});
-	public static final BitSet FOLLOW_19_in_stmt950 = new BitSet(new long[]{0x0000000000008000L});
-	public static final BitSet FOLLOW_coordexp_in_stmt954 = new BitSet(new long[]{0x0000000000010000L});
-	public static final BitSet FOLLOW_16_in_stmt967 = new BitSet(new long[]{0x0000000000080000L,0x0000000000400000L});
-	public static final BitSet FOLLOW_86_in_stmt971 = new BitSet(new long[]{0x0000004B40000002L});
-	public static final BitSet FOLLOW_30_in_stmt986 = new BitSet(new long[]{0x0000000002000000L});
-	public static final BitSet FOLLOW_25_in_stmt988 = new BitSet(new long[]{0x0000000000000400L});
-	public static final BitSet FOLLOW_STRING_in_stmt992 = new BitSet(new long[]{0x0000004B00000002L});
-	public static final BitSet FOLLOW_32_in_stmt1000 = new BitSet(new long[]{0x0000000002000000L});
-	public static final BitSet FOLLOW_25_in_stmt1002 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
-	public static final BitSet FOLLOW_exp_in_stmt1006 = new BitSet(new long[]{0x0000004A00000002L});
-	public static final BitSet FOLLOW_33_in_stmt1017 = new BitSet(new long[]{0x0000000002000000L});
-	public static final BitSet FOLLOW_25_in_stmt1019 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
-	public static final BitSet FOLLOW_exp_in_stmt1023 = new BitSet(new long[]{0x0000004800000002L});
-	public static final BitSet FOLLOW_35_in_stmt1034 = new BitSet(new long[]{0x0000000002000000L});
-	public static final BitSet FOLLOW_25_in_stmt1036 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
-	public static final BitSet FOLLOW_exp_in_stmt1040 = new BitSet(new long[]{0x0000004000000002L});
-	public static final BitSet FOLLOW_38_in_stmt1051 = new BitSet(new long[]{0x0000000002000000L});
-	public static final BitSet FOLLOW_25_in_stmt1053 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
-	public static final BitSet FOLLOW_exp_in_stmt1057 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_15_in_coordexp1082 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
-	public static final BitSet FOLLOW_exp_in_coordexp1086 = new BitSet(new long[]{0x0000000000080000L});
-	public static final BitSet FOLLOW_19_in_coordexp1088 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
-	public static final BitSet FOLLOW_exp_in_coordexp1092 = new BitSet(new long[]{0x0000000000010000L});
-	public static final BitSet FOLLOW_16_in_coordexp1094 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_15_in_colorexp1112 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
-	public static final BitSet FOLLOW_exp_in_colorexp1116 = new BitSet(new long[]{0x0000000000080000L});
-	public static final BitSet FOLLOW_19_in_colorexp1118 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
-	public static final BitSet FOLLOW_exp_in_colorexp1122 = new BitSet(new long[]{0x0000000000080000L});
-	public static final BitSet FOLLOW_19_in_colorexp1124 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
-	public static final BitSet FOLLOW_exp_in_colorexp1128 = new BitSet(new long[]{0x0000000000010000L});
-	public static final BitSet FOLLOW_16_in_colorexp1130 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_15_in_colorexp1137 = new BitSet(new long[]{0x0000000000000400L});
-	public static final BitSet FOLLOW_STRING_in_colorexp1139 = new BitSet(new long[]{0x0000000000010000L});
-	public static final BitSet FOLLOW_16_in_colorexp1141 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_ID_in_formalParamList1176 = new BitSet(new long[]{0x0000000000080002L});
-	public static final BitSet FOLLOW_19_in_formalParamList1180 = new BitSet(new long[]{0x0000000000000100L});
-	public static final BitSet FOLLOW_ID_in_formalParamList1184 = new BitSet(new long[]{0x0000000000080002L});
-	public static final BitSet FOLLOW_exp_in_actualParamList1222 = new BitSet(new long[]{0x0000000000080002L});
-	public static final BitSet FOLLOW_19_in_actualParamList1227 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
-	public static final BitSet FOLLOW_exp_in_actualParamList1231 = new BitSet(new long[]{0x0000000000080002L});
-	public static final BitSet FOLLOW_logexp_in_exp1259 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_relexp_in_logexp1279 = new BitSet(new long[]{0x0000000000004002L,0x0000000000200000L});
-	public static final BitSet FOLLOW_14_in_logexp1291 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
-	public static final BitSet FOLLOW_relexp_in_logexp1295 = new BitSet(new long[]{0x0000000000004002L,0x0000000000200000L});
-	public static final BitSet FOLLOW_85_in_logexp1307 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
-	public static final BitSet FOLLOW_relexp_in_logexp1311 = new BitSet(new long[]{0x0000000000004002L,0x0000000000200000L});
-	public static final BitSet FOLLOW_addexp_in_relexp1337 = new BitSet(new long[]{0x000000001D802002L});
-	public static final BitSet FOLLOW_26_in_relexp1350 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
-	public static final BitSet FOLLOW_addexp_in_relexp1354 = new BitSet(new long[]{0x000000001D802002L});
-	public static final BitSet FOLLOW_24_in_relexp1364 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
-	public static final BitSet FOLLOW_addexp_in_relexp1368 = new BitSet(new long[]{0x000000001D802002L});
-	public static final BitSet FOLLOW_28_in_relexp1378 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
-	public static final BitSet FOLLOW_addexp_in_relexp1382 = new BitSet(new long[]{0x000000001D802002L});
-	public static final BitSet FOLLOW_23_in_relexp1392 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
-	public static final BitSet FOLLOW_addexp_in_relexp1396 = new BitSet(new long[]{0x000000001D802002L});
-	public static final BitSet FOLLOW_27_in_relexp1406 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
-	public static final BitSet FOLLOW_addexp_in_relexp1410 = new BitSet(new long[]{0x000000001D802002L});
-	public static final BitSet FOLLOW_13_in_relexp1420 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
-	public static final BitSet FOLLOW_addexp_in_relexp1424 = new BitSet(new long[]{0x000000001D802002L});
-	public static final BitSet FOLLOW_mulexp_in_addexp1449 = new BitSet(new long[]{0x0000000000140002L});
-	public static final BitSet FOLLOW_18_in_addexp1461 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
-	public static final BitSet FOLLOW_mulexp_in_addexp1465 = new BitSet(new long[]{0x0000000000140002L});
-	public static final BitSet FOLLOW_20_in_addexp1475 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
-	public static final BitSet FOLLOW_mulexp_in_addexp1479 = new BitSet(new long[]{0x0000000000140002L});
-	public static final BitSet FOLLOW_atom_in_mulexp1505 = new BitSet(new long[]{0x0000000000220002L});
-	public static final BitSet FOLLOW_17_in_mulexp1517 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
-	public static final BitSet FOLLOW_atom_in_mulexp1521 = new BitSet(new long[]{0x0000000000220002L});
-	public static final BitSet FOLLOW_21_in_mulexp1531 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
-	public static final BitSet FOLLOW_atom_in_mulexp1535 = new BitSet(new long[]{0x0000000000220002L});
-	public static final BitSet FOLLOW_15_in_atom1560 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
-	public static final BitSet FOLLOW_exp_in_atom1562 = new BitSet(new long[]{0x0000000000010000L});
-	public static final BitSet FOLLOW_16_in_atom1564 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_12_in_atom1574 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
-	public static final BitSet FOLLOW_exp_in_atom1576 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_ID_in_atom1585 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_num_in_atom1593 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_20_in_atom1601 = new BitSet(new long[]{0x0000000000000280L});
-	public static final BitSet FOLLOW_num_in_atom1603 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_BOOLEAN_in_atom1611 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_67_in_atom1620 = new BitSet(new long[]{0x0000000000000002L,0x0000000000004020L});
-	public static final BitSet FOLLOW_69_in_atom1623 = new BitSet(new long[]{0x0000000000008000L});
-	public static final BitSet FOLLOW_coordexp_in_atom1625 = new BitSet(new long[]{0x0000000000000002L,0x0000000000004000L});
-	public static final BitSet FOLLOW_78_in_atom1630 = new BitSet(new long[]{0x0000800000000000L});
-	public static final BitSet FOLLOW_47_in_atom1632 = new BitSet(new long[]{0x0000000000000400L});
-	public static final BitSet FOLLOW_STRING_in_atom1634 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_50_in_atom1645 = new BitSet(new long[]{0x0001000000000000L});
-	public static final BitSet FOLLOW_48_in_atom1647 = new BitSet(new long[]{0x0000000000008000L});
-	public static final BitSet FOLLOW_coordexp_in_atom1649 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000001L});
-	public static final BitSet FOLLOW_64_in_atom1652 = new BitSet(new long[]{0x0000000000000400L});
-	public static final BitSet FOLLOW_STRING_in_atom1654 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_66_in_atom1666 = new BitSet(new long[]{0x0001000000000000L});
-	public static final BitSet FOLLOW_48_in_atom1668 = new BitSet(new long[]{0x0000000000008000L});
-	public static final BitSet FOLLOW_coordexp_in_atom1670 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000001L});
-	public static final BitSet FOLLOW_64_in_atom1673 = new BitSet(new long[]{0x0000000000000400L});
-	public static final BitSet FOLLOW_STRING_in_atom1675 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_46_in_atom1687 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_75_in_atom1694 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000020L});
-	public static final BitSet FOLLOW_69_in_atom1697 = new BitSet(new long[]{0x0000000000008000L});
-	public static final BitSet FOLLOW_coordexp_in_atom1699 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_71_in_atom1708 = new BitSet(new long[]{0x0000000000008000L});
-	public static final BitSet FOLLOW_15_in_atom1710 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
-	public static final BitSet FOLLOW_exp_in_atom1714 = new BitSet(new long[]{0x0000000000080000L});
-	public static final BitSet FOLLOW_19_in_atom1716 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
-	public static final BitSet FOLLOW_exp_in_atom1720 = new BitSet(new long[]{0x0000000000010000L});
-	public static final BitSet FOLLOW_16_in_atom1722 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_ID_in_value1741 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_num_in_value1749 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_20_in_value1757 = new BitSet(new long[]{0x0000000000000280L});
-	public static final BitSet FOLLOW_num_in_value1759 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_59_in_stmt449 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_61_in_stmt464 = new BitSet(new long[]{0x0000000000000100L});
+	public static final BitSet FOLLOW_ID_in_stmt468 = new BitSet(new long[]{0x0000000002000000L});
+	public static final BitSet FOLLOW_25_in_stmt470 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
+	public static final BitSet FOLLOW_exp_in_stmt474 = new BitSet(new long[]{0x0000000000000000L,0x0000000000010000L});
+	public static final BitSet FOLLOW_80_in_stmt476 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
+	public static final BitSet FOLLOW_exp_in_stmt480 = new BitSet(new long[]{0xE0BA701000000100L,0x00000000000E3742L});
+	public static final BitSet FOLLOW_77_in_stmt483 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
+	public static final BitSet FOLLOW_exp_in_stmt487 = new BitSet(new long[]{0xE0BA701000000100L,0x00000000000E1742L});
+	public static final BitSet FOLLOW_stmt_in_stmt507 = new BitSet(new long[]{0xE0BA701000000100L,0x00000000000E1752L});
+	public static final BitSet FOLLOW_68_in_stmt519 = new BitSet(new long[]{0x0000000000000100L});
+	public static final BitSet FOLLOW_ID_in_stmt523 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_81_in_stmt534 = new BitSet(new long[]{0x0000000000000100L});
+	public static final BitSet FOLLOW_ID_in_stmt538 = new BitSet(new long[]{0x0000000000400000L});
+	public static final BitSet FOLLOW_22_in_stmt540 = new BitSet(new long[]{0x0000000400000000L});
+	public static final BitSet FOLLOW_34_in_stmt551 = new BitSet(new long[]{0x0000040000000000L});
+	public static final BitSet FOLLOW_42_in_stmt553 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
+	public static final BitSet FOLLOW_exp_in_stmt557 = new BitSet(new long[]{0x0000080000000000L});
+	public static final BitSet FOLLOW_43_in_stmt559 = new BitSet(new long[]{0x0000000002000000L});
+	public static final BitSet FOLLOW_25_in_stmt561 = new BitSet(new long[]{0x0000000000000000L,0x0000000000100000L});
+	public static final BitSet FOLLOW_84_in_stmt566 = new BitSet(new long[]{0x0004410000109390L,0x000000000000088CL});
+	public static final BitSet FOLLOW_exp_in_stmt571 = new BitSet(new long[]{0x0000000000080000L});
+	public static final BitSet FOLLOW_19_in_stmt573 = new BitSet(new long[]{0x0004410000109390L,0x000000000000088CL});
+	public static final BitSet FOLLOW_40_in_stmt583 = new BitSet(new long[]{0x0000000000080000L,0x0000000000400000L});
+	public static final BitSet FOLLOW_19_in_stmt591 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
+	public static final BitSet FOLLOW_exp_in_stmt595 = new BitSet(new long[]{0x0000000000080000L,0x0000000000400000L});
+	public static final BitSet FOLLOW_86_in_stmt601 = new BitSet(new long[]{0xE0BA701000000100L,0x00000000000E1742L});
+	public static final BitSet FOLLOW_stmt_in_stmt623 = new BitSet(new long[]{0xE4BA701000000100L,0x00000000000E1742L});
+	public static final BitSet FOLLOW_58_in_stmt631 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_46_in_stmt643 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_52_in_stmt653 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_49_in_stmt663 = new BitSet(new long[]{0x0000000000000400L});
+	public static final BitSet FOLLOW_STRING_in_stmt665 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_74_in_stmt675 = new BitSet(new long[]{0x0000000000000000L,0x0000000000010020L});
+	public static final BitSet FOLLOW_69_in_stmt678 = new BitSet(new long[]{0x0000000000008000L});
+	public static final BitSet FOLLOW_coordexp_in_stmt680 = new BitSet(new long[]{0x0000000000000000L,0x0000000000010000L});
+	public static final BitSet FOLLOW_80_in_stmt684 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
+	public static final BitSet FOLLOW_exp_in_stmt686 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_76_in_stmt696 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
+	public static final BitSet FOLLOW_exp_in_stmt698 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000001L});
+	public static final BitSet FOLLOW_64_in_stmt700 = new BitSet(new long[]{0x0000000000008000L});
+	public static final BitSet FOLLOW_colorexp_in_stmt702 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_51_in_stmt712 = new BitSet(new long[]{0x0000000000000400L});
+	public static final BitSet FOLLOW_STRING_in_stmt714 = new BitSet(new long[]{0x0001000000000000L});
+	public static final BitSet FOLLOW_48_in_stmt716 = new BitSet(new long[]{0x0000000000008000L});
+	public static final BitSet FOLLOW_coordexp_in_stmt718 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_65_in_stmt728 = new BitSet(new long[]{0x0001000000000400L});
+	public static final BitSet FOLLOW_STRING_in_stmt731 = new BitSet(new long[]{0x0001000000000000L});
+	public static final BitSet FOLLOW_48_in_stmt735 = new BitSet(new long[]{0x0000000000008000L});
+	public static final BitSet FOLLOW_coordexp_in_stmt737 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_45_in_stmt747 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_44_in_stmt757 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_73_in_stmt768 = new BitSet(new long[]{0x0001000000000000L,0x0000000000010000L});
+	public static final BitSet FOLLOW_48_in_stmt771 = new BitSet(new long[]{0x0000000000008000L});
+	public static final BitSet FOLLOW_coordexp_in_stmt773 = new BitSet(new long[]{0x0000000000000000L,0x0000000000010000L});
+	public static final BitSet FOLLOW_80_in_stmt777 = new BitSet(new long[]{0x0000000000008000L});
+	public static final BitSet FOLLOW_colorexp_in_stmt779 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_83_in_stmt789 = new BitSet(new long[]{0x0000000000400000L});
+	public static final BitSet FOLLOW_22_in_stmt791 = new BitSet(new long[]{0xE0BA701000000100L,0x00000000000E1742L});
+	public static final BitSet FOLLOW_stmt_in_stmt801 = new BitSet(new long[]{0xF0BA701000000100L,0x00000000000E1742L});
+	public static final BitSet FOLLOW_60_in_stmt809 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_36_in_stmt817 = new BitSet(new long[]{0x0000000000400000L});
+	public static final BitSet FOLLOW_22_in_stmt819 = new BitSet(new long[]{0x000002EBE0000002L});
+	public static final BitSet FOLLOW_39_in_stmt830 = new BitSet(new long[]{0x0000000002000000L});
+	public static final BitSet FOLLOW_25_in_stmt832 = new BitSet(new long[]{0x0000000000000400L});
+	public static final BitSet FOLLOW_STRING_in_stmt836 = new BitSet(new long[]{0x0000026BE0000002L});
+	public static final BitSet FOLLOW_29_in_stmt845 = new BitSet(new long[]{0x0000000002000000L});
+	public static final BitSet FOLLOW_25_in_stmt847 = new BitSet(new long[]{0x0000000000008000L});
+	public static final BitSet FOLLOW_coordexp_in_stmt851 = new BitSet(new long[]{0x0000026BC0000002L});
+	public static final BitSet FOLLOW_31_in_stmt862 = new BitSet(new long[]{0x0000000002000000L});
+	public static final BitSet FOLLOW_25_in_stmt864 = new BitSet(new long[]{0x0000000000008000L});
+	public static final BitSet FOLLOW_coordexp_in_stmt868 = new BitSet(new long[]{0x0000026B40000002L});
+	public static final BitSet FOLLOW_41_in_stmt879 = new BitSet(new long[]{0x0000000002000000L});
+	public static final BitSet FOLLOW_25_in_stmt881 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
+	public static final BitSet FOLLOW_exp_in_stmt885 = new BitSet(new long[]{0x0000006B40000002L});
+	public static final BitSet FOLLOW_37_in_stmt896 = new BitSet(new long[]{0x0000000002000000L});
+	public static final BitSet FOLLOW_25_in_stmt898 = new BitSet(new long[]{0x0000000000000000L,0x0000000000100000L});
+	public static final BitSet FOLLOW_84_in_stmt900 = new BitSet(new long[]{0x0000000000008000L});
+	public static final BitSet FOLLOW_15_in_stmt908 = new BitSet(new long[]{0x0000000000000400L});
+	public static final BitSet FOLLOW_STRING_in_stmt912 = new BitSet(new long[]{0x0000000000080000L});
+	public static final BitSet FOLLOW_19_in_stmt914 = new BitSet(new long[]{0x0000000000008000L});
+	public static final BitSet FOLLOW_coordexp_in_stmt918 = new BitSet(new long[]{0x0000000000010000L});
+	public static final BitSet FOLLOW_16_in_stmt931 = new BitSet(new long[]{0x0000000000080000L,0x0000000000400000L});
+	public static final BitSet FOLLOW_19_in_stmt938 = new BitSet(new long[]{0x0000000000008000L});
+	public static final BitSet FOLLOW_15_in_stmt940 = new BitSet(new long[]{0x0000000000000400L});
+	public static final BitSet FOLLOW_STRING_in_stmt944 = new BitSet(new long[]{0x0000000000080000L});
+	public static final BitSet FOLLOW_19_in_stmt946 = new BitSet(new long[]{0x0000000000008000L});
+	public static final BitSet FOLLOW_coordexp_in_stmt950 = new BitSet(new long[]{0x0000000000010000L});
+	public static final BitSet FOLLOW_16_in_stmt963 = new BitSet(new long[]{0x0000000000080000L,0x0000000000400000L});
+	public static final BitSet FOLLOW_86_in_stmt967 = new BitSet(new long[]{0x0000004B40000002L});
+	public static final BitSet FOLLOW_30_in_stmt982 = new BitSet(new long[]{0x0000000002000000L});
+	public static final BitSet FOLLOW_25_in_stmt984 = new BitSet(new long[]{0x0000000000000400L});
+	public static final BitSet FOLLOW_STRING_in_stmt988 = new BitSet(new long[]{0x0000004B00000002L});
+	public static final BitSet FOLLOW_32_in_stmt996 = new BitSet(new long[]{0x0000000002000000L});
+	public static final BitSet FOLLOW_25_in_stmt998 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
+	public static final BitSet FOLLOW_exp_in_stmt1002 = new BitSet(new long[]{0x0000004A00000002L});
+	public static final BitSet FOLLOW_33_in_stmt1013 = new BitSet(new long[]{0x0000000002000000L});
+	public static final BitSet FOLLOW_25_in_stmt1015 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
+	public static final BitSet FOLLOW_exp_in_stmt1019 = new BitSet(new long[]{0x0000004800000002L});
+	public static final BitSet FOLLOW_35_in_stmt1030 = new BitSet(new long[]{0x0000000002000000L});
+	public static final BitSet FOLLOW_25_in_stmt1032 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
+	public static final BitSet FOLLOW_exp_in_stmt1036 = new BitSet(new long[]{0x0000004000000002L});
+	public static final BitSet FOLLOW_38_in_stmt1047 = new BitSet(new long[]{0x0000000002000000L});
+	public static final BitSet FOLLOW_25_in_stmt1049 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
+	public static final BitSet FOLLOW_exp_in_stmt1053 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_15_in_coordexp1078 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
+	public static final BitSet FOLLOW_exp_in_coordexp1082 = new BitSet(new long[]{0x0000000000080000L});
+	public static final BitSet FOLLOW_19_in_coordexp1084 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
+	public static final BitSet FOLLOW_exp_in_coordexp1088 = new BitSet(new long[]{0x0000000000010000L});
+	public static final BitSet FOLLOW_16_in_coordexp1090 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_15_in_colorexp1108 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
+	public static final BitSet FOLLOW_exp_in_colorexp1112 = new BitSet(new long[]{0x0000000000080000L});
+	public static final BitSet FOLLOW_19_in_colorexp1114 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
+	public static final BitSet FOLLOW_exp_in_colorexp1118 = new BitSet(new long[]{0x0000000000080000L});
+	public static final BitSet FOLLOW_19_in_colorexp1120 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
+	public static final BitSet FOLLOW_exp_in_colorexp1124 = new BitSet(new long[]{0x0000000000010000L});
+	public static final BitSet FOLLOW_16_in_colorexp1126 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_15_in_colorexp1133 = new BitSet(new long[]{0x0000000000000400L});
+	public static final BitSet FOLLOW_STRING_in_colorexp1135 = new BitSet(new long[]{0x0000000000010000L});
+	public static final BitSet FOLLOW_16_in_colorexp1137 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_ID_in_formalParamList1172 = new BitSet(new long[]{0x0000000000080002L});
+	public static final BitSet FOLLOW_19_in_formalParamList1176 = new BitSet(new long[]{0x0000000000000100L});
+	public static final BitSet FOLLOW_ID_in_formalParamList1180 = new BitSet(new long[]{0x0000000000080002L});
+	public static final BitSet FOLLOW_exp_in_actualParamList1218 = new BitSet(new long[]{0x0000000000080002L});
+	public static final BitSet FOLLOW_19_in_actualParamList1223 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
+	public static final BitSet FOLLOW_exp_in_actualParamList1227 = new BitSet(new long[]{0x0000000000080002L});
+	public static final BitSet FOLLOW_logexp_in_exp1255 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_relexp_in_logexp1275 = new BitSet(new long[]{0x0000000000004002L,0x0000000000200000L});
+	public static final BitSet FOLLOW_14_in_logexp1287 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
+	public static final BitSet FOLLOW_relexp_in_logexp1291 = new BitSet(new long[]{0x0000000000004002L,0x0000000000200000L});
+	public static final BitSet FOLLOW_85_in_logexp1303 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
+	public static final BitSet FOLLOW_relexp_in_logexp1307 = new BitSet(new long[]{0x0000000000004002L,0x0000000000200000L});
+	public static final BitSet FOLLOW_addexp_in_relexp1333 = new BitSet(new long[]{0x000000001D802002L});
+	public static final BitSet FOLLOW_26_in_relexp1346 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
+	public static final BitSet FOLLOW_addexp_in_relexp1350 = new BitSet(new long[]{0x000000001D802002L});
+	public static final BitSet FOLLOW_24_in_relexp1360 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
+	public static final BitSet FOLLOW_addexp_in_relexp1364 = new BitSet(new long[]{0x000000001D802002L});
+	public static final BitSet FOLLOW_28_in_relexp1374 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
+	public static final BitSet FOLLOW_addexp_in_relexp1378 = new BitSet(new long[]{0x000000001D802002L});
+	public static final BitSet FOLLOW_23_in_relexp1388 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
+	public static final BitSet FOLLOW_addexp_in_relexp1392 = new BitSet(new long[]{0x000000001D802002L});
+	public static final BitSet FOLLOW_27_in_relexp1402 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
+	public static final BitSet FOLLOW_addexp_in_relexp1406 = new BitSet(new long[]{0x000000001D802002L});
+	public static final BitSet FOLLOW_13_in_relexp1416 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
+	public static final BitSet FOLLOW_addexp_in_relexp1420 = new BitSet(new long[]{0x000000001D802002L});
+	public static final BitSet FOLLOW_mulexp_in_addexp1445 = new BitSet(new long[]{0x0000000000140002L});
+	public static final BitSet FOLLOW_18_in_addexp1457 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
+	public static final BitSet FOLLOW_mulexp_in_addexp1461 = new BitSet(new long[]{0x0000000000140002L});
+	public static final BitSet FOLLOW_20_in_addexp1471 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
+	public static final BitSet FOLLOW_mulexp_in_addexp1475 = new BitSet(new long[]{0x0000000000140002L});
+	public static final BitSet FOLLOW_atom_in_mulexp1501 = new BitSet(new long[]{0x0000000000220002L});
+	public static final BitSet FOLLOW_17_in_mulexp1513 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
+	public static final BitSet FOLLOW_atom_in_mulexp1517 = new BitSet(new long[]{0x0000000000220002L});
+	public static final BitSet FOLLOW_21_in_mulexp1527 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
+	public static final BitSet FOLLOW_atom_in_mulexp1531 = new BitSet(new long[]{0x0000000000220002L});
+	public static final BitSet FOLLOW_15_in_atom1556 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
+	public static final BitSet FOLLOW_exp_in_atom1558 = new BitSet(new long[]{0x0000000000010000L});
+	public static final BitSet FOLLOW_16_in_atom1560 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_12_in_atom1570 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
+	public static final BitSet FOLLOW_exp_in_atom1572 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_ID_in_atom1581 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_num_in_atom1589 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_20_in_atom1597 = new BitSet(new long[]{0x0000000000000280L});
+	public static final BitSet FOLLOW_num_in_atom1599 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_BOOLEAN_in_atom1607 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_67_in_atom1616 = new BitSet(new long[]{0x0000000000000002L,0x0000000000004020L});
+	public static final BitSet FOLLOW_69_in_atom1619 = new BitSet(new long[]{0x0000000000008000L});
+	public static final BitSet FOLLOW_coordexp_in_atom1621 = new BitSet(new long[]{0x0000000000000002L,0x0000000000004000L});
+	public static final BitSet FOLLOW_78_in_atom1626 = new BitSet(new long[]{0x0000800000000000L});
+	public static final BitSet FOLLOW_47_in_atom1628 = new BitSet(new long[]{0x0000000000000400L});
+	public static final BitSet FOLLOW_STRING_in_atom1630 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_50_in_atom1641 = new BitSet(new long[]{0x0001000000000000L});
+	public static final BitSet FOLLOW_48_in_atom1643 = new BitSet(new long[]{0x0000000000008000L});
+	public static final BitSet FOLLOW_coordexp_in_atom1645 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000001L});
+	public static final BitSet FOLLOW_64_in_atom1648 = new BitSet(new long[]{0x0000000000000400L});
+	public static final BitSet FOLLOW_STRING_in_atom1650 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_66_in_atom1662 = new BitSet(new long[]{0x0001000000000000L});
+	public static final BitSet FOLLOW_48_in_atom1664 = new BitSet(new long[]{0x0000000000008000L});
+	public static final BitSet FOLLOW_coordexp_in_atom1666 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000001L});
+	public static final BitSet FOLLOW_64_in_atom1669 = new BitSet(new long[]{0x0000000000000400L});
+	public static final BitSet FOLLOW_STRING_in_atom1671 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_46_in_atom1683 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_75_in_atom1690 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000020L});
+	public static final BitSet FOLLOW_69_in_atom1693 = new BitSet(new long[]{0x0000000000008000L});
+	public static final BitSet FOLLOW_coordexp_in_atom1695 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_71_in_atom1704 = new BitSet(new long[]{0x0000000000008000L});
+	public static final BitSet FOLLOW_15_in_atom1706 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
+	public static final BitSet FOLLOW_exp_in_atom1710 = new BitSet(new long[]{0x0000000000080000L});
+	public static final BitSet FOLLOW_19_in_atom1712 = new BitSet(new long[]{0x0004400000109390L,0x000000000000088CL});
+	public static final BitSet FOLLOW_exp_in_atom1716 = new BitSet(new long[]{0x0000000000010000L});
+	public static final BitSet FOLLOW_16_in_atom1718 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_ID_in_value1737 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_num_in_value1745 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_20_in_value1753 = new BitSet(new long[]{0x0000000000000280L});
+	public static final BitSet FOLLOW_num_in_value1755 = new BitSet(new long[]{0x0000000000000002L});
 }
