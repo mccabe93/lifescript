@@ -22,7 +22,7 @@ public class InterpVisitor {
 	// The collected GUI and simulator settings.
 	public String frameTitle = "sim";
 	public double interval = 0.5;
-	public boolean pausable = true, steppable = false;
+	public boolean pausable = true, steppable = false, wraparound = false;
 	public int cellWidth = 6, cellHeight = 6;
 	public int generations = 3;
 	
@@ -53,8 +53,29 @@ public class InterpVisitor {
 	// Get the value of the variable
 	private Scanner consoleInput = new Scanner(System.in);
 
+	private void initParameters(ArgList formalParameters, ArgList actualParameters) 
+		throws ReturnValueException {
+
+		// first check that the list sizes are the same
+		if (formalParameters.size() != actualParameters.size()) {
+		    System.err.println("Error (initParameters): formal and actual parameter lists do not match.");
+		    System.exit(1);
+		}
+
+		// now simply step through the lists and declare the formal parameters as local variables
+		for (int i = 0; i < formalParameters.size(); i++) {
+		    // evaluate the actual expression
+		    Double value = this.dispatch(actualParameters.getAST(i));
+		    // get the formal parameter name
+		    VarExpr var = (VarExpr) formalParameters.getAST(i);
+		    String name = var.rhsVar();
+		    // declare the variable with its init value
+		    lifescript.symbolTable.declareVariable(name,value);
+		}
+	}
+
 	// The dispatcher which finds and begins execution of each AST node.
-	public Double dispatch(AST ast) {
+	public Double dispatch(AST ast) throws ReturnValueException {
 		// General statements
 		if      (ast.getClass() == AssignStmt.class)		return interp((AssignStmt)ast);
 		else if (ast.getClass() == BlockStmt.class)		return interp((BlockStmt)ast);
@@ -78,12 +99,11 @@ public class InterpVisitor {
 		else if (ast.getClass() == CellSizeStmt.class)		return interp((CellSizeStmt)ast);
 		else if (ast.getClass() == CellStmt.class)		return interp((CellStmt)ast);
 		else if (ast.getClass() == DimensionsStmt.class)	return interp((DimensionsStmt)ast);
+		else if (ast.getClass() == WrapMatrixStmt.class)	return interp((WrapMatrixStmt)ast);
 		else if (ast.getClass() == IntervalStmt.class)		return interp((IntervalStmt)ast);
 		else if (ast.getClass() == SteppableStmt.class)		return interp((SteppableStmt)ast);
-		else if (ast.getClass() == IntervalStmt.class)		return interp((IntervalStmt)ast);
 		else if (ast.getClass() == GenerationsStmt.class)	return interp((GenerationsStmt)ast);
 		else if (ast.getClass() == PausableStmt.class)		return interp((PausableStmt)ast);
-		else if (ast.getClass() == SteppableStmt.class)		return interp((SteppableStmt)ast);
 		else if (ast.getClass() == AddRowStmt.class)		return interp((AddRowStmt)ast);
 		else if (ast.getClass() == AddColumnStmt.class)		return interp((AddColumnStmt)ast);
 
@@ -112,6 +132,12 @@ public class InterpVisitor {
 		else if (ast.getClass() == ParenExpr.class)		return interp((ParenExpr)ast);
 		else if (ast.getClass() == VarExpr.class)		return interp((VarExpr)ast);
 		else if (ast.getClass() == NegExpr.class)		return interp((NegExpr)ast);
+		
+		// Function implementation
+		else if (ast.getClass() == FuncDeclStmt.class) 		return interp((FuncDeclStmt)ast);
+		else if (ast.getClass() == CallStmt.class) 		return interp((CallStmt)ast);
+		else if (ast.getClass() == CallExpr.class) 		return interp((CallExpr)ast);
+		else if (ast.getClass() == ReturnStmt.class) 		return interp((ReturnStmt)ast);
 		else {
 		    System.out.println("PrettyPrintVisitor: unknown class type [" + ast.getClass() + "]");
 		    System.exit(1);
@@ -122,25 +148,25 @@ public class InterpVisitor {
 	/*** lifescript Statements ***/
 	
 	// Creates cell of given type at (optional) given coordinate
-	private Double interp(CreateStmt ast) {
+	private Double interp(CreateStmt ast) throws ReturnValueException {
 		cellMatrix.create(dequote(ast.type()), decodeCoord(this.dispatch(ast.getAST(0))));
 		return null;	
 	}
 
 	// Kills cell of given type at (optional) given coordinate
-	private Double interp(KillStmt ast) {
+	private Double interp(KillStmt ast) throws ReturnValueException {
 		cellMatrix.kill(dequote(ast.type()), decodeCoord(this.dispatch(ast.getAST(0))));
 		return null;
 	}
 
 	// Associate a state with a color in given cell type
-	private Double interp(StateColorStmt ast) {
+	private Double interp(StateColorStmt ast) throws ReturnValueException {
 		cellMatrix.setStateColor(this.dispatch(ast.getAST(0)).intValue(), decodeColor(this.dispatch(ast.getAST(1))));
 		return null;	
 	}
 
 	// Set the state of current or given cell (by coordinate) to given state value
-	private Double interp(SetStateStmt ast) {
+	private Double interp(SetStateStmt ast) throws ReturnValueException {
 		if(ast.size() == 1)
 			cellMatrix.state(this.dispatch(ast.getAST(0)).intValue());
 		else
@@ -163,7 +189,7 @@ public class InterpVisitor {
 	// On the first run (saveStmts == true) the neighborhood data will be saved, this 
 	// AST node will be saved, and the logic executed. 
 	// From then on (saveStmsts == false), only the logic will be executed.
-	private Double interp(TypeStmt ast) {
+	private Double interp(TypeStmt ast) throws ReturnValueException {
 		if(!saveStmts && !ast.type().equals(cellMatrix.currentType())) return null;
 		if(saveStmts) {
 			typeStmts.add(ast);
@@ -187,7 +213,7 @@ public class InterpVisitor {
 
 	// Cell in the starting conditions. This is basically one element in the array of
 	// starting condition values -- e.g ("block",(20,16))
-	private Double interp(CellStmt ast) {
+	private Double interp(CellStmt ast) throws ReturnValueException {
 		// Legacy way of getting coordinates - simply get the x,y AST node values through dispatch.
 		Double x = this.dispatch(ast.getAST(0).getAST(0)), y = this.dispatch(ast.getAST(0).getAST(1));
 		startConditionCoords.add(x.intValue());
@@ -216,7 +242,7 @@ public class InterpVisitor {
 
 	// Cell neighborhood node. The VAR in a neighborhood gets the arbitrary
 	// but distinct value -17 to signal that it is the VAR of the neighborhood.
-	private Double interp(NeighborhoodStmt ast) {
+	private Double interp(NeighborhoodStmt ast) throws ReturnValueException {
 		if(!ast.isVar())
 			currentNeighborhood.add(this.dispatch(ast.getAST(0)).intValue());
 		else
@@ -225,7 +251,7 @@ public class InterpVisitor {
 	}
 	
 	// Overrides the color of the cell at the given coordinate.
-	private Double interp(SetColorStmt ast) {
+	private Double interp(SetColorStmt ast) throws ReturnValueException {
 		int[] color, coord;
 		if(ast.size() == 2) {
 			coord = decodeCoord(this.dispatch(ast.getAST(0)));
@@ -238,7 +264,7 @@ public class InterpVisitor {
 	}
 
 	// A world statement is just a block of logic that will be ran each generation.
-	private Double interp(WorldStmt ast) {
+	private Double interp(WorldStmt ast) throws ReturnValueException {
 		if(saveStmts)
 			worldStmts.add(ast);
 		for (int i = 0; i < ast.size(); i++)
@@ -250,7 +276,7 @@ public class InterpVisitor {
 	
 	// The actual Properties statement, loops through all of its children and snags some values
 	// for later use
-	private Double interp(PropertiesStmt ast) {
+	private Double interp(PropertiesStmt ast) throws ReturnValueException {
 		cellMatrix = new CellMatrix();
 		this.dispatch(ast.getAST(0));
 		frameTitle = dequote(ast.title());
@@ -263,11 +289,12 @@ public class InterpVisitor {
 		int[] dims = cellMatrix.getDimensions();
 		cellMatrix.setDefaultType(dequote(ast.defaultType()));
 		cellMatrix.setStartConditions(coords, types);
+		cellMatrix.setWraparound(wraparound);
 		return null;	
 	}
 	
 	// Dimensions of the window -- Uses old way of reading a CoordExpr
-	private Double interp(DimensionsStmt ast) {
+	private Double interp(DimensionsStmt ast) throws ReturnValueException {
 		Double x = this.dispatch(ast.getAST(0).getAST(0)), y = this.dispatch(ast.getAST(0).getAST(1));
 		System.out.println("x = " + x.intValue() + " y = " + y.intValue());
 		cellMatrix.setDimensions(new int[]{x.intValue(), y.intValue()});
@@ -275,32 +302,39 @@ public class InterpVisitor {
 	}
 	
 	// Number of generations to simulate
-	private Double interp(GenerationsStmt ast) {
+	private Double interp(GenerationsStmt ast) throws ReturnValueException {
 		this.generations = this.dispatch(ast.getAST(0)).intValue();
 		return null;	
 	}
 	
+	// Whether the simulation must be unpaused (with spacebar) each generation
+	// i.e You step through the sim generation by generation.
+	private Double interp(WrapMatrixStmt ast) throws ReturnValueException {
+		wraparound = this.dispatch(ast.getAST(0)) == 1 ? true : false;
+		return null;
+	}
+	
 	// Time interval between generations
-	private Double interp(IntervalStmt ast) {
+	private Double interp(IntervalStmt ast) throws ReturnValueException {
 		interval = this.dispatch(ast.getAST(0));
 		return null;
 	}
 
 	// Whether the simulation can be paused (with spacebar)
-	private Double interp(PausableStmt ast) {
+	private Double interp(PausableStmt ast) throws ReturnValueException {
 		pausable = this.dispatch(ast.getAST(0)) == 1 ? true : false;
 		return null;
 	}
 
 	// Whether the simulation must be unpaused (with spacebar) each generation
 	// i.e You step through the sim generation by generation.
-	private Double interp(SteppableStmt ast) {
+	private Double interp(SteppableStmt ast) throws ReturnValueException {
 		steppable = this.dispatch(ast.getAST(0)) == 1 ? true : false;
 		return null;
 	}
 
 	// Sets the size of the cells that are drawn in pixels.
-	private Double interp(CellSizeStmt ast) {
+	private Double interp(CellSizeStmt ast) throws ReturnValueException {
 		int[] dims = decodeCoord(this.dispatch(ast.getAST(0)));
 		this.cellWidth = dims[0];
 		this.cellHeight = dims[1];
@@ -310,7 +344,7 @@ public class InterpVisitor {
 	/*** lifescript Expressions ***/
 
 	// Returns the value of the neighborhood of the current or given (by coordinate) cell
-	private Double interp(NeighborsExpr ast) {
+	private Double interp(NeighborsExpr ast) throws ReturnValueException {
 		// We're calling from inside a Type		
 		if(ast.size() == 0) 
 			return new Double(cellMatrix.neighborValues(dequote(ast.type())));
@@ -320,14 +354,14 @@ public class InterpVisitor {
 
 	// A coordinate in the matrix. Encodes its [x,y] inputs to a single Double of formate 1xxxxyyyy
 	// for later interpretation.
-	private Double interp(CoordExpr ast) {
+	private Double interp(CoordExpr ast) throws ReturnValueException {
 		String coord = "1" + thousandString(this.dispatch(ast.getAST(1)).intValue());
 		coord += thousandString(this.dispatch(ast.getAST(0)).intValue());
 		return Double.parseDouble(coord);
 	}
 
 	// Returns the state of the current or given (by coordinate) cell
-	private Double interp(GetStateExpr ast) {
+	private Double interp(GetStateExpr ast) throws ReturnValueException {
 		if(ast.size() == 0)
 			return new Double(cellMatrix.getState());
 		return new Double(cellMatrix.getState(decodeCoord(this.dispatch(ast.getAST(0)))));
@@ -340,7 +374,7 @@ public class InterpVisitor {
 
 	// Creates a color.  Encodes its [r,g,b] or hex inputs to a single Double of format 1rrrgggbbb 
 	// NOT usable in assignment statement!
-	private Double interp(ColorExpr ast) {
+	private Double interp(ColorExpr ast) throws ReturnValueException {
 		String encode = "1";
 		// if our color isn't already in hex, we convert it		
 		if(ast.hex() != null) {
@@ -357,7 +391,7 @@ public class InterpVisitor {
 	}
 
 	// Generates a random double between given bounds.
-	public Double interp(RandomExpr ast) {
+	public Double interp(RandomExpr ast) throws ReturnValueException {
 		Random r = new Random();
 		double lowerBound = this.dispatch(ast.getAST(0)),
 			upperBound = this.dispatch(ast.getAST(1));
@@ -365,7 +399,7 @@ public class InterpVisitor {
 	}
 
 	// Checks if the cell at [x,y] is of given type (see CellMatrix for more info)
-	private Double interp(CellCheckExpr ast) {
+	private Double interp(CellCheckExpr ast) throws ReturnValueException {
 		return cellMatrix.cellCheck(dequote(ast.type()), decodeCoord(this.dispatch(ast.getAST(0))), ast.relative()) ? 1.0 : 0.0;
 	}
 	
@@ -445,7 +479,7 @@ public class InterpVisitor {
 
 	/*** General functionality (same code as on the midterm) ***/
 
-	private Double interp(ForStmt ast) {
+	private Double interp(ForStmt ast) throws ReturnValueException {
 		// First we check if the variable given at the start is the same as the one
 		// we "next" at the end. If not, the syntax is wrong.
 		String var = ast.startVar(), nexted = ast.endVar();
@@ -469,7 +503,7 @@ public class InterpVisitor {
 	}
 
 	// Spits out the prompt and uses the scanner to get input
-	private Double interp(InputStmt ast) {
+	private Double interp(InputStmt ast) throws ReturnValueException {
 		// Print out the prompt
 		System.out.print(dequote(ast.prompt()));
 		Double value = new Double(consoleInput.nextInt());
@@ -485,7 +519,7 @@ public class InterpVisitor {
 		return null;
 	}
 
-	private Double interp(PrintStmt ast) {
+	private Double interp(PrintStmt ast) throws ReturnValueException {
 		String value = "";	
 		// Value will either be the value of an expression (and therefore has an AST)
 		// or a given string (which indicates there is no AST)
@@ -513,7 +547,7 @@ public class InterpVisitor {
 
 	//****** interpret statement level ASTs
 	// statements
-	private Double interp(AssignStmt ast) {
+	private Double interp(AssignStmt ast) throws ReturnValueException {
 		// evaluate the expression
 		Double value = this.dispatch(ast.getAST(0));
 		// assign the value to the lhs var
@@ -529,7 +563,7 @@ public class InterpVisitor {
 	}
 
 	// block statements
-	private Double interp(BlockStmt ast) {
+	private Double interp(BlockStmt ast) throws ReturnValueException {
 		symbolTable.pushScope();
 		// interpret each of the statements in the block
 		for (int i = 0; i < ast.size(); i++) {
@@ -542,7 +576,7 @@ public class InterpVisitor {
 	}
 
 	// if statements
-	private Double interp(IfStmt ast) {
+	private Double interp(IfStmt ast) throws ReturnValueException {
 		// interpret the expression
 		Double value = this.dispatch(ast.getAST(0));
 		if (value.doubleValue() != 0.0) {
@@ -558,7 +592,7 @@ public class InterpVisitor {
 	}
 
 	// while statements
-	private Double interp(WhileStmt ast) {
+	private Double interp(WhileStmt ast) throws ReturnValueException {
 		Double value;
 
 		// interpet the expression
@@ -577,7 +611,7 @@ public class InterpVisitor {
 	}
 
 	// statement lists
-	private Double interp(StmtList ast) {
+	private Double interp(StmtList ast) throws ReturnValueException {
 		// interpret each of the statements
 		for (int i = 0; i < ast.size(); i++) {
 		    this.dispatch(ast.getAST(i));
@@ -590,7 +624,7 @@ public class InterpVisitor {
 
 	//****** interpret expression level ASTs
 	// binop expressions
-	private Double interp(MathExpr ast) {
+	private Double interp(MathExpr ast) throws ReturnValueException {
 		// interpret left child
 		Double left = this.dispatch(ast.getAST(0));
 		// interpret right child
@@ -635,7 +669,7 @@ public class InterpVisitor {
 	}
 
 	// parenthesized expressions
-	private  Double interp(ParenExpr ast) {
+	private  Double interp(ParenExpr ast) throws ReturnValueException {
 		return this.dispatch(ast.getAST(0));
 	}
 
@@ -652,7 +686,122 @@ public class InterpVisitor {
 	}
 
 	// negative expressions
-	private  Double interp(NegExpr ast) {
+	private  Double interp(NegExpr ast) throws ReturnValueException {
 		return this.dispatch(ast.getAST(0)) == 0.0 ? 1 : 0.0;
+	}
+	
+	
+	// function declaration statements
+	private Double interp(FuncDeclStmt ast) throws ReturnValueException {
+
+		// we are implementing static scoping, so we
+		// have to insert the current scope as the parent
+		// scope for this function declaration
+		Function fValue = ast.Value();
+		fValue.setParentScope(lifescript.symbolTable.getCurrentScope());
+
+		// declare the function
+		lifescript.symbolTable.declareFunction(ast.Name(),fValue);
+
+		// statements do not have return values -- null
+		return null;
+	}
+	
+	// call statements -- function calls as statements -- ignore the return value
+	private Double interp(CallStmt ast) throws ReturnValueException {
+
+		// lookup the function value of the function name
+		Function fValue = lifescript.symbolTable.lookupFunction(ast.getFunctionName());
+
+		// implement static scoping
+		// save the current top of stack
+		SymbolTableScope topOfStack = lifescript.symbolTable.getCurrentScope();
+		// push function local scope onto the stack
+		lifescript.symbolTable.pushScope();
+		// Initialize formal parameters with actual parameters in the current scope
+		initParameters(fValue.getFormalParameters(),ast.getActualParameters());
+		// set the parent of the current scope to be the parent scope of the function
+		lifescript.symbolTable.getCurrentScope().setParentScope(fValue.getParentScope());
+
+		// execute the body of the function
+		try {
+		    this.dispatch(fValue.getFunctionBody());
+		}
+		catch (ReturnValueException e) {
+		    // ignore!
+		}
+
+		// pop the function scope off the stack
+		lifescript.symbolTable.popScope();
+		// we are now in the parent scope of the function --
+		// we have to restore the original scope on the top of the stack
+		lifescript.symbolTable.setCurrentScope(topOfStack);
+
+		// statements do not have return values -- null
+		return null;
+	}
+	
+	// call expressions - call to functions within expressions -- have
+	// deal with the return value.
+	private Double interp(CallExpr ast) throws ReturnValueException {
+
+		// lookup the function value of the function name
+		Function fValue = lifescript.symbolTable.lookupFunction(ast.getFunctionName());
+
+		// implement static scoping
+		// save the current top of stack
+		SymbolTableScope topOfStack = lifescript.symbolTable.getCurrentScope();
+		// push function local scope onto the stack
+		lifescript.symbolTable.pushScope();
+		// Initialize formal parameters with actual parameters in the current scope
+		initParameters(fValue.getFormalParameters(),ast.getActualParameters());
+		// the the parent of the current scope to be the parent scope of the function
+		lifescript.symbolTable.getCurrentScope().setParentScope(fValue.getParentScope());
+
+		// execute the body of the function and retrieve the return value
+		Double returnValue = null;
+		try {
+		    this.dispatch(fValue.getFunctionBody());
+		    // if we got here then we did not receive a return value exception -- error!
+		    System.err.println("Error: expected return value from function '"+ast.getFunctionName()+"'.");
+		    System.exit(1);
+		}
+		catch (ReturnValueException e) {
+		    returnValue = e.getReturnValue();
+
+		    // if this is null then we saw a return without a value
+		    if (returnValue == null) {
+			System.err.println("Error: expected return value from function '"+ast.getFunctionName()+"'.");
+			System.exit(1);
+		    }
+		}
+
+		// pop the function scope off the stack
+		lifescript.symbolTable.popScope();
+		// we are now in the parent scope of the function --
+		// we have to restore the original scope on the top of the stack
+		lifescript.symbolTable.setCurrentScope(topOfStack);
+
+		// the return value of a function call is the value of the 
+		// called function
+		return returnValue;
+	}
+	
+	
+	// return statements
+	private Double interp(ReturnStmt ast) throws ReturnValueException {
+
+		if (ast.size() == 0) {
+		    // no return value express, throw a null
+		    // return value object.
+		    throw new ReturnValueException(null);
+		}
+		else {
+		    // evaluate the return expression
+		    Double returnValue = this.dispatch(ast.getExpr());
+
+		    // now throw the return value object
+		    throw new ReturnValueException(returnValue);
+		}
 	}
 }

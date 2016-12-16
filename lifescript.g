@@ -42,6 +42,22 @@ stmt	returns [Stmt ast]
 	|	'input' (STRING ',')? ID		
 		{$ast = new InputStmt($STRING.text, $ID.text);}
 
+	|	'def' f0=ID '(' ')' ':' 
+			{BlockStmt funcBlock = new BlockStmt();}
+		    	(s=stmt {funcBlock.addAST($s.ast);})+
+		'enddef'
+		{ $ast = new FuncDeclStmt($f0.text,new Function(new ArgList(),funcBlock)); }
+		
+	|	'def' f1=ID '(' l=formalParamList ')' ':' 
+			{BlockStmt funcBlock2 = new BlockStmt();}
+		    	(s=stmt {funcBlock2.addAST($s.ast);})+
+		'enddef'
+		{ $ast = new FuncDeclStmt($f1.text,new Function($l.ast,funcBlock2));
+			}
+	|	ID '(' ')'					{ $ast = new CallStmt($ID.text);}
+	|	ID '(' l=actualParamList ')'			{ $ast = new CallStmt($ID.text,$l.ast);}
+	|	'return' exp					{ $ast = new ReturnStmt($exp.ast); }
+	|	'return'					{ $ast = new ReturnStmt(); }
 	// This will actually be received as a BlockStmt node with all PrNUMStmt nodes are appended to it
 	|	'print' // We create a BlockStmt
 			{BlockStmt prints = new BlockStmt();}
@@ -73,6 +89,7 @@ stmt	returns [Stmt ast]
 	|	'while' exp {BlockStmt whileBlock = new BlockStmt();}
 			(s=stmt {whileBlock.addAST($s.ast);})+  'endwhile'	
 			{$ast = new WhileStmt($exp.ast,whileBlock);}
+		'endwhile'
 	
 	// The for loop includes the BlockStmt logic, along with grabbing quite a few other values
 	|	'for' v3=ID '=' start2=exp 'to' lim=exp ('step' step=exp)? 
@@ -132,6 +149,7 @@ stmt	returns [Stmt ast]
 			('Title' '=' title=STRING)? // otherwise sim
 			('Cell Size' '=' cs=coordexp {properties.addAST(new CellSizeStmt(cs));})? // defaults 10px
 			('Dimensions' '=' dims=coordexp {properties.addAST(new DimensionsStmt(dims));})? // otherwise 540,540
+			('Wraparound' '=' wrap=exp {properties.addAST(new WrapMatrixStmt(wrap));})? // defaults false 
 			('Start' '=' '{' {BlockStmt startConditions = new BlockStmt();}
 				'(' celltype=STRING ',' cellcoords=coordexp 
 				{startConditions.addAST(new CellStmt($celltype.text, $cellcoords.ast));}
@@ -156,6 +174,13 @@ colorexp returns [ColorExpr ast]
 	:	'(' e1=exp ',' e2=exp ',' e3=exp ')'	{$ast = new ColorExpr($e1.ast, $e2.ast, $e3.ast);}
 	|	'(' STRING ')'					{$ast = new ColorExpr($STRING.text);} // hex color encoding
 	;
+
+formalParamList returns [ArgList ast] 
+     :     v1 = ID {$ast = new ArgList(new VarExpr($v1.text));}(',' v2=ID {$ast.addAST(new VarExpr($v2.text));} )* 
+     ; 
+actualParamList returns [ArgList ast] 
+     :     e1 = exp {$ast = new ArgList($e1.ast);} (',' e2=exp {$ast.addAST($e2.ast);} )* 
+     ; 
 
 // Mathematical / numerical expressions
 

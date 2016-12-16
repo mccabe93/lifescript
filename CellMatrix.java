@@ -19,14 +19,16 @@ public class CellMatrix {
 	public static final int DEFAULT 	= -99;		// Signals no change in matrix coordinate
 	public static final int PLUSONE		= -999;		// Signals to increase coordinate by one
 
-
 	private HashMap<String, Cell> types; // Stores info of each cell type for lookup
 	private CellNode[] Matrix, OriginalMatrix; // Tracks states of each cell and type
-	private int matrixWidth; // Used in favor of calling Matrix.length constantly 
+	private int matrixWidth, matrixHeight; // Used in favor of calling Matrix.length constantly 
 	private String defaultType; // The type we'll initially fill our matrices with.
 
 	// The index of the current cell being evaluated
 	private int current = 0;
+	
+	// wraparound data
+	private boolean wraparound = false;
 
 	// The CellNode type used for tracking cells in the Matrix and OriginalMatrix
 	// Provides basic information about a cell.
@@ -59,6 +61,7 @@ public class CellMatrix {
 					color = col;
 			}
 		}
+		
 	}
 
 	// More detailed info such as neighborhood, some supplementary calculations for neighborhood
@@ -66,10 +69,11 @@ public class CellMatrix {
 	public class Cell {
 		public int[]	neighborhood;	// values of neighbors
 		public int 	VAR;		// location of VARs in neighborhood
-		public int	rowsAbove = 0, rowsBelow = -1, 
+		public int	rowsAbove = -1, rowsBelow = 0, 
 				leftDisplacement = 0, rightDisplacement = 0;
+		public int[]	neighborIndex; // stores the indices of the cell's neighbors
 		public HashMap<Integer, int[]> stateColors = new HashMap<Integer, int[]>();
-
+		//public int dx, dy;
 		// first value of any neighborhood is its width, height is implicit by array length
 		public Cell(String name, int[] neighborhood, int VAR) {
 			this.neighborhood = neighborhood;
@@ -79,22 +83,22 @@ public class CellMatrix {
 			getTranslationData();
 			stateColors.put(0, new int[]{255, 255, 255});
 			stateColors.put(1, new int[]{0, 0, 0});
+			System.out.println("rows below: " + rowsBelow + "\nrows above: " + rowsAbove);
 		}
 
 		public void addStateColor(int state, int[] color) {
 			stateColors.put(state, color);
 		}
 		private void getTranslationData() {
-			if(neighborhood[0] == 0) return;
-			// center the neighborhood matrix on VAR
+			if(neighborhood[0] == 0)
+				return;
 			for(int i = 1; i < neighborhood.length; i++){
 				if(i == VAR) { 
 					leftDisplacement = (i % neighborhood[0]) - 1;
 					rightDisplacement = (neighborhood[0] - leftDisplacement) - 1;
 				}
 				if(i % neighborhood[0] == 0){
-//					System.out.println("row found");
-					if(i < VAR)
+					if((i-(neighborhood[0]+1)) < VAR)
 						rowsAbove++;
 					else if(i > VAR)
 						rowsBelow++;
@@ -140,6 +144,10 @@ public class CellMatrix {
 		for(int i = 0; i < Matrix.length; i++)
 			Matrix[i] = new CellNode(0, type);
 	}
+	
+	public void setWraparound(boolean wraparound) {
+		this.wraparound = wraparound;
+	}
 
 	// Sets the dimensions of the matrix to [x,y]
 	public void setDimensions(int[] dimensions) {
@@ -154,9 +162,8 @@ public class CellMatrix {
 			matrixWidth = dimensions[0];
 
 		// Change the number of rows
-		int matrixHeight = 0;
 		if(Matrix != null)
-			matrixHeight = (Matrix.length/matrixWidth)+1;
+			matrixHeight = Matrix.length/matrixWidth;
 		if(dimensions[1] == DEFAULT)
 			dimensions[1] = matrixHeight;
 		else if(dimensions[1] == PLUSONE)
@@ -210,7 +217,6 @@ public class CellMatrix {
 			System.out.print(neighborValues(i, null) + " " + c.type + " | ");
 		}
 	}
-
 	/*** Cell functionality ***/
 	
 	// Return the values of the neighborhood of the cell at index pos.
@@ -221,26 +227,65 @@ public class CellMatrix {
 		Cell cell = types.get(Matrix[pos].type);
 		int[] hood = cell.neighborhood;
 		if(hood[0] == 0) return 0;
-		int 	bufferTop = pos - cell.rowsAbove * matrixWidth, bufferBottom = pos + cell.rowsBelow * matrixWidth,
-			bufferLeft = pos%matrixWidth - cell.leftDisplacement, bufferRight = pos%matrixWidth + cell.rightDisplacement;
+		int diy = 0;
+		int dix = 0;
+		int y = pos/matrixWidth;
+		int x = pos%matrixWidth;
+		if(matrixHeight == 0)
+			matrixHeight = Matrix.length/matrixWidth;
+		if(wraparound) {
+			for(int dy = -cell.rowsAbove; dy <= cell.rowsBelow; dy++, diy++) {
+				for(int dx = -cell.leftDisplacement; dx <= cell.rightDisplacement; dx++, dix++) {
+					int index = cellAddress(x+dx, (y+dy), matrixWidth, matrixHeight);
+					CellNode tmp = OriginalMatrix[index];
+					if(tmp.state > 0) {
+						if((type != null && type.equals(tmp.type)) || type == null) {
+							//if(!wraparound && !(x + dx < matrixWidth && x - dx >= 0 && y + dy < matrixHeight && y + dy >= 0))
+							//	continue;
+							//else {
+							int loc = dix+diy*hood[0];
+							values += hood[loc+1];
+							//}
+						}
+					}
+				}
+				dix = 0;
+			}
+		}
+		// not wraparound matrix uses legacy way of evaluating neighborhood
+		// due to some bugs in the previous way
+		else {
+			int 	bufferTop = pos - cell.rowsAbove * matrixWidth, bufferBottom = pos + cell.rowsBelow * matrixWidth,
+				bufferLeft = pos%matrixWidth - cell.leftDisplacement, bufferRight = pos%matrixWidth + cell.rightDisplacement;
 
-		if(bufferTop > -1 && bufferBottom < Matrix.length && bufferLeft > -1 && bufferRight < matrixWidth) {
-			pos = bufferTop - cell.leftDisplacement;
-			for(int i = 1; i < hood.length; i++) {
-				CellNode tmp = OriginalMatrix[pos];
-				if(tmp.state > 0) {
-					if((type != null && type.equals(tmp.type)) || type == null)
-						values += hood[i];
+			if(bufferTop > -1 && bufferBottom < Matrix.length && bufferLeft > -1 && bufferRight < matrixWidth) {
+				pos = bufferTop - cell.leftDisplacement;
+				for(int i = 1; i < hood.length; i++) {
+					CellNode tmp = OriginalMatrix[pos];
+					if(tmp.state > 0) {
+						if((type != null && type.equals(tmp.type)) || type == null)
+							values += hood[i];
+					}
+					if(i % hood[0] == 0){
+						pos -= hood[0]-1;
+						pos += matrixWidth;
+					}
+					else pos++;
 				}
-				if(i % hood[0] == 0){
-					pos -= hood[0]-1;
-					pos += matrixWidth;
-				}
-				else pos++;
 			}
 		}
 		return values;
 	}
+	
+	private int cellAddress(int x, int y, int m, int n) {
+		return (pymod(y,n))*m + pymod(x,m);
+	}
+	// stackoverflow 
+	private int pymod(int a, int b) {
+		if(b == 0)
+			return 0;
+		return ((a%b) + b) % b;
+	} 
 
 	// Converts [x,y] to index and checks neighbor values
 	public int neighborValues(int[] coord, String type) {
